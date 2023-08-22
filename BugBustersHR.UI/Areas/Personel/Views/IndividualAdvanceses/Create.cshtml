@@ -1,0 +1,75 @@
+﻿@model BugBustersHR.BLL.ViewModels.IndividualAdvanceViewModel.IndividualAdvanceRequestVM
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<body class="g-sidenav-show  bg-gray-200">
+    <div class="container-fluid mt-6 px-md-4 d-flex justify-content-end align-items-center">
+        <div class="col-10">
+            <div class="page-header min-height-300 border-radius-xl" style="background-image: url('https://images.unsplash.com/photo-1531512073830-ba890ca4eba2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');">
+                <span class="mask bg-gradient-secondary opacity-6"></span>
+            </div>
+        </div>
+    </div>
+    @*Here goes the content withour Navbar*@
+
+    <div class="container-fluid px-2 px-md-4 d-flex justify-content-end align-items-center mt-n10" style="height: 100vh;">
+        <div class="col-10 mt-n11">
+            <div class="bg-light card card-body mx-2 mx-md-4 bg-light">
+                <div class="col-md-12 d-flex justify-content-center align-items-center">
+                    <h2 class="mb-1 mt-4">Individual Allowance Request</h2>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input type="hidden" asp-for="Id" class="form-control" />
+                                  
+                                </div>
+                                <div class="form-group">
+                                    <input type="hidden" asp-for="RequestingId" class="form-control" />
+                                   
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Amount" class="control-label"></label>
+                                    <input asp-for="Amount" class="form-control  shadow-sm" />
+                                    <span asp-validation-for="Amount" class="text-danger"></span>
+                                </div>
+                                @*<div class="form-group">
+                                    <label asp-for="Currency" class="control-label"></label>
+                                    <input asp-for="Currency" class="form-control shadow-sm" />
+                                    <span asp-validation-for="Currency" class="text-danger"></span>
+                                </div>*@
+
+                                <div class="form-group">
+                                    <label asp-for="Currency" class="control-label"></label>
+                                    <select asp-for="Currency" class="form-control shadow-sm" asp-items="ViewBag.CurrencyOptions">
+                                        <option value="">-- Select --</option>
+                                    </select>
+                                    <span asp-validation-for="Currency" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Explanation" class="control-label"></label>
+                                    <input asp-for="Explanation" class="form-control shadow-sm" />
+                                    <span asp-validation-for="Explanation" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input type="hidden" asp-for="EmployeeRequestingId" class="form-control" />
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-group mt-3">
+                            <input type="submit" value="Create" class="btn btn-primary" />
+                            <a asp-action="Index" class="btn btn-link">Back to List</a>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>   

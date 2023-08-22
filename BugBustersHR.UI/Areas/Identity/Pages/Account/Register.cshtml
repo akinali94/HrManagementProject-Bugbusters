@@ -1,0 +1,165 @@
+﻿@page
+@using static BugBustersHR.UI.Areas.Identity.Pages.Account.RegisterModel;
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+
+<body class="g-sidenav-show  bg-gray-200">
+    <div class="container-fluid mt-6 px-md-4 d-flex justify-content-end align-items-center">
+        <div class="col-10">
+            <div class="page-header min-height-300 border-radius-xl" style="background-image: url('https://images.unsplash.com/photo-1531512073830-ba890ca4eba2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');">
+                <span class="mask bg-gradient-secondary opacity-6"></span>
+            </div>
+        </div>
+    </div>
+    @*Here goes the content withour Navbar*@
+    <div class="container-fluid px-2 px-md-4 d-flex justify-content-end align-items-center mt-n11" style="height: 100vh;">
+        <div class="col-10 mt-n11">
+            <div class="bg-light card card-body mx-2 mx-md-4 bg-light">
+                <div class="col-md-12 d-flex justify-content-center align-items-center">
+                    <h2 class="mb-1 mt-4">Employee Register</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <!-- Column 1 -->
+                                    <div class="form-floating mb-3">
+                                        <input asp-for="Input.Name" class="form-control" aria-required="true" placeholder="Name" />
+                                        <label asp-for="Input.Name">Name</label>
+                                        <span asp-validation-for="Input.Name" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input asp-for="Input.SecondName" class="form-control" placeholder="SecondName" />
+                                        <label asp-for="Input.SecondName">SecondName</label>
+                                        <span asp-validation-for="Input.SecondName" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input asp-for="Input.Surname" class="form-control" placeholder="Surname" />
+                                        <label asp-for="Input.Surname">Surname</label>
+                                        <span asp-validation-for="Input.Surname" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input asp-for="Input.SecondSurname" class="form-control" placeholder="SecondSurname" />
+                                        <label asp-for="Input.SecondSurname">SecondSurname</label>
+                                        <span asp-validation-for="Input.SecondSurname" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <!-- Column 2 -->
+                                    <div class="form-floating mb-3">
+                                        <input asp-for="Input.BirthPlace" class="form-control" placeholder="BirthPlace" />
+                                        <label asp-for="Input.BirthPlace">BirthPlace</label>
+                                        <span asp-validation-for="Input.BirthPlace" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input asp-for="Input.BirthDate" class="form-control" placeholder="BirthDate" type="date"/>
+                                        <label asp-for="Input.BirthDate">BirthDate</label>
+                                        <span asp-validation-for="Input.BirthDate" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label asp-for="Input.Gender" class="control-label">Gender</label>
+                                        <select asp-for="Input.Gender" asp-items="GenderTypeHelper.GetGenderSelectList()" class="form-control"></select>
+                                        <span asp-validation-for="Input.Gender" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label asp-for="Input.Role" class="control-label">Role</label>
+                                        <select asp-for="Input.Role" asp-items="GetRoles()" class="form-control"></select>
+                                        <span asp-validation-for="Input.Role" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="form-floating mb-3">
+                                        <input asp-for="Input.HiredDate" class="form-control" placeholder="HiredDate" type="date"/>
+                                        <label asp-for="Input.HiredDate">HiredDate</label>
+                                        <span asp-validation-for="Input.HiredDate" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <!-- Column 3 -->
+                                    <div class="form-floating mb-3">
+                                        <input asp-for="Input.Title" class="form-control" placeholder="Title" />
+                                        <label asp-for="Input.Title">Title</label>
+                                        <span asp-validation-for="Input.Title" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="form-floating mb-3">
+                                        <input asp-for="Input.Section" class="form-control" placeholder="Section" />
+                                        <label asp-for="Input.Section">Section</label>
+                                        <span asp-validation-for="Input.Section" class="text-danger"></span>
+                                    </div>
+
+
+                                    <div class="form-floating mb-3">
+                                        <input asp-for="Input.TelephoneNumber" class="form-control" placeholder="TelephoneNumber" />
+                                        <label asp-for="Input.TelephoneNumber">TelephoneNumber</label>
+                                        <span asp-validation-for="Input.TelephoneNumber" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="form-floating mb-3">
+                                        <input asp-for="Input.Address" class="form-control" placeholder="Address" />
+                                        <label asp-for="Input.Address">Address</label>
+                                        <span asp-validation-for="Input.Address" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <!-- Column 4 -->
+
+                                    <div class="form-floating mb-3">
+                                        <input asp-for="Input.CompanyName" class="form-control" placeholder="CompanyName" />
+                                        <label asp-for="Input.CompanyName">CompanyName</label>
+                                        <span asp-validation-for="Input.CompanyName" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="form-floating mb-3">
+                                        <input asp-for="Input.Salary" class="form-control" placeholder="Salary" />
+                                        <label asp-for="Input.Salary">Salary</label>
+                                        <span asp-validation-for="Input.Salary" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="form-floating mb-3">
+                                        <input asp-for="Input.TC" class="form-control" placeholder="TC" />
+                                        <label asp-for="Input.TC" class="form-control">TC Kimlik No</label>
+                                        <span asp-validation-for="Input.TC" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="form-floating mb-3">
+                                        <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                                        <label asp-for="Input.Password">Password</label>
+                                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                                        <label asp-for="Input.ConfirmPassword">Confirm Password</label>
+                                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+</body>
+
+
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+
+    
+
+   
+
+

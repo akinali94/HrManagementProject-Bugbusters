@@ -1,0 +1,43 @@
+﻿.scrollable-table {
+    max-height: 75vh; /* Adjust this value as per your design */
+    overflow-y: auto;
+}
+
+.sticky-header th {
+    position: sticky; /* Makes the header "stick" */
+    top: 0; /* Aligns the header to the top of the containing element */
+    z-index: 1000; /* Ensures the header is above the other content */
+    background-color: #f9f9f9; /* Background color for the header */
+}
+
+.table-responsive::-webkit-scrollbar {
+    width: 5px;
+}
+
+.table-responsive {
+    height: 250px; /* Adjust this height as needed */
+    overflow-y: auto; /* Enables vertical scrolling if needed */
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+    .table-responsive::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 10px;
+    }
+
+        .table-responsive::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+.table-container {
+    max-height: 60vh; /* Adjust this value to suit your design */
+    overflow-y: auto;
+}
+
+body {
+    overflow: hidden; /* Prevents scrolling */
+    height: 100vh; /* Ensures full viewport height */
+    position: fixed; /* Makes the body fixed */
+    width: 100%; /* Full width */
+}

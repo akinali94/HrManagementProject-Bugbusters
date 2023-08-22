@@ -1,0 +1,63 @@
+﻿@model BugBustersHR.BLL.ViewModels.ExpenditureTypeViewModel.ExpenditureTypeCreateVM
+@{
+    Layout = null;
+}
+
+<form class="form-horizontal" asp-action="Create">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right" asp-for="ExpenditureName">Expenditure Type</label>
+        <div class="col-sm-9">
+            <input asp-for="ExpenditureName" type="text" id="form-field-1" placeholder="Expenditure Type" class="col-xs-10 col-sm-5" />
+            <span asp-validation-for="ExpenditureName" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right">Max Price</label>
+        <div class="col-sm-9">
+            <input asp-for="MaxPrice" type="text" id="form-field-2" class="col-xs-10 col-sm-5" />
+            <span asp-validation-for="MaxPrice" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right">Min Price</label>
+        <div class="col-sm-9">
+            <input asp-for="MinPrice" type="text" id="form-field-3" class="col-xs-10 col-sm-5" />
+            <span asp-validation-for="MinPrice" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="clearfix form-actions">
+        <div class="col-md-offset-3 col-md-9">
+            <button class="btn btn-info" type="submit">
+                <i class="ace-icon fade fa-check bigger-110"></i>Submit
+            </button>
+            &nbsp; &nbsp; &nbsp;
+            <button class="btn" type="reset">
+                <i class="ace-icon fa fa-undo bigger-110"></i>Reset
+            </button>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        function checkAmountValidity() {
+            var expenditureTypeId = document.getElementById('ExpenditureTypeId').value;
+            var minPrice = parseFloat(document.getElementById('form-field-3').value);
+            var maxPrice = parseFloat(document.getElementById('form-field-2').value);
+            var amountInput = document.getElementById('form-field-4');
+            var amount = parseFloat(amountInput.value);
+
+            // Your logic to get the valid range based on expenditureTypeId
+
+            if (amount >= minPrice && amount <= maxPrice) {
+                amountInput.setCustomValidity(''); // Clear any previous validation message
+            } else {
+                amountInput.setCustomValidity('Amount must be within the valid range for the selected Expenditure Type.');
+            }
+        }
+    </script>
+}

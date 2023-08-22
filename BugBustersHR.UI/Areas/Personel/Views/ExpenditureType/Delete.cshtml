@@ -1,0 +1,38 @@
+﻿@model BugBustersHR.BLL.ViewModels.ExpenditureTypeViewModel.ExpenditureTypeVM
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Delete</title>
+</head>
+<body>
+    <h2>Confirm Delete</h2>
+    <form asp-action="Delete">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+
+        <div class="form-group">
+            <label asp-for="ExpenditureName"></label>
+            <input asp-for="ExpenditureName" class="form-control" disabled />
+        </div>
+        <div class="form-group">
+            <label asp-for="MaxPrice"></label>
+            <input asp-for="MaxPrice" class="form-control" disabled />
+        </div>
+        <div class="form-group">
+            <label asp-for="MinPrice"></label>
+            <input asp-for="MinPrice" class="form-control" disabled />
+        </div>
+
+
+        <div class="form-group">
+            <input type="submit" value="Delete" class="btn btn-danger" />
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</body>
+</html>

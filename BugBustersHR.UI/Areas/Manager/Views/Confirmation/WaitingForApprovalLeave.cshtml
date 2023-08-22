@@ -1,0 +1,107 @@
+﻿@model IEnumerable<BugBustersHR.BLL.ViewModels.LeaveRequestViewModel.EmployeeLeaveRequestVM>
+
+<style>
+    .nav-item .nav-link:hover {
+        background-color: lightgray; /* You can change this color to whatever you prefer */
+        transition: background-color 0.3s ease; /* Optional: Adds a smooth transition effect */
+    }
+</style>
+<body class="g-sidenav-show  bg-gray-200">
+    <div class="container-fluid mt-6 px-md-4 d-flex justify-content-end align-items-center">
+        <div class="col-10">
+            <div class="page-header min-height-300 border-radius-xl" style="background-image: url('https://images.unsplash.com/photo-1531512073830-ba890ca4eba2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');">
+                <span class="mask bg-gradient-secondary opacity-6"></span>
+            </div>
+        </div>
+    </div>
+
+    @*Here goes the content withour Navbar*@
+    <div class="container-fluid px-2 px-md-4 d-flex justify-content-end align-items-center mt-n12" style="height: 100vh;">
+        <div class="col-10 mt-n8">
+            <div class="col-12">
+                <div class="bg-light card card-body mx-2 mx-md-4 bg-light">
+                    <div class="col-md-12 d-flex justify-content-center align-items-center">
+                        <h2 class="mb-1 mt-4">Waiting Approval Leave List</h2>
+                    </div>
+                    <div class="card-body mt-5 p-0">
+                        <div class="row">
+                            <div class="col-md-3 bg-light">
+                                <ul class="nav flex-column nav-pills bg-light">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" asp-area="Manager" asp-controller="Confirmation" asp-action="LeaveConfirmation" style="font-weight: bold;">All</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-area="Manager" asp-controller="Confirmation" asp-action="AcceptedApprovalLeave" style="font-weight: bold; color:forestgreen">Confirmed</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-area="Manager" asp-controller="Confirmation" asp-action="WaitingForApprovalLeave" style="font-weight: bold; color:orange">Waiting for Approval</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-area="Manager" asp-controller="Confirmation" asp-action="NotAcceptedApprovalLeave" style="font-weight: bold; color:darkred">Not Confirmed</a>
+                                    </li>
+                                    <li class="nav-item mt-5">
+                                        <a asp-controller="Employee" asp-action="Index" class="btn btn-dark btn-outline-secondary text-lg-center">
+                                            <i class="fas fa-home"></i> Home
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="table-responsive m-0 p-0 scrollable-table" style="margin: 0 !important; padding: 0 !important;">
+                                    <table class="table table-bordered table-hover">
+                                        <thead class="thead-dark sticky-header">
+                                            <tr>
+                                                <th>Full Name</th>
+                                                <th>Start Date</th>
+                                                <th>End Date</th>
+                                                <th>Request Date</th>
+                                                <th>Leave Type</th>
+                                                <th>Days</th>
+                                                <th>Leave Approval Status</th>
+            @*                                    <th>Leave Approval Date</th>*@
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                <tr>
+                                                    <td>@Html.DisplayFor(modelItem => item.FullName)</td>
+                                                    <td>@item.StartDate.ToString("dd.MM.yyyy")</td>
+                                                    <td>@item.EndDate.ToString("dd.MM.yyyy")</td>
+                                                    <td>@item.DateRequest.ToString("dd.MM.yyyy")</td>
+                                                    <td>@Html.DisplayFor(modelItem => item.LeaveTypeName)</td>
+                                                    <td>@Html.DisplayFor(modelItem => item.NumberOfDaysOff)</td>
+                                                    <td>@Html.DisplayFor(modelItem => item.LeaveApprovalStatusName)</td>
+                                            @*        <td>@Html.DisplayFor(modelItem => item.LeaveApprovalDate)</td>*@
+                                                    <td>
+                                                        @{
+                                                            if (item.Approved == null)
+                                                            {
+                                                                <a href="/Manager/Advances/AdvanceRefused/@item.Id" class="btn btn-outline-warning">Refuse</a>
+                                                                <a href="/Manager/Advances/AdvanceAccepted/@item.Id" class="btn btn-outline-info">Accept</a>
+                                                                //@Html.ActionLink("Accept Leave", "LeaveAccepted", new { id=item.Id  })
+                                                                //@Html.ActionLink("Refuse Leave", "LeaveRefused", new { id=item.Id })
+
+                                                            }
+                                                            if (item.Approved != null)
+                                                            {
+
+                                                                <h6>Advance situation was evaluated!</h6>
+
+                                                            }
+                                                        }
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

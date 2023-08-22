@@ -1,0 +1,98 @@
+﻿@model IEnumerable<BugBustersHR.BLL.ViewModels.ManagerViewModel.GetEmployeeListVM>
+
+@{
+    ViewData["Title"] = "GetEmployeeList";
+}
+
+<style>
+    .nav-item .nav-link:hover {
+        background-color: lightgray; /* You can change this color to whatever you prefer */
+        transition: background-color 0.3s ease; /* Optional: Adds a smooth transition effect */
+    }
+</style>
+
+<body class="g-sidenav-show  bg-gray-200">
+    <div class="container-fluid mt-6 px-md-4 d-flex justify-content-end align-items-center">
+        <div class="col-10">
+            <div class="page-header min-height-300 border-radius-xl" style="background-image: url('https://images.unsplash.com/photo-1531512073830-ba890ca4eba2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');">
+                <span class="mask bg-gradient-secondary opacity-6"></span>
+            </div>
+        </div>
+    </div>
+
+    @*Here goes the content withour Navbar*@
+    <div class="container-fluid px-2 px-md-4 d-flex justify-content-end align-items-center mt-n12" style="height: 100vh;">
+        <div class="col-10 mt-n8">
+            <div class="col-12">
+                <div class="bg-light card card-body mx-2 mx-md-4 bg-light">
+                    <div class="col-md-12 d-flex justify-content-center align-items-center">
+                        <h2 class="mb-1 mt-4">Employee List</h2>
+                    </div>
+                    <div class="card-body mt-5 p-0">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table-responsive m-0 p-0 scrollable-table" style="margin: 0 !important; padding: 0 !important;">
+                                    <table class="table table-bordered table-hover">
+                                        <thead class="thead-dark sticky-header">
+                                            <tr>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.ImageUrl)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.FullName)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Email)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.TelephoneNumber)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Section)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Title)
+                                                </th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @item.ImageUrl
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.FullName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Email)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.TelephoneNumber)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Section)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Title)
+                                                    </td>
+                                                    <td>
+                                                        @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |*@
+                                                        @Html.ActionLink("Details", "GetEmployeeDetails", new { id=item.Id })
+                                                        @*@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

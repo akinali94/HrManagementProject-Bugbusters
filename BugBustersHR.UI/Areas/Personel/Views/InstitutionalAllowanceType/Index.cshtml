@@ -1,0 +1,81 @@
+﻿@model IEnumerable<BugBustersHR.BLL.ViewModels.InstitutionalAllowanceTypeViewModel.InstitutionalAllowanceTypeVM>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            margin: auto;
+            width: 80%;
+            padding: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            text-align: center;
+            padding: 8px;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <p>
+         
+            <a asp-controller="InstitutionalAllowanceType" asp-action="Create">Create New</a>
+        </p>
+        <table>
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.InstitutionalAllowanceTypeName)</th>
+                    <th>@Html.DisplayNameFor(model => model.MaxPrice)</th>
+                    <th>@Html.DisplayNameFor(model => model.MinPrice)</th>
+
+
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.InstitutionalAllowanceTypeName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.MaxPrice)</td>
+                        <td>@Html.DisplayFor(modelItem => item.MinPrice)</td>
+
+
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+
+                            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+

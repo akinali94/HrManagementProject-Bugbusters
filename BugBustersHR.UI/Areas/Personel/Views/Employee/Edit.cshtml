@@ -1,0 +1,163 @@
+﻿@using BugBustersHR.BLL.ViewModels.EmployeeViewModel;
+@model EmployeeUpdateVM
+
+<div class="container-fluid mt-6 px-md-4 d-flex justify-content-end align-items-center">
+    <div class="col-10">
+        @*<input type="file" asp-for="BackgroundImageModel.File" class="form-control" id="backgroundImageInput" style="display:none;" />
+        <label for="backgroundImageInput" class="btn btn-outline-dark btn-sm">Upload Background Image</label>*@
+        <div class="page-header min-height-300 border-radius-xl" id="backgroundImage" style="background-image: url('https://images.unsplash.com/photo-1531512073830-ba890ca4eba2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');">
+            <span class="mask bg-gradient-secondary opacity-6"></span>
+        </div>
+    </div>
+</div>
+<div class="toast-container position-fixed top-0 end-0 p-3 mt-5" style="z-index: 1051;">
+    <div class="toast fade bg-light text-dark border" role="alert" aria-live="assertive" id="successToast" aria-atomic="true">
+        <div class="toast-header">
+            <i class="material-icons text-success me-2">check</i>
+            <strong class="me-auto font-weight-bold">Bug Busters</strong>
+            <small class="text-muted">Just Now</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            The changes are saved!
+        </div>
+    </div>
+</div>
+<div class="container-fluid px-2 px-md-4 d-flex justify-content-end align-items-center mt-n11 bg-light" style="min-height: 100vh">
+    <div class="col-10 mt-n11 bg-light">
+        <div class="card card-body mx-3 mx-md-4 bg-light">
+            <div class="card-header pb-0 p-3 bg-light">
+                <div class="row">
+                    <div class="col-md-12 d-flex justify-content-center align-items-center">
+                        <h2 class="mb-4">Edit Information</h2>
+                    </div>
+                </div>
+            </div>
+            <form asp-controller="Employee" asp-action="Edit" method="post" enctype="multipart/form-data" id="editProfileForm">
+                <input type="hidden" asp-for="Id" />
+                <div class="row gx-4 mb-0 justify-content-center align-items-center">
+                    <div class="col-md-10 d-flex align-items-center p-4">
+                        <div class="col-sm-4">
+                            <div class="avatar avatar-xl position-relative">
+                                <img src="@Model.ImageUrl" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+                                <input type="file" asp-for="ImageModel.File" accept="image/*" class="form-control" id="photoInput" style="display:none;" />
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <ul class="list-group">
+                                <li class="list-group-item border-0 ps-0 pt-0 bg-light">
+                                    <strong class="text-dark text-center">Mobile</strong>
+                                    <input asp-for="TelephoneNumber" id="telephoneNumber" class="form-control" value="@Model.TelephoneNumber" oninput="validateAndUpdateButton()">
+                                    <span class="text-danger" asp-validation-for="TelephoneNumber"></span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-4">
+                            <li class="list-group-item border-0 ps-0 pt-0 bg-light">
+                                <strong class="text-dark">Address</strong>
+                                <input asp-for="Address" id="Address" class="form-control" value="@Model.Address">
+                                <span asp-validation-for="Address"></span>
+                            </li>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="row justify-content-center">
+                    <div class="col-sm-3 text-center">
+                        <label for="photoInput" class="btn btn-outline-dark btn-light">
+                            <i class="fas fa-upload"></i> Upload Photo
+                        </label>
+                    </div>
+                    <div class="col-sm-3 text-center">
+                        <button id="updateButton" type="submit" class="btn btn-outline-dark btn-light toast-btn" data-target="successToast" disabled>
+                            <i class="fas fa-save"></i> Save
+                        </button> &nbsp
+                    </div>
+                    <div class="col-sm-3 text-center">
+                        <a asp-controller="Employee" asp-action="Details" class="btn btn-outline-dark btn-light">
+                            <i class="fas fa-info-circle"></i> Detailed Info
+                        </a>
+                    </div>
+                    <div class="col-sm-3 text-center">
+                        <a asp-controller="Employee" asp-action="Index" class="btn btn-dark btn-outline-secondary text-lg-center">
+                            <i class="fas fa-home"></i> Home
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showSuccessToast() {
+        // Show the toast notification
+        var toast = new bootstrap.Toast(document.getElementById('successToast'));
+        toast.show();
+
+        // Wait for a few seconds (adjust the delay as needed)
+        setTimeout(function () {
+            // Submit the form
+            document.getElementById('editProfileForm').submit();
+        }, 4000); // 4 seconds delay, you can change this to your preferred value
+    }
+
+    // Find all buttons with the toast-btn class
+    var toastButtons = document.getElementsByClassName('toast-btn');
+    for (var i = 0; i < toastButtons.length; i++) {
+        toastButtons[i].addEventListener('click', showSuccessToast);
+    }
+</script>
+
+
+
+<script>
+    var telephoneNumberInput = document.getElementById("telephoneNumber");
+    telephoneNumberInput.addEventListener("input", validateAndUpdateButton);
+    var addressInput = document.getElementById("Address");
+    addressInput.addEventListener("input", validateAndUpdateButton);
+
+    //var backgroundImageInput = document.getElementById("backgroundImageInput");
+    //backgroundImageInput.addEventListener("change", validateAndUpdateButton);
+
+    var photoInput = document.getElementById("photoInput");
+    photoInput.addEventListener("change", validateAndUpdateButton);
+
+    var originalTelephoneNumber = telephoneNumberInput.value;
+    var originalAddress = addressInput.value;
+
+    function validateAndUpdateButton() {
+        var updateButton = document.getElementById("updateButton");
+        var isValidTelephoneNumber = validatePhoneNumber(telephoneNumberInput.value);
+        var isValidAddress = validateAddress(addressInput.value);
+        var isImageChanged = isFileSelected(photoInput);
+        //var isBackgroundImageChanged = isFileSelected(backgroundImageInput);
+
+
+        var telephoneNumberChanged = originalTelephoneNumber !== telephoneNumberInput.value;
+        var addressChanged = originalAddress !== addressInput.value;
+
+        updateButton.disabled = !(isValidTelephoneNumber && isValidAddress && (isImageChanged || telephoneNumberChanged || addressChanged));
+    }
+
+    function validatePhoneNumber(telephoneNumber) {
+        // Telefon numarasının sadece rakamlardan oluşup oluşmadığını kontrol et
+        return /^[0-9]{11}$/.test(telephoneNumber);
+    }
+
+    function validateAddress(address) {
+        return address.trim() !== "";
+    }
+
+    function isFileSelected(input) {
+        return input.files && input.files.length > 0;
+    }
+</script>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
