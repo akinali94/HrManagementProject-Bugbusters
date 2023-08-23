@@ -33,13 +33,13 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
             _personelValidator = personelValidator;
             _hrDb = hrDb;
         }
-
+      
         public IActionResult Index()
         {
-            var query2 = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var qury1 = _service.TGetById(query2);
-    
+
+            var qury1 = _service.TGetById(User.FindFirstValue(ClaimTypes.NameIdentifier));
             var mappingQuery = _mapper.Map<EmployeeSummaryListVM>(qury1);
+
 
             ViewBag.UserImageUrl = qury1?.ImageUrl;
             ViewBag.UserFullName = qury1?.FullName;
@@ -49,15 +49,14 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
 
         public IActionResult Edit(string id)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var personel = _service.TGetById(userId);
-
+            var personel = _service.TGetById(User.FindFirstValue(ClaimTypes.NameIdentifier));
             var mapli = _mapper.Map<EmployeeUpdateVM>(personel);
-            var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
 
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+
+            ViewBag.UserImageUrl = personel?.ImageUrl;
+            ViewBag.UserFullName = personel?.FullName;
+
             return View(mapli);
         }
 
@@ -73,7 +72,6 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
                 try
                 {
                     var entity = _service.TGetById(updateVm.Id);
-
                     entity.TelephoneNumber = updateVm.TelephoneNumber;
                     entity.Address = updateVm.Address;
 
@@ -128,9 +126,7 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
                     }
 
                     _service.TUpdate(entity);
-
                     return RedirectToAction("Index", new { imageUrl = entity.ImageUrl, backgroundImageUrl = entity.BackgroundImageUrl });
-
 
                 }
                 catch (Exception ex)
@@ -138,7 +134,6 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
                     Console.WriteLine(ex);
                 }
             }
-
             return View(updateVm);
         }
 
@@ -148,10 +143,9 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var query1 = _service.TGetById(userId);
             var mappingQuery1 = _mapper.Map<EmployeeListWithoutSalaryVM>(query1);
-            var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
 
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+            ViewBag.UserImageUrl = query1?.ImageUrl;
+            ViewBag.UserFullName = query1?.FullName;
             return View(mappingQuery1);
         }
     }

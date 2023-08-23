@@ -40,28 +40,23 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
 
         public async Task<IActionResult> Index()
         {
-            //Expression<Func<EmployeeLeaveRequest, bool>> filter = null;
-
-
-
-            //var query = await _employeeLeaveRequestService.TGetAllAsync(filter);
-            //var mappingQuery = _mapper.Map<List<EmployeeLeaveRequestVM>>(query);
-
-            //return View(mappingQuery);
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
             var query = _employeeLeaveRequestService.GetAllLeaveReq().Where(x => x.RequestingId == userId);
             var mappingQuery = _mapper.Map<IEnumerable<EmployeeLeaveRequestVM>>(query);
 
-            foreach (var item in mappingQuery)
-            {
-                item.LeaveTypeName = (_employeeLeaveTypeService.GetByIdType(item.SelectedLeaveTypeId)).Name;
-            }
+            //foreach (var item in mappingQuery)
+            //{
+            //    item.LeaveTypeName = (_employeeLeaveTypeService.GetByIdType(item.SelectedLeaveTypeId)).Name;
+            //}
+            foreach (var item in mappingQuery) _employeeLeaveRequestService.GetLeaveTypeName(item);
+            foreach (var item in mappingQuery) _employeeLeaveRequestService.GetLeaveApprovelName(item);
 
-            foreach (var item in mappingQuery)_employeeLeaveRequestService.GetLeaveApprovelName(item);
 
             ViewBag.UserImageUrl = user?.ImageUrl;
             ViewBag.UserFullName = user?.FullName;
+
+
             return View(mappingQuery);
 
         }
@@ -209,7 +204,7 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
 
             foreach (var item in mappingQuery) _employeeLeaveRequestService.GetLeaveApprovelName(item);
             var waitingForApprovalLeave = mappingQuery.Where(item => item.Approved == null);
-          
+
             var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
             ViewBag.UserImageUrl = user?.ImageUrl;
             ViewBag.UserFullName = user?.FullName;
@@ -283,7 +278,7 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
             //}
             var notConfirmedLeave = mappingQuery.Where(item => item.Approved == false);
 
-           
+
 
             var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
             ViewBag.UserImageUrl = user?.ImageUrl;

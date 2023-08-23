@@ -17,10 +17,12 @@ namespace BugBustersHR.BLL.Services.Concrete.LeaveConcreteService
     {
         protected readonly IEmployeeLeaveRequestRepository _employeeLeaveRequestRepository;
         protected readonly IMapper _mapper;
-        public EmployeeLeaveRequestService(IBaseRepository<EmployeeLeaveRequest> repository, IUnitOfWork unitOfWork, HrDb db, IEmployeeLeaveRequestRepository employeeLeaveRequestRepository, IMapper mapper) : base(repository, unitOfWork, db)
+        private readonly IEmployeeLeaveTypeService _employeeLeaveTypeService;
+        public EmployeeLeaveRequestService(IBaseRepository<EmployeeLeaveRequest> repository, IUnitOfWork unitOfWork, HrDb db, IEmployeeLeaveRequestRepository employeeLeaveRequestRepository, IMapper mapper, IEmployeeLeaveTypeService employeeLeaveTypeService) : base(repository, unitOfWork, db)
         {
             _employeeLeaveRequestRepository = employeeLeaveRequestRepository;
             _mapper = mapper;
+            _employeeLeaveTypeService = employeeLeaveTypeService;
         }
 
         public IEnumerable<EmployeeLeaveRequest> GetAllLeaveReq()
@@ -47,6 +49,11 @@ namespace BugBustersHR.BLL.Services.Concrete.LeaveConcreteService
             {
                 request.LeaveApprovalStatusName = "Not Confirmed";
             }
+        }
+
+        public async Task GetLeaveTypeName(EmployeeLeaveRequestVM request)
+        {
+            request.LeaveTypeName = (_employeeLeaveTypeService.GetByIdType(request.SelectedLeaveTypeId)).Name;
         }
 
         public async Task TChangeToFalseforLeave(int id)

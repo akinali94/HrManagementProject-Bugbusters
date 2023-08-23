@@ -17,6 +17,7 @@ namespace BugBustersHR.BLL.Services.Abstract.LeaveAbstractService
         Task TChangeToFalseforLeave(int id);
 
         Task GetLeaveApprovelName(EmployeeLeaveRequestVM request);
+        Task GetLeaveTypeName(EmployeeLeaveRequestVM request);
 
     }
 }
