@@ -1,4 +1,6 @@
-﻿using BugBustersHR.ENTITY.Concrete;
+﻿using BugBustersHR.BLL.ViewModels.IndividualAdvanceViewModel;
+using BugBustersHR.BLL.ViewModels.LeaveRequestViewModel;
+using BugBustersHR.ENTITY.Concrete;
 
 namespace BugBustersHR.BLL.Services.Abstract.IndividualAdvanceService
 {
@@ -11,6 +13,7 @@ namespace BugBustersHR.BLL.Services.Abstract.IndividualAdvanceService
         void RemainCalculation(IndividualAdvance ındividual);
         Task TChangeToTrueforAdvance(int id);
         Task TChangeToFalseforAdvance(int id);
+        Task GetAdvanceApprovelName(IndividualAdvanceRequestVM request);
 
     }
 }

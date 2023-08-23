@@ -1,4 +1,5 @@
 ﻿using BugBustersHR.BLL.Services.Abstract.IndividualAdvanceService;
+using BugBustersHR.BLL.ViewModels.IndividualAdvanceViewModel;
 using BugBustersHR.DAL.Context;
 using BugBustersHR.DAL.Repository.Abstract;
 using BugBustersHR.DAL.Repository.Abstract.ExpenditureAbstractRepos;
@@ -22,6 +23,22 @@ namespace BugBustersHR.BLL.Services.Concrete.IndividualAdvanceService
         {
             _repository = ındividualAdvancesesRepositoryrepository;
             _employeeRepository = employeeRepository;
+        }
+
+        public async Task GetAdvanceApprovelName(IndividualAdvanceRequestVM request)
+        {
+            if (request.ApprovalStatus == null)
+            {
+                request.ApprovalStatusName = "Waiting for Approval";
+            }
+            else if (request.ApprovalStatus == true)
+            {
+                request.ApprovalStatusName = "Confirmed";
+            }
+            else
+            {
+                request.ApprovalStatusName = "Not Confirmed";
+            }
         }
 
         public IEnumerable<IndividualAdvance> GetAllIndividualAdvanceReq()

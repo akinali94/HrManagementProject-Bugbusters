@@ -55,21 +55,8 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
                 item.TypeName = (_typeService.GetByIdExpenditureType(item.ExpenditureTypeId)).ExpenditureName;
             }
 
-            foreach (var item in mappingQuery)
-            {
-                if (item.ApprovalStatus == null)
-                {
-                    item.ApprovalStatusName = "Waiting for Approval";
-                }
-                else if (item.ApprovalStatus == true)
-                {
-                    item.ApprovalStatusName = "Confirmed";
-                }
-                else
-                {
-                    item.ApprovalStatusName = "Not Confirmed";
-                }
-            }
+            foreach (var item in mappingQuery) _expenditureRequestService.GetExpenditureApprovelName(item);
+        
 
             ViewBag.UserImageUrl = user?.ImageUrl;
             ViewBag.UserFullName = user?.FullName;
@@ -240,21 +227,7 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
                 item.TypeName = (_typeService.GetByIdExpenditureType(item.ExpenditureTypeId)).ExpenditureName;
             }
 
-            foreach (var item in mappingQuery)
-            {
-                if (item.ApprovalStatus == null)
-                {
-                    item.ApprovalStatusName = "Waiting";
-                }
-                else if (item.ApprovalStatus == true)
-                {
-                    item.ApprovalStatusName = "Confirmed";
-                }
-                else
-                {
-                    item.ApprovalStatusName = "Not Confirmed";
-                }
-            }
+            foreach (var item in mappingQuery) _expenditureRequestService.GetExpenditureApprovelName(item);
 
             var waitingForApprovalexp = mappingQuery.Where(item => item.ApprovalStatus == null);
             var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
@@ -277,21 +250,7 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
                 item.TypeName = (_typeService.GetByIdExpenditureType(item.ExpenditureTypeId)).ExpenditureName;
             }
 
-            foreach (var item in mappingQuery)
-            {
-                if (item.ApprovalStatus == null)
-                {
-                    item.ApprovalStatusName = "Waiting";
-                }
-                else if (item.ApprovalStatus == true)
-                {
-                    item.ApprovalStatusName = "Confirmed";
-                }
-                else
-                {
-                    item.ApprovalStatusName = "Not Confirmed";
-                }
-            }
+            foreach (var item in mappingQuery) _expenditureRequestService.GetExpenditureApprovelName(item);
 
             var confirmedForApprovalexp = mappingQuery.Where(item => item.ApprovalStatus == true);
             var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
@@ -314,21 +273,7 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
                 item.TypeName = (_typeService.GetByIdExpenditureType(item.ExpenditureTypeId)).ExpenditureName;
             }
 
-            foreach (var item in mappingQuery)
-            {
-                if (item.ApprovalStatus == null)
-                {
-                    item.ApprovalStatusName = "Waiting";
-                }
-                else if (item.ApprovalStatus == true)
-                {
-                    item.ApprovalStatusName = "Confirmed";
-                }
-                else
-                {
-                    item.ApprovalStatusName = "Not Confirmed";
-                }
-            }
+            foreach (var item in mappingQuery) _expenditureRequestService.GetExpenditureApprovelName(item);
 
 
             var notConfirmedApprovalExp = mappingQuery.Where(item => item.ApprovalStatus == false);

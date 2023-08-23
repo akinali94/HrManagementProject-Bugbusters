@@ -1,4 +1,6 @@
 ﻿using BugBustersHR.BLL.Services.Abstract.ExpenditureAbstractServices;
+using BugBustersHR.BLL.ViewModels.ExpenditureRequestViewModel;
+using BugBustersHR.BLL.ViewModels.LeaveRequestViewModel;
 using BugBustersHR.DAL.Context;
 using BugBustersHR.DAL.Repository.Abstract;
 using BugBustersHR.DAL.Repository.Abstract.ExpenditureAbstractRepos;
@@ -29,6 +31,24 @@ namespace BugBustersHR.BLL.Services.Concrete.ExpenditureConcreteServices
         {
             return _requestrepository.GetByIdExpenditureRequest(id);
         }
+
+        public async Task GetExpenditureApprovelName(ExpenditureRequestVM request)
+        {
+            if (request.ApprovalStatus == null)
+            {
+                request.ApprovalStatusName = "Waiting for Approval";
+            }
+            else if (request.ApprovalStatus == true)
+            {
+                request.ApprovalStatusName = "Confirmed";
+            }
+            else
+            {
+                request.ApprovalStatusName = "Not Confirmed";
+            }
+        }
+
+    
 
         public async Task TChangeToFalseforExpenditure(int id)
         {

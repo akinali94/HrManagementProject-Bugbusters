@@ -54,21 +54,8 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
             var query = _ındividualAdvanceRequestService.GetAllIndividualAdvanceReq().Where(x => x.EmployeeRequestingId == userId);
 
             var mapping = _mapper.Map<IEnumerable<IndividualAdvanceRequestVM>>(query);
-            foreach (var item in mapping)
-            {
-                if (item.ApprovalStatus == null)
-                {
-                    item.ApprovalStatusName = "Waiting for Approval";
-                }
-                else if (item.ApprovalStatus == true)
-                {
-                    item.ApprovalStatusName = "Confirmed";
-                }
-                else
-                {
-                    item.ApprovalStatusName = "Not Confirmed";
-                }
-            }
+            foreach (var item in mapping) _ındividualAdvanceRequestService.GetAdvanceApprovelName(item);
+        
 
 
             ViewBag.UserImageUrl = user?.ImageUrl;
@@ -270,21 +257,7 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
             var mappingQuery = _mapper.Map<IEnumerable<IndividualAdvanceRequestVM>>(query);
 
 
-            foreach (var item in mappingQuery)
-            {
-                if (item.ApprovalStatus == null)
-                {
-                    item.ApprovalStatusName = "Waiting for Approval";
-                }
-                else if (item.ApprovalStatus == true)
-                {
-                    item.ApprovalStatusName = "Confirmed";
-                }
-                else
-                {
-                    item.ApprovalStatusName = "Not Confirmed";
-                }
-            }
+            foreach (var item in mappingQuery) _ındividualAdvanceRequestService.GetAdvanceApprovelName(item);
 
             var notConfirmedApprovalExp = mappingQuery.Where(item => item.ApprovalStatus == false);
             ViewBag.UserImageUrl = user?.ImageUrl;
@@ -304,21 +277,7 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
             var mappingQuery = _mapper.Map<IEnumerable<IndividualAdvanceRequestVM>>(query);
 
 
-            foreach (var item in mappingQuery)
-            {
-                if (item.ApprovalStatus == null)
-                {
-                    item.ApprovalStatusName = "Waiting for Approval";
-                }
-                else if (item.ApprovalStatus == true)
-                {
-                    item.ApprovalStatusName = "Confirmed";
-                }
-                else
-                {
-                    item.ApprovalStatusName = "Not Confirmed";
-                }
-            }
+            foreach (var item in mappingQuery) _ındividualAdvanceRequestService.GetAdvanceApprovelName(item);
 
             var confirmedForApprovalexp = mappingQuery.Where(item => item.ApprovalStatus == true);
             ViewBag.UserImageUrl = user?.ImageUrl;
@@ -337,21 +296,7 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
             var query = _ındividualAdvanceRequestService.GetAllIndividualAdvanceReq().Where(x => x.EmployeeRequestingId == userId);
             var mappingQuery = _mapper.Map<IEnumerable<IndividualAdvanceRequestVM>>(query);
 
-            foreach (var item in mappingQuery)
-            {
-                if (item.ApprovalStatus == null)
-                {
-                    item.ApprovalStatusName = "Waiting for Approval";
-                }
-                else if (item.ApprovalStatus == true)
-                {
-                    item.ApprovalStatusName = "Confirmed";
-                }
-                else
-                {
-                    item.ApprovalStatusName = "Not Confirmed";
-                }
-            }
+            foreach (var item in mappingQuery) _ındividualAdvanceRequestService.GetAdvanceApprovelName(item);
 
             var waitingForApprovalexp = mappingQuery.Where(item => item.ApprovalStatus == null);
             ViewBag.UserImageUrl = user?.ImageUrl;

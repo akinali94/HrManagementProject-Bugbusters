@@ -51,22 +51,7 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
             {
                 item.TypeName = (_ınstitutionalAllowanceTypeService.GetByIdInstitutionalAllowanceType(item.InstitutionalAllowanceTypeId)).InstitutionalAllowanceTypeName;
             }
-            foreach (var item in mappingQuery)
-            {
-                if (item.ApprovalStatus == null)
-                {
-                    item.ApprovalStatusName = "Waiting for Approval";
-                }
-                else if (item.ApprovalStatus == true)
-                {
-                    item.ApprovalStatusName = "Confirmed";
-                }
-                else
-                {
-                    item.ApprovalStatusName = "Not Confirmed";
-                }
-            }
-
+            foreach (var item in mappingQuery) _ınstitutionalAllowanceService.GetInstAllApprovelName(item);
 
             ViewBag.UserImageUrl = user?.ImageUrl;
             ViewBag.UserFullName = user?.FullName;
@@ -190,21 +175,7 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
             {
                 item.TypeName = (_ınstitutionalAllowanceTypeService.GetByIdInstitutionalAllowanceType(item.InstitutionalAllowanceTypeId)).InstitutionalAllowanceTypeName;
             }
-            foreach (var item in mappingQuery)
-            {
-                if (item.ApprovalStatus == null)
-                {
-                    item.ApprovalStatusName = "Waiting";
-                }
-                else if (item.ApprovalStatus == true)
-                {
-                    item.ApprovalStatusName = "Confirmed";
-                }
-                else
-                {
-                    item.ApprovalStatusName = "Not Confirmed";
-                }
-            }
+            foreach (var item in mappingQuery) _ınstitutionalAllowanceService.GetInstAllApprovelName(item);
 
             var notConfirmedApprovalExp = mappingQuery.Where(item => item.ApprovalStatus == false);
             ViewBag.UserImageUrl = user?.ImageUrl;
@@ -227,21 +198,7 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
             {
                 item.TypeName = (_ınstitutionalAllowanceTypeService.GetByIdInstitutionalAllowanceType(item.InstitutionalAllowanceTypeId)).InstitutionalAllowanceTypeName;
             }
-            foreach (var item in mappingQuery)
-            {
-                if (item.ApprovalStatus == null)
-                {
-                    item.ApprovalStatusName = "Waiting";
-                }
-                else if (item.ApprovalStatus == true)
-                {
-                    item.ApprovalStatusName = "Confirmed";
-                }
-                else
-                {
-                    item.ApprovalStatusName = "Not Confirmed";
-                }
-            }
+            foreach (var item in mappingQuery) _ınstitutionalAllowanceService.GetInstAllApprovelName(item);
 
             var confirmedForApprovalexp = mappingQuery.Where(item => item.ApprovalStatus == true);
             ViewBag.UserImageUrl = user?.ImageUrl;
@@ -264,21 +221,7 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
             {
                 item.TypeName = (_ınstitutionalAllowanceTypeService.GetByIdInstitutionalAllowanceType(item.InstitutionalAllowanceTypeId)).InstitutionalAllowanceTypeName;
             }
-            foreach (var item in mappingQuery)
-            {
-                if (item.ApprovalStatus == null)
-                {
-                    item.ApprovalStatusName = "Waiting";
-                }
-                else if (item.ApprovalStatus == true)
-                {
-                    item.ApprovalStatusName = "Confirmed";
-                }
-                else
-                {
-                    item.ApprovalStatusName = "Not Confirmed";
-                }
-            }
+            foreach (var item in mappingQuery) _ınstitutionalAllowanceService.GetInstAllApprovelName(item);
 
             var waitingForApprovalexp = mappingQuery.Where(item => item.ApprovalStatus == null);
             ViewBag.UserImageUrl = user?.ImageUrl;
