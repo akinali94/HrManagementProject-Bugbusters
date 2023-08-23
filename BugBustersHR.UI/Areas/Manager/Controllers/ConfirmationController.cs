@@ -51,7 +51,7 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
             // Talepleri kullanıcı şirketindeki çalışanlarla eşleştirerek bir liste oluştur
             var mappingQuery = _mapper.Map<IEnumerable<EmployeeLeaveRequestVM>>(leaveList)
                 .Where(leave => userCompanyIds.Contains(leave.RequestingId)).ToList();
-
+            foreach (var item in mappingQuery) _leaveReqService.GetLeaveApprovelName(item);
             foreach (var item in mappingQuery)
             {
                 item.LeaveTypeName = (_LeaveTypeService.GetByIdType(item.SelectedLeaveTypeId)).Name;
@@ -59,22 +59,6 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
                 item.Title = (_employeeService.TGetById(item.RequestingId)).Title;
                 item.CompanyName = (_employeeService.TGetById(item.RequestingId)).CompanyName;
 
-
-                //foreach (var item in mappingQuery)
-                // İkinci foreach döngüsünü çıkarabilirsiniz çünkü zaten
-                // ilk foreach döngüsünde her bir talep öğesi için aynı işlemi yapıyorsunuz
-                if (item.Approved == null)
-                {
-                    item.LeaveApprovalStatusName = "Waiting for Approval";
-                }
-                else if (item.Approved == true)
-                {
-                    item.LeaveApprovalStatusName = "Confirmed";
-                }
-                else
-                {
-                    item.LeaveApprovalStatusName = "Not Confirmed";
-                }
             }
 
              // ViewBag.ManagerComp içine kullanıcı şirketindeki çalışanları ekle
@@ -123,7 +107,7 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
 
             var mappingQuery = _mapper.Map<IEnumerable<EmployeeLeaveRequestVM>>(query)
                .Where(advances => userCompanyIds.Contains(advances.RequestingId)).ToList();
-
+            foreach (var item in mappingQuery) _leaveReqService.GetLeaveApprovelName(item);
             foreach (var item in mappingQuery)
             {
                 item.LeaveTypeName = (_LeaveTypeService.GetByIdType(item.SelectedLeaveTypeId)).Name;
@@ -133,21 +117,6 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
                 item.CompanyName = (_employeeService.TGetById(item.RequestingId)).CompanyName;
 
 
-                //foreach (var item in mappingQuery)
-                // İkinci foreach döngüsünü çıkarabilirsiniz çünkü zaten
-                // ilk foreach döngüsünde her bir talep öğesi için aynı işlemi yapıyorsunuz
-                if (item.Approved == null)
-                {
-                    item.LeaveApprovalStatusName = "Waiting for Approval";
-                }
-                else if (item.Approved == true)
-                {
-                    item.LeaveApprovalStatusName = "Confirmed";
-                }
-                else
-                {
-                    item.LeaveApprovalStatusName = "Not Confirmed";
-                }
             }
 
             return View(mappingQuery);
@@ -170,7 +139,7 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
 
             var mappingQuery = _mapper.Map<IEnumerable<EmployeeLeaveRequestVM>>(query)
                .Where(advances => userCompanyIds.Contains(advances.RequestingId)).ToList();
-
+            foreach (var item in mappingQuery) _leaveReqService.GetLeaveApprovelName(item);
             foreach (var item in mappingQuery)
             {
                 item.LeaveTypeName = (_LeaveTypeService.GetByIdType(item.SelectedLeaveTypeId)).Name;
@@ -179,22 +148,6 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
                 //item.ImgLink = (_employeeService.TGetById(item.EmployeeRequestingId)).ImageUrl;
                 item.CompanyName = (_employeeService.TGetById(item.RequestingId)).CompanyName;
 
-
-                //foreach (var item in mappingQuery)
-                // İkinci foreach döngüsünü çıkarabilirsiniz çünkü zaten
-                // ilk foreach döngüsünde her bir talep öğesi için aynı işlemi yapıyorsunuz
-                if (item.Approved == null)
-                {
-                    item.LeaveApprovalStatusName = "Waiting for Approval";
-                }
-                else if (item.Approved == true)
-                {
-                    item.LeaveApprovalStatusName = "Confirmed";
-                }
-                else
-                {
-                    item.LeaveApprovalStatusName = "Not Confirmed";
-                }
             }
 
             return View(mappingQuery);
@@ -217,7 +170,7 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
 
             var mappingQuery = _mapper.Map<IEnumerable<EmployeeLeaveRequestVM>>(query)
                .Where(advances => userCompanyIds.Contains(advances.RequestingId)).ToList();
-
+            foreach (var item in mappingQuery) _leaveReqService.GetLeaveApprovelName(item);
             foreach (var item in mappingQuery)
             {
                 item.LeaveTypeName = (_LeaveTypeService.GetByIdType(item.SelectedLeaveTypeId)).Name;
@@ -226,22 +179,6 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
                 //item.ImgLink = (_employeeService.TGetById(item.EmployeeRequestingId)).ImageUrl;
                 item.CompanyName = (_employeeService.TGetById(item.RequestingId)).CompanyName;
 
-
-                //foreach (var item in mappingQuery)
-                // İkinci foreach döngüsünü çıkarabilirsiniz çünkü zaten
-                // ilk foreach döngüsünde her bir talep öğesi için aynı işlemi yapıyorsunuz
-                if (item.Approved == null)
-                {
-                    item.LeaveApprovalStatusName = "Waiting for Approval";
-                }
-                else if (item.Approved == true)
-                {
-                    item.LeaveApprovalStatusName = "Confirmed";
-                }
-                else
-                {
-                    item.LeaveApprovalStatusName = "Not Confirmed";
-                }
             }
 
             return View(mappingQuery);

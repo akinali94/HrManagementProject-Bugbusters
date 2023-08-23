@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BugBustersHR.BLL.Services.Abstract;
 using BugBustersHR.BLL.Services.Abstract.InstitutionalAllowanceAbstractServices;
+using BugBustersHR.BLL.Services.Concrete.InstitutionalAllowanceConcreteServices;
 using BugBustersHR.BLL.ViewModels.InstitutionalAllowanceViewModel;
 using BugBustersHR.BLL.ViewModels.LeaveRequestViewModel;
 using BugBustersHR.DAL.Context;
@@ -49,7 +50,7 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
             //    .Where(leave => userCompanyIds.Contains(leave.RequestingId)).ToList();
             var mappingQuery = _mapper.Map<IEnumerable<InstitutionalAllowanceVM>>(allowanceList)
                 .Where(allowance => userCompanyIds.Contains(allowance.EmployeeId)).ToList();
-
+            foreach (var item in mappingQuery) _institutionalAllowanceService.GetInstAllApprovelName(item);
 
             foreach (var item in mappingQuery)
             {
@@ -59,21 +60,6 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
                 item.CompanyName = (_employeeService.TGetById(item.EmployeeId)).CompanyName;
 
 
-                //foreach (var item in mappingQuery)
-                // İkinci foreach döngüsünü çıkarabilirsiniz çünkü zaten
-                // ilk foreach döngüsünde her bir talep öğesi için aynı işlemi yapıyorsunuz
-                if (item.ApprovalStatus == null)
-                {
-                    item.ApprovalStatusName = "Waiting for Approval";
-                }
-                else if (item.ApprovalStatus == true)
-                {
-                    item.ApprovalStatusName = "Confirmed";
-                }
-                else
-                {
-                    item.ApprovalStatusName = "Not Confirmed";
-                }
             }
 
             // ViewBag.ManagerComp içine kullanıcı şirketindeki çalışanları ekle
@@ -117,7 +103,7 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
 
             var mappingQuery = _mapper.Map<IEnumerable<InstitutionalAllowanceVM>>(query)
                .Where(advances => userCompanyIds.Contains(advances.EmployeeId)).ToList();
-
+            foreach (var item in mappingQuery) _institutionalAllowanceService.GetInstAllApprovelName(item);
             foreach (var item in mappingQuery)
             {
                 //item.LeaveTypeName = (_LeaveTypeService.GetByIdType(item.SelectedLeaveTypeId)).Name;
@@ -126,22 +112,6 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
                 //item.ImgLink = (_employeeService.TGetById(item.EmployeeRequestingId)).ImageUrl;
                 item.CompanyName = (_employeeService.TGetById(item.EmployeeId)).CompanyName;
 
-
-                //foreach (var item in mappingQuery)
-                // İkinci foreach döngüsünü çıkarabilirsiniz çünkü zaten
-                // ilk foreach döngüsünde her bir talep öğesi için aynı işlemi yapıyorsunuz
-                if (item.ApprovalStatus == null)
-                {
-                    item.ApprovalStatusName = "Waiting for Approval";
-                }
-                else if (item.ApprovalStatus == true)
-                {
-                    item.ApprovalStatusName = "Confirmed";
-                }
-                else
-                {
-                    item.ApprovalStatusName = "Not Confirmed";
-                }
             }
 
             return View(mappingQuery);
@@ -166,7 +136,7 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
 
             var mappingQuery = _mapper.Map<IEnumerable<InstitutionalAllowanceVM>>(query)
                .Where(advances => userCompanyIds.Contains(advances.EmployeeId)).ToList();
-
+            foreach (var item in mappingQuery) _institutionalAllowanceService.GetInstAllApprovelName(item);
             foreach (var item in mappingQuery)
             {
                 //item.LeaveTypeName = (_LeaveTypeService.GetByIdType(item.SelectedLeaveTypeId)).Name;
@@ -175,22 +145,6 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
                 //item.ImgLink = (_employeeService.TGetById(item.EmployeeRequestingId)).ImageUrl;
                 item.CompanyName = (_employeeService.TGetById(item.EmployeeId)).CompanyName;
 
-
-                //foreach (var item in mappingQuery)
-                // İkinci foreach döngüsünü çıkarabilirsiniz çünkü zaten
-                // ilk foreach döngüsünde her bir talep öğesi için aynı işlemi yapıyorsunuz
-                if (item.ApprovalStatus == null)
-                {
-                    item.ApprovalStatusName = "Waiting for Approval";
-                }
-                else if (item.ApprovalStatus == true)
-                {
-                    item.ApprovalStatusName = "Confirmed";
-                }
-                else
-                {
-                    item.ApprovalStatusName = "Not Confirmed";
-                }
             }
 
             return View(mappingQuery);
@@ -213,7 +167,7 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
 
             var mappingQuery = _mapper.Map<IEnumerable<InstitutionalAllowanceVM>>(query)
                .Where(advances => userCompanyIds.Contains(advances.EmployeeId)).ToList();
-
+            foreach (var item in mappingQuery) _institutionalAllowanceService.GetInstAllApprovelName(item);
             foreach (var item in mappingQuery)
             {
                 //item.LeaveTypeName = (_LeaveTypeService.GetByIdType(item.SelectedLeaveTypeId)).Name;
@@ -222,22 +176,6 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
                 //item.ImgLink = (_employeeService.TGetById(item.EmployeeRequestingId)).ImageUrl;
                 item.CompanyName = (_employeeService.TGetById(item.EmployeeId)).CompanyName;
 
-
-                //foreach (var item in mappingQuery)
-                // İkinci foreach döngüsünü çıkarabilirsiniz çünkü zaten
-                // ilk foreach döngüsünde her bir talep öğesi için aynı işlemi yapıyorsunuz
-                if (item.ApprovalStatus == null)
-                {
-                    item.ApprovalStatusName = "Waiting for Approval";
-                }
-                else if (item.ApprovalStatus == true)
-                {
-                    item.ApprovalStatusName = "Confirmed";
-                }
-                else
-                {
-                    item.ApprovalStatusName = "Not Confirmed";
-                }
             }
 
             return View(mappingQuery);
