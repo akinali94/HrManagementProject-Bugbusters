@@ -255,7 +255,8 @@ namespace BugBustersHR.UI.Areas.Identity.Pages.Account
             var roles = new SelectList(new List<SelectListItem>
             {
                 new SelectListItem{Text = "Manager", Value = AppRoles.Role_Manager},
-                new SelectListItem{Text = "Employee", Value = AppRoles.Role_Employee}
+                new SelectListItem{Text = "Employee", Value = AppRoles.Role_Employee},
+                new SelectListItem{Text = "Admin", Value = AppRoles.Role_Admin}
             }, "Value", "Text");
 
             return roles;

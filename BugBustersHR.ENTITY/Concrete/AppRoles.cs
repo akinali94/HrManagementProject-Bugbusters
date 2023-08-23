@@ -10,5 +10,6 @@ namespace BugBustersHR.ENTITY.Concrete
     {
         public const string Role_Employee = "Employee";
         public const string Role_Manager = "Manager";
+        public const string Role_Admin = "Admin";
     }
 }

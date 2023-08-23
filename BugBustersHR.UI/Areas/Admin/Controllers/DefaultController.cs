@@ -1,0 +1,161 @@
+﻿using AutoMapper;
+using Azure.Storage.Blobs.Models;
+using Azure.Storage.Blobs;
+using BugBustersHR.BLL.Options;
+using BugBustersHR.BLL.Services.Abstract;
+using BugBustersHR.BLL.Services.Concrete;
+using BugBustersHR.BLL.Validatons;
+using BugBustersHR.BLL.ViewModels.AdminViewModel;
+using BugBustersHR.BLL.ViewModels.ManagerViewModel;
+using BugBustersHR.DAL.Context;
+using BugBustersHR.ENTITY.Concrete;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using FluentValidation;
+
+namespace BugBustersHR.UI.Areas.Admin.Controllers
+{
+    [Area("Admin")]
+    [Authorize(Roles = AppRoles.Role_Admin)]
+    public class DefaultController : Controller
+    {
+        private readonly IEmployeeService _employeeService;
+        private readonly IMapper _mapper;
+        private readonly HrDb _hrDb;
+        private readonly IValidator<AdminUpdateVM> _adminValidator;
+        private readonly AzureOptions _azureOptions;
+
+        public DefaultController(IEmployeeService employeeService, IMapper mapper, IValidator<AdminUpdateVM> adminValidator, AzureOptions azureOptions)
+        {
+            _employeeService = employeeService;
+            _mapper = mapper;
+            _adminValidator = adminValidator;
+            _azureOptions = azureOptions;
+        }
+
+        public IActionResult Index()
+        {
+            var findAdminID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var getAdmin = _employeeService.TGetById(findAdminID);
+            var mappingQuery = _mapper.Map<AdminSummaryListVM>(getAdmin);
+            var user = _hrDb.Personels.FirstOrDefault(u => u.Id == findAdminID);
+            ViewBag.AdminImagerUrl = user?.ImageUrl;
+            ViewBag.AdminFullName = user?.FullName;
+
+            return View(mappingQuery);
+        }
+
+        public IActionResult Edit(string id)
+        {
+            var adminID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var getAdmin = _employeeService.TGetById(adminID);
+
+            var mappingQuery = _mapper.Map<AdminUpdateVM>(getAdmin);
+
+            var user = _hrDb.Personels.FirstOrDefault(u => u.Id == adminID);
+            ViewBag.AdminImagerUrl = user?.ImageUrl;
+            ViewBag.AdminFullName = user?.FullName;
+
+            return View(mappingQuery);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(AdminUpdateVM updateVm, IFormFile backgroundImageFile)
+        {
+
+            AdminValidator adminValidator = new AdminValidator();
+            var validationResult = adminValidator.Validate(updateVm);
+
+            if (validationResult.IsValid)
+            {
+                try
+                {
+                    var entity = _employeeService.TGetById(updateVm.Id);
+
+                    entity.TelephoneNumber = updateVm.TelephoneNumber;
+                    entity.Address = updateVm.Address;
+
+
+                    if (updateVm.ImageModel.File != null)
+                    {
+                        string fileExtension = Path.GetExtension(updateVm.ImageModel.File.FileName);
+                        var uniqueName = Guid.NewGuid().ToString() + fileExtension;
+
+                        using (MemoryStream fileUploadStream = new MemoryStream())
+                        {
+                            updateVm.ImageModel.File.CopyTo(fileUploadStream);
+                            fileUploadStream.Position = 0;
+
+                            BlobContainerClient blobContainerClient = new BlobContainerClient(
+                                _azureOptions.ConnectionString,
+                                _azureOptions.Container);
+
+                            BlobClient blobClient = blobContainerClient.GetBlobClient(uniqueName);
+
+                            blobClient.Upload(fileUploadStream, new BlobHttpHeaders()
+                            {
+                                ContentType = updateVm.ImageModel.File.ContentType,
+                            });
+
+                            entity.ImageUrl = "https://bugbustersstorage.blob.core.windows.net/contentupload/" + uniqueName;
+                        }
+                    }
+                    if (backgroundImageFile != null)
+                    {
+                        string backgroundFileExtension = Path.GetExtension(backgroundImageFile.FileName);
+                        var backgroundUniqueName = Guid.NewGuid().ToString() + backgroundFileExtension;
+
+                        using (MemoryStream backgroundFileUploadStream = new MemoryStream())
+                        {
+                            backgroundImageFile.CopyTo(backgroundFileUploadStream);
+                            backgroundFileUploadStream.Position = 0;
+
+                            BlobContainerClient backgroundBlobContainerClient = new BlobContainerClient(
+                                _azureOptions.ConnectionString,
+                                _azureOptions.Container);
+
+                            BlobClient backgroundBlobClient = backgroundBlobContainerClient.GetBlobClient(backgroundUniqueName);
+
+                            backgroundBlobClient.Upload(backgroundFileUploadStream, new BlobHttpHeaders()
+                            {
+                                ContentType = backgroundImageFile.ContentType,
+                            });
+
+                            entity.BackgroundImageUrl = "https://bugbustersstorage.blob.core.windows.net/contentupload/" + backgroundUniqueName;
+                        }
+                    }
+
+                    _employeeService.TUpdate(entity);
+
+                    return RedirectToAction("Index", new { imageUrl = entity.ImageUrl, backgroundImageUrl = entity.BackgroundImageUrl });
+
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+            }
+
+            var adminID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var admin = _hrDb.Personels.FirstOrDefault(u => u.Id == adminID);
+            ViewBag.AdminImageUrl = admin?.ImageUrl;
+            ViewBag.AdminFullName = admin?.FullName;
+            return View(updateVm);
+        }
+
+        public IActionResult Details(string id)
+        {
+            var adminId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var query1 = _employeeService.TGetById(adminId);
+            var mappingQuery1 = _mapper.Map<AdminListWithoutSalaryVM>(query1);
+            var user = _hrDb.Personels.FirstOrDefault(u => u.Id == adminId);
+            ViewBag.AdminImageUrl = user?.ImageUrl;
+            ViewBag.AdminFullName = user?.FullName;
+
+            return View(mappingQuery1);
+        }
+    }
+}

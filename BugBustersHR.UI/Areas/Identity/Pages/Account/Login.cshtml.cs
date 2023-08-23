@@ -178,13 +178,18 @@ namespace BugBustersHR.UI.Areas.Identity.Pages.Account
                             var userRole = await _signInManager.UserManager.GetRolesAsync(getUser);
                             if (userRole.Contains("Manager"))
                             {
-                                _logger.LogInformation("User-Admin logged in.");
+                                _logger.LogInformation("Manager logged in.");
                                 return RedirectToAction("Index", "Default", new { area = "Manager" });
                             }
                             else if (userRole.Contains(AppRoles.Role_Employee))
                             {
-                                _logger.LogInformation("User-Admin logged in.");
+                                _logger.LogInformation("Employee logged in.");
                                 return RedirectToAction("Index", "Employee", new { area = "Personel" });
+                            }
+                            else if (userRole.Contains(AppRoles.Role_Admin))
+                            {
+                                _logger.LogInformation("Admin logged in.");
+                                return RedirectToAction("Index", "Default", new { area = "Admin" });
                             }
                         }
                     }
