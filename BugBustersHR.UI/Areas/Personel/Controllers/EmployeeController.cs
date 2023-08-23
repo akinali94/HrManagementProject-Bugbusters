@@ -38,11 +38,11 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
         {
             var query2 = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var qury1 = _service.TGetById(query2);
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var mappingQuery = _mapper.Map<EmployeeSummaryListVM>(qury1);
-            var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+            //var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
+            ViewBag.UserImageUrl = qury1?.ImageUrl;
+            ViewBag.UserFullName = qury1?.FullName;
 
             return View(mappingQuery);
         }
