@@ -16,7 +16,7 @@ namespace BugBustersHR.BLL.ViewModels.InstitutionalAllowanceViewModel
         {
             InstitutionalAllowanceTypeVM = new InstitutionalAllowanceTypeVM();
         }
-
+        public ImageModel ImageModel { get; set; }
         public string? FullName { get; set; }
         public int Id { get; set; }
         public string Title { get; set; }

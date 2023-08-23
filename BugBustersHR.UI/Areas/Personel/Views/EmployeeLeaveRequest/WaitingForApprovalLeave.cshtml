@@ -26,9 +26,9 @@
                         <h2 class="mb-1 mt-4">Leave Request List</h2>
                     </div>
                     <div class="card-body mt-5 p-0">
-                        <div class="row">
-                            <div class="col-md-3 bg-light">
-                                <ul class="nav flex-column nav-pills bg-light">
+                        <div class="row justify-content-center">
+                            <div class="col-md-9 bg-light">
+                                <ul class="nav flex-row nav-pills bg-light">
                                     <li class="nav-item">
                                         <a class="nav-link active" asp-controller="EmployeeLeaveRequest" asp-action="Index" style="font-weight: bold;">All</a>
                                     </li>
@@ -41,16 +41,11 @@
                                     <li class="nav-item">
                                         <a class="nav-link" asp-controller="EmployeeLeaveRequest" asp-action="NotConfirmedApprovalLeave" style="font-weight: bold; color:darkred">Not Confirmed</a>
                                     </li>
-                                    <li class="nav-item mt-5">
-                                        <a href="@Url.Action("Create")" class="btn btn-primary">
-                                            <i class="fas fa-plus"></i>New Request
-                                        </a>
-                                        <a asp-controller="Employee" asp-action="Index" class="btn btn-dark btn-outline-secondary text-lg-center">
-                                            <i class="fas fa-home"></i> Home
-                                        </a>
-                                    </li>
                                 </ul>
+                                <hr />
                             </div>
+                        </div>
+                        <div class="row justify-content-center">
                             <div class="col-md-9">
                                 <div class="table-responsive m-0 p-0 scrollable-table" style="margin: 0 !important; padding: 0 !important;">
                                     <table class="table table-bordered table-hover">
@@ -93,6 +88,21 @@
                                             }
                                         </tbody>
                                     </table>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-md-9 bg-light">
+                                    <hr />
+                                    <ul class="nav flex-column nav-pills bg-light">
+                                        <li class="nav-item mt-2">
+                                            <a href="@Url.Action("Create")" class="btn btn-primary">
+                                                <i class="fas fa-plus"></i>New Request
+                                            </a>
+                                            <a asp-controller="Employee" asp-action="Index" class="btn btn-dark btn-outline-secondary text-lg-center">
+                                                <i class="fas fa-home"></i> Home
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
