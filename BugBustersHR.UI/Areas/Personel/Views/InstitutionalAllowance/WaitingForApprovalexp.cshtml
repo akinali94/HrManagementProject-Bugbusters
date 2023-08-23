@@ -67,8 +67,6 @@
                                                     Expenditure Type
                                                 </th>
 
-
-                                                <th>Bill Preview</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -94,20 +92,6 @@
                                                         @Html.DisplayFor(modelItem => item.TypeName)
                                                     </td>
 
-
-                                                    <td>
-                                                        @if (!string.IsNullOrEmpty(item.ImageUrl))
-                                                        {
-                                                            @if (item.ImageUrl.EndsWith(".pdf"))
-                                                            {
-                                                                <iframe src="@item.ImageUrl" width="100" height="100"></iframe>
-                                                            }
-                                                            else
-                                                            {
-                                                                <img src="@item.ImageUrl" alt="Document Preview" style="max-width: 100px; max-height: 100px;">
-                                                            }
-                                                        }
-                                                    </td>
                                                     <td>
                                                         @if (item.ApprovalStatus == null)
                                                         {
