@@ -58,21 +58,8 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
                 item.LeaveTypeName = (_employeeLeaveTypeService.GetByIdType(item.SelectedLeaveTypeId)).Name;
             }
 
-            foreach (var item in mappingQuery)
-            {
-                if (item.Approved == null)
-                {
-                    item.LeaveApprovalStatusName = "Waiting for Approval";
-                }
-                else if (item.Approved == true)
-                {
-                    item.LeaveApprovalStatusName = "Confirmed";
-                }
-                else
-                {
-                    item.LeaveApprovalStatusName = "Not Confirmed";
-                }
-            }
+            foreach (var item in mappingQuery)_employeeLeaveRequestService.GetLeaveApprovelName(item);
+
             ViewBag.UserImageUrl = user?.ImageUrl;
             ViewBag.UserFullName = user?.FullName;
             return View(mappingQuery);
@@ -220,21 +207,7 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
                 item.LeaveTypeName = (_employeeLeaveTypeService.GetByIdType(item.SelectedLeaveTypeId)).Name;
             }
 
-            foreach (var item in mappingQuery)
-            {
-                if (item.Approved == null)
-                {
-                    item.LeaveApprovalStatusName = "Waiting";
-                }
-                else if (item.Approved == true)
-                {
-                    item.LeaveApprovalStatusName = "Confirmed";
-                }
-                else
-                {
-                    item.LeaveApprovalStatusName = "Not Confirmed";
-                }
-            }
+            foreach (var item in mappingQuery) _employeeLeaveRequestService.GetLeaveApprovelName(item);
             var waitingForApprovalLeave = mappingQuery.Where(item => item.Approved == null);
           
             var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
@@ -255,22 +228,23 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
                 item.LeaveTypeName = (_employeeLeaveTypeService.GetByIdType(item.SelectedLeaveTypeId)).Name;
             }
 
-            foreach (var item in mappingQuery)
-            {
-                if (item.Approved == null)
-                {
-                    item.LeaveApprovalStatusName = "Waiting";
-                }
-                else if (item.Approved == true)
-                {
-                    item.LeaveApprovalStatusName = "Confirmed";
-                }
-                else
-                {
-                    item.LeaveApprovalStatusName = "Not Confirmed";
-                }
-            }
-           
+            //foreach (var item in mappingQuery)
+            //{
+            //    if (item.Approved == null)
+            //    {
+            //        item.LeaveApprovalStatusName = "Waiting";
+            //    }
+            //    else if (item.Approved == true)
+            //    {
+            //        item.LeaveApprovalStatusName = "Confirmed";
+            //    }
+            //    else
+            //    {
+            //        item.LeaveApprovalStatusName = "Not Confirmed";
+            //    }
+            //}
+            foreach (var item in mappingQuery) _employeeLeaveRequestService.GetLeaveApprovelName(item);
+
 
             var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
             ViewBag.UserImageUrl = user?.ImageUrl;
@@ -291,22 +265,22 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
             {
                 item.LeaveTypeName = (_employeeLeaveTypeService.GetByIdType(item.SelectedLeaveTypeId)).Name;
             }
-
-            foreach (var item in mappingQuery)
-            {
-                if (item.Approved == null)
-                {
-                    item.LeaveApprovalStatusName = "Waiting";
-                }
-                else if (item.Approved == true)
-                {
-                    item.LeaveApprovalStatusName = "Confirmed";
-                }
-                else
-                {
-                    item.LeaveApprovalStatusName = "Not Confirmed";
-                }
-            }
+            foreach (var item in mappingQuery) _employeeLeaveRequestService.GetLeaveApprovelName(item);
+            //foreach (var item in mappingQuery)
+            //{
+            //    if (item.Approved == null)
+            //    {
+            //        item.LeaveApprovalStatusName = "Waiting";
+            //    }
+            //    else if (item.Approved == true)
+            //    {
+            //        item.LeaveApprovalStatusName = "Confirmed";
+            //    }
+            //    else
+            //    {
+            //        item.LeaveApprovalStatusName = "Not Confirmed";
+            //    }
+            //}
             var notConfirmedLeave = mappingQuery.Where(item => item.Approved == false);
 
            

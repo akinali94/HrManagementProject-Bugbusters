@@ -8,15 +8,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BugBustersHR.BLL.ViewModels.LeaveRequestViewModel;
+using AutoMapper;
 
 namespace BugBustersHR.BLL.Services.Concrete.LeaveConcreteService
 {
-    public class EmployeeLeaveRequestService : Service<EmployeeLeaveRequest>, IEmployeeLeaveRequestService
+    public class EmployeeLeaveRequestService : Service<EmployeeLeaveRequest>,IEmployeeLeaveRequestService
     {
         protected readonly IEmployeeLeaveRequestRepository _employeeLeaveRequestRepository;
-        public EmployeeLeaveRequestService(IBaseRepository<EmployeeLeaveRequest> repository, IUnitOfWork unitOfWork, HrDb db, IEmployeeLeaveRequestRepository employeeLeaveRequestRepository) : base(repository, unitOfWork, db)
+        protected readonly IMapper _mapper;
+        public EmployeeLeaveRequestService(IBaseRepository<EmployeeLeaveRequest> repository, IUnitOfWork unitOfWork, HrDb db, IEmployeeLeaveRequestRepository employeeLeaveRequestRepository, IMapper mapper) : base(repository, unitOfWork, db)
         {
             _employeeLeaveRequestRepository = employeeLeaveRequestRepository;
+            _mapper = mapper;
         }
 
         public IEnumerable<EmployeeLeaveRequest> GetAllLeaveReq()
@@ -27,6 +31,22 @@ namespace BugBustersHR.BLL.Services.Concrete.LeaveConcreteService
         public EmployeeLeaveRequest GetByIdRequest(int id)
         {
             return _employeeLeaveRequestRepository.GetByIdRequest(id);
+        }
+
+        public async Task GetLeaveApprovelName(EmployeeLeaveRequestVM request)
+        {
+            if (request.Approved == null)
+            {
+                request.LeaveApprovalStatusName = "Waiting for Approval";
+            }
+            else if (request.Approved == true)
+            {
+                request.LeaveApprovalStatusName = "Confirmed";
+            }
+            else
+            {
+                request.LeaveApprovalStatusName = "Not Confirmed";
+            }
         }
 
         public async Task TChangeToFalseforLeave(int id)

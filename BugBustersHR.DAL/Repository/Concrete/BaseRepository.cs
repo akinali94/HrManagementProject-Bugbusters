@@ -35,6 +35,7 @@ namespace BugBustersHR.DAL.Repository.Concrete
 
         }
 
+
         public T GetById(string id)
         {
             return _hrDb.Set<T>().Find(id);

@@ -45,5 +45,22 @@ namespace BugBustersHR.DAL.Repository.Concrete.LeaveConcreteRepos
             return _hrDb.EmployeeLeaveRequests.Find(id);
         }
 
+        //public async Task GetLeaveApprovelName(EmployeeLeaveRequest request)
+        //{
+        //    //var request = await _hrDb.EmployeeLeaveRequests.FindAsync(id);
+
+        //    if (request.Approved == null)
+        //    {
+        //        request.LeaveApprovalStatusName = "Waiting for Approval";
+        //    }
+        //    else if (request.Approved == true)
+        //    {
+        //        request.LeaveApprovalStatusName = "Confirmed";
+        //    }
+        //    else
+        //    {
+        //        request.LeaveApprovalStatusName = "Not Confirmed";
+        //    }
+        //}
     }
 }

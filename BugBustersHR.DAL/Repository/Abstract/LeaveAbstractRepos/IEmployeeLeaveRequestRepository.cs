@@ -15,5 +15,7 @@ namespace BugBustersHR.DAL.Repository.Abstract.ExpenditureAbstractRepos
         Task ChangeToTrueforLeave(int id);
         Task ChangeToFalseforLeave(int id);
 
+        //Task GetLeaveApprovelName(EmployeeLeaveRequest request);
+
     }
 }

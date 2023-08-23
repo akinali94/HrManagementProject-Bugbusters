@@ -23,5 +23,7 @@ namespace BugBustersHR.DAL.Repository.Abstract
 
 
         void Update(T entity);
+
+
     }
 }

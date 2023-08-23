@@ -1,4 +1,5 @@
-﻿using BugBustersHR.ENTITY.Concrete;
+﻿using BugBustersHR.BLL.ViewModels.LeaveRequestViewModel;
+using BugBustersHR.ENTITY.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,8 @@ namespace BugBustersHR.BLL.Services.Abstract.LeaveAbstractService
 
         Task TChangeToTrueforLeave(int id);
         Task TChangeToFalseforLeave(int id);
+
+        Task GetLeaveApprovelName(EmployeeLeaveRequestVM request);
 
     }
 }
