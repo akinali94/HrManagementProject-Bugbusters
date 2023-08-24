@@ -23,11 +23,13 @@ namespace BugBustersHR.UI.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger, UserManager<IdentityUser> userManager)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _userManager = userManager;
         }
 
         /// <summary>
@@ -164,33 +166,35 @@ namespace BugBustersHR.UI.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                
+
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
 
-                
+
 
                 if (result.Succeeded)
                 {
-                    var userName = User.Identity.Name;
-                    if (!string.IsNullOrEmpty(userName))
+
+                    Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+                    Response.Headers["Pragma"] = "no-cache";
+                    Response.Headers["Expires"] = "0";
+
+                    var loggedInUser = await _userManager.FindByEmailAsync(Input.Email);
+
+                    var userRole = await _signInManager.UserManager.GetRolesAsync(loggedInUser);
+                    if (userRole.Contains("Manager"))
                     {
-                        var getUser = await _signInManager.UserManager.FindByNameAsync(userName);
-                        if (getUser != null)
-                        {
-                            var userRole = await _signInManager.UserManager.GetRolesAsync(getUser);
-                            if (userRole.Contains("Manager"))
-                            {
-                                _logger.LogInformation("User-Admin logged in.");
-                                return RedirectToAction("Index", "Default", new { area = "Manager" });
-                            }
-                            else if (userRole.Contains(AppRoles.Role_Employee))
-                            {
-                                _logger.LogInformation("User-Admin logged in.");
-                                return RedirectToAction("Index", "Employee", new { area = "Personel" });
-                            }
-                        }
+                        await Task.Delay(1000);
+                        _logger.LogInformation("User-Admin logged in.");
+                        return RedirectToAction("Index", "Default", new { area = "Manager" });
+                    }
+                    else if (userRole.Contains(AppRoles.Role_Employee))
+                    {
+                        await Task.Delay(1000);
+                        _logger.LogInformation("User-Admin logged in.");
+                        return RedirectToAction("Index", "Employee", new { area = "Personel" });
                     }
 
+                    await Task.Delay(2000);
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }
