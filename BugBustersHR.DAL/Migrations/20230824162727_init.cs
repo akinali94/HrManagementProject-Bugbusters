@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BugBustersHR.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class ınit : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -91,6 +91,33 @@ namespace BugBustersHR.DAL.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Companies",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CompanyName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CompanyTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MersisNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TaxNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Logo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TelephoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EmployeeNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FoundationYear = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ContractStartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ContractEndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Companies", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -386,7 +413,7 @@ namespace BugBustersHR.DAL.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "Address", "AdvanceAmount", "BackgroundImageUrl", "BirthDate", "BirthPlace", "CompanyName", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "Gender", "HiredDate", "ImageUrl", "IsActive", "LockoutEnabled", "LockoutEnd", "MaxAdvanceAmount", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "ResignationDate", "Role", "Salary", "SecondName", "SecondSurname", "Section", "SecurityStamp", "Surname", "TC", "TelephoneNumber", "Title", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "1", 0, "Cicek sokak no:14", 0m, "https://images.unsplash.com/photo-1531512073830-ba890ca4eba2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80", new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Aydın", "Bilge Adam", "9ea18cfd-0aaf-467c-a743-8da37cd32445", "Employee", null, false, 0, new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://bugbustersstorage.blob.core.windows.net/contentupload/765d1a1-7027-47f1-94f6-f293fadebf31.png", true, false, null, 0m, "Ersin", null, null, null, null, false, null, null, 2000m, "", "", "DevOps", "81c97411-93e6-46bc-87fc-088f39d85b81", "Bahar", "54111447858", "05354578958", "Manager", false, null });
+                values: new object[] { "1", 0, "Cicek sokak no:14", 0m, "https://images.unsplash.com/photo-1531512073830-ba890ca4eba2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80", new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Aydın", "Bilge Adam", "f06cb41a-3b50-4bd8-a70c-ef9c8de3c320", "Employee", null, false, 0, new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://bugbustersstorage.blob.core.windows.net/contentupload/765d1a1-7027-47f1-94f6-f293fadebf31.png", true, false, null, 0m, "Ersin", null, null, null, null, false, null, null, 2000m, "", "", "DevOps", "219e50b5-bf44-44cd-89a9-004afc0742cd", "Bahar", "54111447858", "05354578958", "Manager", false, null });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -485,6 +512,9 @@ namespace BugBustersHR.DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Companies");
 
             migrationBuilder.DropTable(
                 name: "EmployeeLeaveRequests");

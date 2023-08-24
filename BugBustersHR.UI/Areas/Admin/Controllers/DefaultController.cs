@@ -31,20 +31,20 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
         private readonly IMapper _mapper;
         private readonly HrDb _hrDb;
         private readonly IValidator<AdminUpdateVM> _adminValidator;
-        private readonly IValidator<CreateManagerFromAdminVM> _createAdminValidator;
+        private readonly IValidator<CreateManagerFromAdminVM> _CreateManagerValidator;
         private readonly AzureOptions _azureOptions;
     
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IEmailService _emailService;
 
-        public DefaultController(IEmployeeService employeeService, IMapper mapper, HrDb hrDb, IValidator<AdminUpdateVM> adminValidator, IValidator<CreateManagerFromAdminVM> createAdminValidator, IOptions<AzureOptions> azureOptions,  UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IEmailService emailService)
+        public DefaultController(IEmployeeService employeeService, IMapper mapper, HrDb hrDb, IValidator<AdminUpdateVM> adminValidator, IValidator<CreateManagerFromAdminVM> CreateManagerValidator, IOptions<AzureOptions> azureOptions,  UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IEmailService emailService)
         {
             _employeeService = employeeService;
             _mapper = mapper;
             _hrDb = hrDb;
             _adminValidator = adminValidator;
-            _createAdminValidator = createAdminValidator;
+            _CreateManagerValidator = CreateManagerValidator;
             _azureOptions = azureOptions.Value;
             
             _userManager = userManager;
@@ -184,7 +184,7 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
 
 
         [HttpGet]
-        public IActionResult CreateAdmin()
+        public IActionResult CreateManager()
         {
             ViewBag.gender = new SelectList(new List<SelectListItem>
             {
@@ -209,7 +209,7 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAdmin(CreateManagerFromAdminVM createManagerFromAdminVM)
+        public async Task<IActionResult> CreateManager(CreateManagerFromAdminVM createManagerFromAdminVM)
         {
             CreateManagerValidator validator = new CreateManagerValidator();
             var validationResult = validator.Validate(createManagerFromAdminVM);

@@ -17,7 +17,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using BugBustersHR.BLL.ViewModels.AdminViewModel;
-
+using BugBustersHR.BLL.ViewModels.CompanyViewModel;
 
 namespace BugBustersHR.BLL.Mapping
 {
@@ -55,6 +55,10 @@ namespace BugBustersHR.BLL.Mapping
             CreateMap<AdminUpdateVM, Employee>().ReverseMap();
             CreateMap<AdminSummaryListVM, Employee>().ReverseMap();    
             CreateMap<AdminListWithoutSalaryVM, Employee>().ReverseMap();
+
+
+
+            CreateMap<CompanyVM,Companies>().ReverseMap();    
 
         }
     }

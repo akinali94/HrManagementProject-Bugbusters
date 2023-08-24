@@ -30,7 +30,7 @@ namespace BugBustersHR.BLL.ViewModels.AdminViewModel
         public string CompanyName { get; set; }
         public ImageModel ImageModel { get; set; }
 
-
+        public Companies Company { get; set; }    
         public string Email
         {
             get

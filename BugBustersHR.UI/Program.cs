@@ -48,6 +48,12 @@ using BugBustersHR.BLL.ViewModels.ManagerViewModel;
 using BugBustersHR.BLL.Validatons.CreateEnployeeValidations;
 using BugBustersHR.BLL.ViewModels.AdminViewModel;
 using BugBustersHR.BLL.Validatons.CreateManagerValidation;
+using BugBustersHR.DAL.Repository.Abstract.CompanyRepos;
+using BugBustersHR.DAL.Repository.Concrete.Company;
+using BugBustersHR.BLL.Services.Abstract.CompanyService;
+using BugBustersHR.BLL.Services.Concrete.CompanyService;
+using BugBustersHR.BLL.ViewModels.CompanyViewModel;
+using BugBustersHR.BLL.Validatons.CompanyValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -100,6 +106,9 @@ builder.Services.AddScoped<IInstitutionalAllowanceRepository, InstitutionalAllow
 builder.Services.AddScoped<IInstitutionalAllowanceTypeRepository, InstitutionalAllowanceTypeRepository>();
 builder.Services.AddScoped<IInstitutionalAllowanceTypeService, InstitutionalAllowanceTypeService>();
 builder.Services.AddScoped<IInstitutionalAllowanceService, InstitutionalAllowanceService>();
+// Company
+builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
+builder.Services.AddScoped<ICompanyService, CompanyService>();
 
 
 
@@ -120,6 +129,7 @@ builder.Services.AddScoped<EmployeeLeaveRequestListVM>();
 builder.Services.AddScoped<EmployeeLeaveTypeVM>();
 builder.Services.AddScoped<IndividualAdvanceRequestVM>();
 builder.Services.AddScoped<InstitutionalAllowanceVM>();
+builder.Services.AddScoped<CompanyVM>();
 
 builder.Services.AddScoped<CreateEmployeeFromManagerVM>();
 builder.Services.AddScoped<CreateManagerFromAdminVM>();
@@ -144,6 +154,7 @@ builder.Services.AddScoped<IValidator<InstitutionalAllowanceVM>, InstitutionalAl
 builder.Services.AddScoped<IValidator<CreateEmployeeFromManagerVM>, CreateEmployeeValidator>();
 builder.Services.AddScoped<IValidator<CreateManagerFromAdminVM>, CreateManagerValidator>();
 builder.Services.AddScoped<IValidator<AdminUpdateVM>, AdminValidator>();
+builder.Services.AddScoped<IValidator<CompanyVM>, CompanyValidator>();
 
 
 
