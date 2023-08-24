@@ -19,6 +19,7 @@ using BugBustersHR.UI.Email.ServiceEmail;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
+using Microsoft.Extensions.Options;
 
 namespace BugBustersHR.UI.Areas.Admin.Controllers
 {
@@ -32,30 +33,35 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
         private readonly IValidator<AdminUpdateVM> _adminValidator;
         private readonly IValidator<CreateManagerFromAdminVM> _createAdminValidator;
         private readonly AzureOptions _azureOptions;
-        private readonly AdminVM _adminVM;
+    
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IEmailService _emailService;
 
-        public DefaultController(IEmployeeService employeeService, IMapper mapper, HrDb hrDb, IValidator<AdminUpdateVM> adminValidator, IValidator<CreateManagerFromAdminVM> createAdminValidator, AzureOptions azureOptions, AdminVM adminVM, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IEmailService emailService)
+        public DefaultController(IEmployeeService employeeService, IMapper mapper, HrDb hrDb, IValidator<AdminUpdateVM> adminValidator, IValidator<CreateManagerFromAdminVM> createAdminValidator, IOptions<AzureOptions> azureOptions,  UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IEmailService emailService)
         {
             _employeeService = employeeService;
             _mapper = mapper;
             _hrDb = hrDb;
             _adminValidator = adminValidator;
             _createAdminValidator = createAdminValidator;
-            _azureOptions = azureOptions;
-            _adminVM = adminVM;
+            _azureOptions = azureOptions.Value;
+            
             _userManager = userManager;
             _roleManager = roleManager;
             _emailService = emailService;
         }
+        
 
         public IActionResult Index()
         {
+            
             var findAdminID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+           
             var getAdmin = _employeeService.TGetById(findAdminID);
+
             var mappingQuery = _mapper.Map<AdminSummaryListVM>(getAdmin);
+
             var user = _hrDb.Personels.FirstOrDefault(u => u.Id == findAdminID);
             ViewBag.AdminImagerUrl = user?.ImageUrl;
             ViewBag.AdminFullName = user?.FullName;
@@ -65,29 +71,29 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
 
         public IActionResult Edit(string id)
         {
-            var adminID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var getAdmin = _employeeService.TGetById(adminID);
+            var personel = _employeeService.TGetById(userId);
 
-            var mappingQuery = _mapper.Map<AdminUpdateVM>(getAdmin);
+            var mapli = _mapper.Map<AdminUpdateVM>(personel);
 
-            var user = _hrDb.Personels.FirstOrDefault(u => u.Id == adminID);
-            ViewBag.AdminImagerUrl = user?.ImageUrl;
-            ViewBag.AdminFullName = user?.FullName;
+            var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
+            ViewBag.UserImageUrl = user?.ImageUrl;
+            ViewBag.UserFullName = user?.FullName;
 
-            return View(mappingQuery);
+            return View(mapli);
         }
 
         [HttpPost]
         public IActionResult Edit(AdminUpdateVM updateVm, IFormFile backgroundImageFile)
         {
 
-            AdminValidator adminValidator = new AdminValidator();
-            var validationResult = adminValidator.Validate(updateVm);
+            AdminValidator validator = new AdminValidator();
+            var validationResult = validator.Validate(updateVm);
 
             if (validationResult.IsValid)
             {
-                try
+                try  
                 {
                     var entity = _employeeService.TGetById(updateVm.Id);
 
@@ -158,8 +164,8 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
 
             var adminID = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var admin = _hrDb.Personels.FirstOrDefault(u => u.Id == adminID);
-            ViewBag.AdminImageUrl = admin?.ImageUrl;
-            ViewBag.AdminFullName = admin?.FullName;
+            ViewBag.UserImageUrl = admin?.ImageUrl;
+            ViewBag.UserFullName = admin?.FullName;
             return View(updateVm);
         }
 

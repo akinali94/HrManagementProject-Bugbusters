@@ -51,10 +51,10 @@ namespace BugBustersHR.BLL.Mapping
             CreateMap<InstitutionalAllowance, InstitutionalAllowanceVM>().ReverseMap();
             CreateMap<InstitutionalAllowanceType, InstitutionalAllowanceTypeVM>().ReverseMap();
 
-            CreateMap<AdminVM, Admin>().ReverseMap();
-            CreateMap<AdminUpdateVM, Admin>().ReverseMap();
-            CreateMap<AdminSummaryListVM, Admin>();
-            CreateMap<AdminListWithoutSalaryVM, Admin>();
+            CreateMap<AdminVM, Employee>().ReverseMap();
+            CreateMap<AdminUpdateVM, Employee>().ReverseMap();
+            CreateMap<AdminSummaryListVM, Employee>().ReverseMap();    
+            CreateMap<AdminListWithoutSalaryVM, Employee>().ReverseMap();
 
         }
     }

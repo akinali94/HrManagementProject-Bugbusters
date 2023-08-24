@@ -62,6 +62,8 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
             var query2 = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var qury1 = _service.TGetById(query2);
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+           
             var mappingQuery = _mapper.Map<ManagerSummaryListVM>(qury1);
             var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
             ViewBag.UserImageUrl = user?.ImageUrl;

@@ -110,6 +110,7 @@ builder.Services.AddAutoMapper(typeof(MapProfile));
 builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 builder.Services.AddScoped(typeof(IService<>), typeof(Service<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+//builder.Services.AddScoped<AzureOptions>();  evet onu denicektim
 builder.Services.Configure<AzureOptions>(builder.Configuration.GetSection("Azure"));
 builder.Services.AddDbContext<HrDb>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DBConnection")));
 builder.Services.AddScoped<EmployeeLeaveRequestVM>();
@@ -143,6 +144,8 @@ builder.Services.AddScoped<IValidator<InstitutionalAllowanceVM>, InstitutionalAl
 builder.Services.AddScoped<IValidator<CreateEmployeeFromManagerVM>, CreateEmployeeValidator>();
 builder.Services.AddScoped<IValidator<CreateManagerFromAdminVM>, CreateManagerValidator>();
 builder.Services.AddScoped<IValidator<AdminUpdateVM>, AdminValidator>();
+
+
 
 
 builder.Services.ConfigureApplicationCookie(options =>
