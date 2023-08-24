@@ -15,6 +15,10 @@ namespace BugBustersHR.DAL.Repository.Concrete
     {
         protected readonly HrDb _hrDb;
 
+        public BaseRepository()
+        {
+        }
+
         public BaseRepository(HrDb hrDb)
         {
             _hrDb = hrDb;
@@ -41,9 +45,12 @@ namespace BugBustersHR.DAL.Repository.Concrete
             return _hrDb.Set<T>().Find(id);
         }
 
+
         public void Update(T entity)
         {
             _hrDb.Update(entity);
         }
+
+        
     }
 }
