@@ -13,6 +13,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using FluentValidation;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using BugBustersHR.BLL.Validatons.CreateManagerValidation;
+using BugBustersHR.UI.Email.ServiceEmail;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.WebUtilities;
+using System.Text;
 
 namespace BugBustersHR.UI.Areas.Admin.Controllers
 {
@@ -24,14 +30,25 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
         private readonly IMapper _mapper;
         private readonly HrDb _hrDb;
         private readonly IValidator<AdminUpdateVM> _adminValidator;
+        private readonly IValidator<CreateManagerFromAdminVM> _createAdminValidator;
         private readonly AzureOptions _azureOptions;
+        private readonly AdminVM _adminVM;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IEmailService _emailService;
 
-        public DefaultController(IEmployeeService employeeService, IMapper mapper, IValidator<AdminUpdateVM> adminValidator, AzureOptions azureOptions)
+        public DefaultController(IEmployeeService employeeService, IMapper mapper, HrDb hrDb, IValidator<AdminUpdateVM> adminValidator, IValidator<CreateManagerFromAdminVM> createAdminValidator, AzureOptions azureOptions, AdminVM adminVM, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IEmailService emailService)
         {
             _employeeService = employeeService;
             _mapper = mapper;
+            _hrDb = hrDb;
             _adminValidator = adminValidator;
+            _createAdminValidator = createAdminValidator;
             _azureOptions = azureOptions;
+            _adminVM = adminVM;
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _emailService = emailService;
         }
 
         public IActionResult Index()
@@ -156,6 +173,107 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
             ViewBag.AdminFullName = user?.FullName;
 
             return View(mappingQuery1);
+        }
+
+
+
+        [HttpGet]
+        public IActionResult CreateAdmin()
+        {
+            ViewBag.gender = new SelectList(new List<SelectListItem>
+            {
+                new SelectListItem{Text = "Woman", Value = "1"},
+                new SelectListItem{Text = "Man", Value = "0"}
+            }, "Value", "Text");
+
+            var adminId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            //Bunun servisi yazılabilir
+            var adminID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var admin = _hrDb.Personels.FirstOrDefault(u => u.Id == adminID);
+
+            //ViewBag.Company = admin.CompanyName;
+
+            string passwordGenerated = _employeeService.GenerateRandomPassword(null);
+            ViewBag.GeneratedPassword = passwordGenerated;
+
+            ViewBag.UserImageUrl = admin?.ImageUrl;
+            ViewBag.UserFullName = admin?.FullName;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateAdmin(CreateManagerFromAdminVM createManagerFromAdminVM)
+        {
+            CreateManagerValidator validator = new CreateManagerValidator();
+            var validationResult = validator.Validate(createManagerFromAdminVM);
+
+            if (validationResult.IsValid)
+            {
+                var mapManager = _mapper.Map<Employee>(createManagerFromAdminVM);
+
+                mapManager.UserName = createManagerFromAdminVM.Email;
+                mapManager.Role = AppRoles.Role_Manager;
+
+                //await _userStore.SetUserNameAsync(mapEmployee, createEmployeeVM.Email, CancellationToken.None);
+                //await _emailStore.SetEmailAsync(mapEmployee, createEmployeeVM.Email, CancellationToken.None);
+                var result = await _userManager.CreateAsync(mapManager, createManagerFromAdminVM.Password);
+                //_service.TAddAsync(mapEmployee);
+
+                if (!await _roleManager.RoleExistsAsync(AppRoles.Role_Manager))
+                {
+                    await _roleManager.CreateAsync(new IdentityRole(AppRoles.Role_Manager));
+                }
+
+                await _userManager.AddToRoleAsync(mapManager, AppRoles.Role_Manager);
+
+
+                string code = await _userManager.GeneratePasswordResetTokenAsync(mapManager);
+                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+                var link = Url.Page("/Account/ResetPassword", pageHandler: null, values: new { area = "Identity", userId = mapManager.Id, code }, protocol: Request.Scheme);
+
+
+                await _emailService.SendConfirmEmail(link, mapManager.Email, mapManager.PasswordHash);
+
+                return RedirectToAction("Index", "Default");
+            }
+
+            ViewBag.gender = new SelectList(new List<SelectListItem>
+            {
+                new SelectListItem{Text = "Woman", Value = "1"},
+                new SelectListItem{Text = "Man", Value = "0"}
+            }, "Value", "Text");
+
+            var adminId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            //Bunun servisi yazılabilir
+            var adminID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var admin = _hrDb.Personels.FirstOrDefault(u => u.Id == adminID);
+
+            ViewBag.UserImageUrl = admin?.ImageUrl;
+            ViewBag.UserFullName = admin?.FullName;
+          
+
+            string passwordGenerated = _employeeService.GenerateRandomPassword(null);
+            ViewBag.GeneratedPassword = passwordGenerated;
+
+
+            return View();
+        }
+
+        public IActionResult GetAdminList()
+        {
+            var adminID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var admin = _hrDb.Personels.FirstOrDefault(u => u.Id == adminID);
+            //ROLE ÇEKİLECEK
+
+            var getList = _hrDb.Personels.ToList();
+
+            var mappingList = _mapper.Map<List<GetManagerListVM>>(getList);
+            ViewBag.UserImageUrl = admin?.ImageUrl;
+            ViewBag.UserFullName = admin?.FullName;
+            return View(mappingList);
         }
     }
 }

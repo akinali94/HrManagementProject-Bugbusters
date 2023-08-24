@@ -46,6 +46,8 @@ using BugBustersHR.UI.Email.ServiceEmail;
 using BugBustersHR.UI.OptionsModels;
 using BugBustersHR.BLL.ViewModels.ManagerViewModel;
 using BugBustersHR.BLL.Validatons.CreateEnployeeValidations;
+using BugBustersHR.BLL.ViewModels.AdminViewModel;
+using BugBustersHR.BLL.Validatons.CreateManagerValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -119,6 +121,11 @@ builder.Services.AddScoped<IndividualAdvanceRequestVM>();
 builder.Services.AddScoped<InstitutionalAllowanceVM>();
 
 builder.Services.AddScoped<CreateEmployeeFromManagerVM>();
+builder.Services.AddScoped<CreateManagerFromAdminVM>();
+builder.Services.AddScoped<GetManagerListVM>();
+builder.Services.AddScoped<AdminUpdateVM>();
+builder.Services.AddScoped<AdminSummaryListVM>();
+builder.Services.AddScoped<AdminListWithoutSalaryVM>();
 
 builder.Services.AddScoped<EmployeeVM>();
 
@@ -134,6 +141,8 @@ builder.Services.AddScoped<IValidator<EmployeeLeaveRequestVM>, EmployeeLeaveRequ
 builder.Services.AddScoped<IValidator<IndividualAdvanceRequestVM>, IndividualAdvanceValidator>();
 builder.Services.AddScoped<IValidator<InstitutionalAllowanceVM>, InstitutionalAllowanceValidator>();
 builder.Services.AddScoped<IValidator<CreateEmployeeFromManagerVM>, CreateEmployeeValidator>();
+builder.Services.AddScoped<IValidator<CreateManagerFromAdminVM>, CreateManagerValidator>();
+builder.Services.AddScoped<IValidator<AdminUpdateVM>, AdminValidator>();
 
 
 builder.Services.ConfigureApplicationCookie(options =>

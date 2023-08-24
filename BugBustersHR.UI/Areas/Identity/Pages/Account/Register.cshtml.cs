@@ -333,7 +333,16 @@ namespace BugBustersHR.UI.Areas.Identity.Pages.Account
                         await _roleManager.CreateAsync(new IdentityRole(AppRoles.Role_Manager));
                     }
 
+       
+
+
+                    else if (!await _roleManager.RoleExistsAsync(AppRoles.Role_Admin) && Input.Role == AppRoles.Role_Admin)
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole(AppRoles.Role_Admin));
+                    }
+
                     await _userManager.AddToRoleAsync(user, Input.Role);
+
 
                     //if (!await _roleManager.RoleExistsAsync(AppRoles.Role_Employee))
                     //{

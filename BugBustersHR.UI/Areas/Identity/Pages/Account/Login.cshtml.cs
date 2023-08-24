@@ -16,6 +16,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System.Security.Claims;
 using BugBustersHR.ENTITY.Concrete;
+using System.Threading.RateLimiting;
+using Azure.Identity;
+using Microsoft.CodeAnalysis.FlowAnalysis;
+using System.Diagnostics.Tracing;
 
 namespace BugBustersHR.UI.Areas.Identity.Pages.Account
 {
@@ -169,7 +173,10 @@ namespace BugBustersHR.UI.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
-                    var userName = User.Identity.Name;
+                   
+                  
+                    var userName = User.Identity.Name; 
+
                     if (!string.IsNullOrEmpty(userName))
                     {
                         var getUser = await _signInManager.UserManager.FindByNameAsync(userName);
