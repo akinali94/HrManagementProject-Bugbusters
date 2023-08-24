@@ -26,11 +26,20 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
        
         private readonly IValidator<CompanyVM> _companyValidator;
         private readonly HrDb _hrDb;
+
+        public CompanyController(ICompanyService service, IMapper mapper, IValidator<CompanyVM> companyValidator, HrDb hrDb)
+        {
+            _service = service;
+            _mapper = mapper;
+            _companyValidator = companyValidator;
+            _hrDb = hrDb;
+        }
+
         public IActionResult Index()
         {
             var query = _service.GetAllCompany();
             var mappingQuery = _mapper.Map<List<CompanyVM>>(query);
-
+           
             return View(mappingQuery);
        
         }

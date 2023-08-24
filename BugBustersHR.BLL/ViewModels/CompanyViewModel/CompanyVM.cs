@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BugBustersHR.ENTITY.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace BugBustersHR.BLL.ViewModels.CompanyViewModel
     public class CompanyVM
     {
         public string CompanyName { get; set; }
-        public string CompanyTitle { get; set; }
+        public CompanyTitle CompanyTitle { get; set; }
         public string MersisNo { get; set; }
         public string TaxNumber { get; set; }
         public string Logo { get; set; }
@@ -21,7 +22,7 @@ namespace BugBustersHR.BLL.ViewModels.CompanyViewModel
         public DateTime ContractStartDate { get; set; }
         public DateTime ContractEndDate { get; set; }
 
-        public bool IsActive { get; set; } = true;
+        public bool IsActive { get; set; } 
 
     }
 }

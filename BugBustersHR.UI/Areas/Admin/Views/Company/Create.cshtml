@@ -1,7 +1,9 @@
-﻿@model BugBustersHR.BLL.ViewModels.CompanyViewModel.CompanyVM
+﻿@using BugBustersHR.ENTITY.Enums;
+@model BugBustersHR.BLL.ViewModels.CompanyViewModel.CompanyVM
 
 @{
     ViewData["Title"] = "Create";
+    Layout = null; //silinecekk
 }
 
 <h1>Create</h1>
@@ -18,8 +20,8 @@
                 <span asp-validation-for="CompanyName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CompanyTitle" class="control-label"></label>
-                <input asp-for="CompanyTitle" class="form-control" />
+                <label asp-for="CompanyTitle" class="control-label">CompanyTitle</label>
+                <select asp-for="CompanyTitle" asp-items="@Html.GetEnumSelectList<CompanyTitle>()" class="form-control shadow-sm"></select>
                 <span asp-validation-for="CompanyTitle" class="text-danger"></span>
             </div>
             <div class="form-group">

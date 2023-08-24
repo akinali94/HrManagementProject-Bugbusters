@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BugBustersHR.ENTITY.Enums
+{
+    public enum CompanyTitle
+    {
+        Cooperative,
+        Collective,
+        Incorporated,
+        Commandite,
+        Limited,
+    }
+}

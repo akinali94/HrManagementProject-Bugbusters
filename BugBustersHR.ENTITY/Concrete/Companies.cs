@@ -1,4 +1,5 @@
 ﻿using BugBustersHR.ENTITY.Abstract;
+using BugBustersHR.ENTITY.Enums;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace BugBustersHR.ENTITY.Concrete
     {
 
         public string CompanyName { get; set; }
-        public string CompanyTitle { get; set; }
+        public CompanyTitle CompanyTitle { get; set; }
         public string MersisNo { get; set; }
         public string TaxNumber { get; set; }
         public string Logo { get; set; }
