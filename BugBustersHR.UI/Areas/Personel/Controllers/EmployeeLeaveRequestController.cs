@@ -45,10 +45,6 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
             var query = _employeeLeaveRequestService.GetAllLeaveReq().Where(x => x.RequestingId == userId);
             var mappingQuery = _mapper.Map<IEnumerable<EmployeeLeaveRequestVM>>(query);
 
-            //foreach (var item in mappingQuery)
-            //{
-            //    item.LeaveTypeName = (_employeeLeaveTypeService.GetByIdType(item.SelectedLeaveTypeId)).Name;
-            //}
             foreach (var item in mappingQuery) _employeeLeaveRequestService.GetLeaveTypeName(item);
             foreach (var item in mappingQuery) _employeeLeaveRequestService.GetLeaveApprovelName(item);
 

@@ -104,7 +104,21 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
             if (existingPendingRequest != null)
             {
                 ModelState.AddModelError("", "You already have a pending request. Please wait for its approval.");
+                ViewData["ExpentitureTypeId"] = new SelectList(_hrDb.ExpenditureTypes, "Id", "ExpenditureName", expenditureRequest.ExpenditureTypeId);
+                ViewBag.CurrencyList = Enum.GetValues(typeof(Currency))
+                            .Cast<Currency>()
+                            .Select(c => new SelectListItem
+                            {
+                                Value = c.ToString(),
+                                Text = c.ToString()
+                            });
+                var userId1 = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var user2 = _hrDb.Personels.FirstOrDefault(u => u.Id == userId1);
+                ViewBag.UserImageUrl = user2?.ImageUrl;
+                ViewBag.UserFullName = user2?.FullName;
                 return View(expenditureRequest);
+
+           
             }
 
             var expenditureType = _typeService.GetByIdExpenditureType(expenditureRequest.ExpenditureTypeId);
