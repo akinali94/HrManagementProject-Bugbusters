@@ -1,133 +1,144 @@
-﻿@model BugBustersHR.BLL.ViewModels.AdminViewModel.CreateManagerFromAdminVM
-
+﻿@using BugBustersHR.BLL.ViewModels.AdminViewModel;
+@model CreateManagerFromAdminVM
 @{
-    ViewData["Title"] = "CreateManager";
+    ViewData["Title"] = "Register";
 }
 
-<h1>CreateManager</h1>
 
-<h4>CreateManagerFromAdminVM</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="CreateManager">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="ImageUrl" class="control-label"></label>
-                <input asp-for="ImageUrl" class="form-control" />
-                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+<body class="g-sidenav-show  bg-gray-200">
+    <div class="container-fluid mt-6 px-md-4 d-flex justify-content-end align-items-center">
+        <div class="col-10">
+            <div class="page-header min-height-300 border-radius-xl" style="background-image: url('https://images.unsplash.com/photo-1531512073830-ba890ca4eba2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');">
+                <span class="mask bg-gradient-secondary opacity-6"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SecondName" class="control-label"></label>
-                <input asp-for="SecondName" class="form-control" />
-                <span asp-validation-for="SecondName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Surname" class="control-label"></label>
-                <input asp-for="Surname" class="form-control" />
-                <span asp-validation-for="Surname" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SecondSurname" class="control-label"></label>
-                <input asp-for="SecondSurname" class="form-control" />
-                <span asp-validation-for="SecondSurname" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FullName" class="control-label"></label>
-                <input asp-for="FullName" class="form-control" />
-                <span asp-validation-for="FullName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BirthPlace" class="control-label"></label>
-                <input asp-for="BirthPlace" class="form-control" />
-                <span asp-validation-for="BirthPlace" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TC" class="control-label"></label>
-                <input asp-for="TC" class="form-control" />
-                <span asp-validation-for="TC" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BirthDate" class="control-label"></label>
-                <input asp-for="BirthDate" class="form-control" />
-                <span asp-validation-for="BirthDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StartedDate" class="control-label"></label>
-                <input asp-for="StartedDate" class="form-control" />
-                <span asp-validation-for="StartedDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="HireDate" class="control-label"></label>
-                <input asp-for="HireDate" class="form-control" />
-                <span asp-validation-for="HireDate" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Section" class="control-label"></label>
-                <input asp-for="Section" class="form-control" />
-                <span asp-validation-for="Section" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Salary" class="control-label"></label>
-                <input asp-for="Salary" class="form-control" />
-                <span asp-validation-for="Salary" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TelephoneNumber" class="control-label"></label>
-                <input asp-for="TelephoneNumber" class="form-control" />
-                <span asp-validation-for="TelephoneNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CompanyName" class="control-label"></label>
-                <input asp-for="CompanyName" class="form-control" />
-                <span asp-validation-for="CompanyName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MaxAdvanceAmount" class="control-label"></label>
-                <input asp-for="MaxAdvanceAmount" class="form-control" />
-                <span asp-validation-for="MaxAdvanceAmount" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
+    @*Here goes the content withour Navbar*@
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div class="container-fluid px-2 px-md-4 d-flex justify-content-end align-items-center mt-n10" style="height: 100vh;">
+        <div class="col-10 mt-n9">
+            <div class="bg-light card card-body mx-2 mx-md-4 bg-light">
+                <div class="col-md-12 d-flex justify-content-center align-items-center">
+                    <h2 class="mb-1 mt-4">Manager Register</h2>
+                </div>
+                <div class="card-body">
+                    <form asp-controller="Default" asp-action="CreateManager" id="registerForm" asp-route-returnUrl="" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <!-- Column 1 -->
+                                <div class="form-floating mb-3">
+                                    <input asp-for="Name" class="form-control shadow-sm" aria-required="true" placeholder="Name" />
+                                    <label asp-for="Name">Name</label>
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input asp-for="SecondName" class="form-control shadow-sm" placeholder="SecondName" />
+                                    <label asp-for="SecondName">SecondName</label>
+                                    <span asp-validation-for="SecondName" class="text-danger"></span>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input asp-for="Surname" class="form-control shadow-sm" placeholder="Surname" />
+                                    <label asp-for="Surname">Surname</label>
+                                    <span asp-validation-for="Surname" class="text-danger"></span>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input asp-for="SecondSurname" class="form-control shadow-sm" placeholder="SecondSurname" />
+                                    <label asp-for="SecondSurname">SecondSurname</label>
+                                    <span asp-validation-for="SecondSurname" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <!-- Column 2 -->
+                                <div class="form-floating mb-3">
+                                    <input asp-for="BirthPlace" class="form-control shadow-sm" placeholder="BirthPlace" />
+                                    <label asp-for="BirthPlace">BirthPlace</label>
+                                    <span asp-validation-for="BirthPlace" class="text-danger"></span>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input asp-for="BirthDate" class="form-control shadow-sm" placeholder="BirthDate" type="date" />
+                                    <label asp-for="BirthDate">BirthDate</label>
+                                    <span asp-validation-for="BirthDate" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="Gender" class="control-label">Gender</label>
+                                    <select asp-for="Gender" asp-items="ViewBag.gender" class="form-control shadow-sm"></select>
+                                    <span asp-validation-for="Gender" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <input asp-for="HiredDate" class="form-control shadow-sm" placeholder="HiredDate" type="date" />
+                                    <label asp-for="HiredDate">HiredDate</label>
+                                    <span asp-validation-for="HiredDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <!-- Column 3 -->
+                                <div class="form-floating mb-3">
+                                    <input asp-for="Title" class="form-control shadow-sm" placeholder="Title" />
+                                    <label asp-for="Title">Title</label>
+                                    <span asp-validation-for="Title" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <input asp-for="Section" class="form-control shadow-sm" placeholder="Section" />
+                                    <label asp-for="Section">Section</label>
+                                    <span asp-validation-for="Section" class="text-danger"></span>
+                                </div>
+
+
+
+
+
+                                <div class="form-floating mb-3">
+                                    <input asp-for="TelephoneNumber" class="form-control shadow-sm" placeholder="TelephoneNumber" />
+                                    <label asp-for="TelephoneNumber">TelephoneNumber</label>
+                                    <span asp-validation-for="TelephoneNumber" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <input asp-for="Address" class="form-control shadow-sm" placeholder="Address" />
+                                    <label asp-for="Address">Address</label>
+                                    <span asp-validation-for="Address" class="text-danger"></span>
+                                </div>
+
+
+                            </div>
+                            <div class="col-md-3">
+                                <!-- Column 4 -->
+                                <div class="form-floating mb-3">
+                                    <select asp-for="CompanyName" asp-items="@ViewBag.Companies" class="form-select shadow-sm"></select>
+                                    <label asp-for="CompanyName">CompanyName</label>
+                                    <span asp-validation-for="CompanyName" class="text-danger"></span>
+                                </div>
+
+
+                                <div class="form-floating mb-3">
+                                    <input asp-for="Salary" class="form-control shadow-sm" placeholder="Salary" />
+                                    <label asp-for="Salary">Salary</label>
+                                    <span asp-validation-for="Salary" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <input asp-for="TC" class="form-control shadow-sm" placeholder="TC" />
+                                    <label asp-for="TC">TC</label>
+                                    <span asp-validation-for="TC" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <input type="hidden" asp-for="Password" value="@ViewBag.GeneratedPassword" class="form-control shadow-sm" autocomplete="new-password" aria-required="true" placeholder="password" />
+                                </div>
+                            </div>
+                        </div>
+                        <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Create Employee</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <partial name="_ValidationScriptsPartial" />
 }

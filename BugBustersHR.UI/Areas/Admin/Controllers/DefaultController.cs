@@ -20,6 +20,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
 using Microsoft.Extensions.Options;
+using System.Collections;
+using BugBustersHR.BLL.Services.Abstract.CompanyService;
 
 namespace BugBustersHR.UI.Areas.Admin.Controllers
 {
@@ -28,6 +30,8 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
     public class DefaultController : Controller
     {
         private readonly IEmployeeService _employeeService;
+        private readonly ICompanyService _companyService;
+
         private readonly IMapper _mapper;
         private readonly HrDb _hrDb;
         private readonly IValidator<AdminUpdateVM> _adminValidator;
@@ -38,7 +42,7 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IEmailService _emailService;
 
-        public DefaultController(IEmployeeService employeeService, IMapper mapper, HrDb hrDb, IValidator<AdminUpdateVM> adminValidator, IValidator<CreateManagerFromAdminVM> CreateManagerValidator, IOptions<AzureOptions> azureOptions,  UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IEmailService emailService)
+        public DefaultController(IEmployeeService employeeService, IMapper mapper, HrDb hrDb, IValidator<AdminUpdateVM> adminValidator, IValidator<CreateManagerFromAdminVM> CreateManagerValidator, IOptions<AzureOptions> azureOptions, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IEmailService emailService, ICompanyService companyService)
         {
             _employeeService = employeeService;
             _mapper = mapper;
@@ -46,12 +50,13 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
             _adminValidator = adminValidator;
             _CreateManagerValidator = CreateManagerValidator;
             _azureOptions = azureOptions.Value;
-            
+
             _userManager = userManager;
             _roleManager = roleManager;
             _emailService = emailService;
+            _companyService = companyService;
         }
-        
+
 
         public IActionResult Index()
         {
@@ -198,7 +203,15 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
             var adminID = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var admin = _hrDb.Personels.FirstOrDefault(u => u.Id == adminID);
 
-            //ViewBag.Company = admin.CompanyName;
+            IEnumerable<Companies> companies = _companyService.GetAllCompany();
+
+            List<SelectListItem> companyItems = companies.Select(c => new SelectListItem
+            {
+                Text = c.CompanyName,
+                Value = c.CompanyName
+            }).ToList();
+
+            ViewBag.Companies = companyItems;
 
             string passwordGenerated = _employeeService.GenerateRandomPassword(null);
             ViewBag.GeneratedPassword = passwordGenerated;
@@ -268,13 +281,13 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
             return View();
         }
 
-        public IActionResult GetAdminList()
+        public IActionResult GetManagerList()
         {
             var adminID = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var admin = _hrDb.Personels.FirstOrDefault(u => u.Id == adminID);
             //ROLE ÇEKİLECEK
 
-            var getList = _hrDb.Personels.ToList();
+            var getList = _hrDb.Personels.Where(x => x.Role == AppRoles.Role_Manager).ToList();
 
             var mappingList = _mapper.Map<List<GetManagerListVM>>(getList);
             ViewBag.UserImageUrl = admin?.ImageUrl;

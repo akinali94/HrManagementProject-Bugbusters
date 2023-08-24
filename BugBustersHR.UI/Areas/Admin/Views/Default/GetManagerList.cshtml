@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<BugBustersHR.BLL.ViewModels.AdminViewModel.GetManagerListVM>
 
 @{
-    ViewData["Title"] = "GetAdminList";
+    ViewData["Title"] = "GetManagerList";
 }
 
-<h1>GetAdminList</h1>
+<h1>GetManagerList</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -43,7 +43,7 @@
                 @Html.DisplayNameFor(model => model.StartedDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.HireDate)
+                @Html.DisplayNameFor(model => model.HiredDate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.IsActive)
@@ -106,7 +106,7 @@
                 @Html.DisplayFor(modelItem => item.StartedDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.HireDate)
+                @Html.DisplayFor(modelItem => item.HiredDate)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.IsActive)

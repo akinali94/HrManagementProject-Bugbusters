@@ -75,6 +75,7 @@ namespace BugBustersHR.ENTITY.Concrete
         public string TelephoneNumber { get; set; }
         public string Address { get; set; }
         public string CompanyName { get; set; }
+
         public decimal Salary { get; set; }
         public GenderType Gender { get; set; }
         public decimal MaxAdvanceAmount { get; set; }

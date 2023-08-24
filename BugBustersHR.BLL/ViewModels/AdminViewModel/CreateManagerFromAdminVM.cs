@@ -1,4 +1,6 @@
-﻿using BugBustersHR.ENTITY.Concrete;
+﻿using BugBustersHR.BLL.ViewModels.CompanyViewModel;
+using BugBustersHR.ENTITY.Concrete;
+using BugBustersHR.ENTITY.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,17 +22,20 @@ namespace BugBustersHR.BLL.ViewModels.AdminViewModel
         public string TC { get; set; }
         public DateTime BirthDate { get; set; }
         public DateTime StartedDate { get; set; }
-        public DateTime? HireDate { get; set; }
+        public DateTime? HiredDate { get; set; }
         public bool IsActive { get; set; }
         public string Title { get; set; }
         public string Section { get; set; }
         public decimal Salary { get; set; }
         public string TelephoneNumber { get; set; }
         public string Address { get; set; }
-        public string CompanyName { get; set; }
+        
         public ImageModel ImageModel { get; set; }
+        public GenderType Gender { get; set; }
+        public CompanyVM Company{ get; set; }
 
-        public Companies Company { get; set; }    
+        public string CompanyName { get; set; }
+        public List<string> CompanyNames { get; set; }
         public string Email
         {
             get
