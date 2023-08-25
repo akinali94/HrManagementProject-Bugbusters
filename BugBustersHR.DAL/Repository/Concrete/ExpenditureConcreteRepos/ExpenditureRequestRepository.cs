@@ -11,8 +11,10 @@ namespace BugBustersHR.DAL.Repository.Concrete.ExpenditureConcreteRepos
 {
     public class ExpenditureRequestRepository : BaseRepository<ExpenditureRequest>, IExpenditureRequestRepository
     {
-        public ExpenditureRequestRepository(HrDb hrDb) : base(hrDb)
+        protected readonly IExpenditureTypeRepository _expendituretypeRepository;
+        public ExpenditureRequestRepository(HrDb hrDb, IExpenditureTypeRepository expendituretypeRepository) : base(hrDb)
         {
+            _expendituretypeRepository = expendituretypeRepository;
         }
 
         public async Task ChangeToFalseforExpenditure(int id)
@@ -40,5 +42,7 @@ namespace BugBustersHR.DAL.Repository.Concrete.ExpenditureConcreteRepos
         {
             return _hrDb.ExpenditureRequests.Find(id);
         }
+
+       
     }
 }

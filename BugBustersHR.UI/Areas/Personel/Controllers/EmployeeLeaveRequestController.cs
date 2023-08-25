@@ -37,31 +37,31 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
             _validator = validator;
             _hrDb = hrDb;
         }
+        [NonAction]
+        private void SetUserImageViewBag()
+        {
+            var qury2 = _employeeLeaveRequestService.GetByIdEmployee(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            ViewBag.UserImageUrl = qury2?.ImageUrl;
+            ViewBag.UserFullName = qury2?.FullName;
+
+        }
+        [NonAction]
+        private Employee GetEmployee()
+        {
+            return _employeeLeaveRequestService.GetByIdEmployee(User.FindFirstValue(ClaimTypes.NameIdentifier));
+        }
+
+
 
         public async Task<IActionResult> Index()
         {
-            //Expression<Func<EmployeeLeaveRequest, bool>> filter = null;
-
-
-
-            //var query = await _employeeLeaveRequestService.TGetAllAsync(filter);
-            //var mappingQuery = _mapper.Map<List<EmployeeLeaveRequestVM>>(query);
-
-            //return View(mappingQuery);
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
-            var query = _employeeLeaveRequestService.GetAllLeaveReq().Where(x => x.RequestingId == userId);
+            var query = _employeeLeaveRequestService.GetAllLeaveReq().Where(x => x.RequestingId == GetEmployee().Id);
             var mappingQuery = _mapper.Map<IEnumerable<EmployeeLeaveRequestVM>>(query);
 
-            foreach (var item in mappingQuery)
-            {
-                item.LeaveTypeName = (_employeeLeaveTypeService.GetByIdType(item.SelectedLeaveTypeId)).Name;
-            }
+            foreach (var item in mappingQuery) _employeeLeaveRequestService.GetLeaveTypeName(item);
+            foreach (var item in mappingQuery) _employeeLeaveRequestService.GetLeaveApprovelName(item);
 
-            foreach (var item in mappingQuery)_employeeLeaveRequestService.GetLeaveApprovelName(item);
-
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+            SetUserImageViewBag();
             return View(mappingQuery);
 
         }
@@ -70,17 +70,12 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
 
         public async Task<IActionResult> Create()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
-            var selectedGender = user.Gender;
+            var selectedGender = GetEmployee().Gender;
             var leaveTypeList = _hrDb.EmployeeLeaveTypes
-         .Where(leaveType => leaveType.Gender == selectedGender)
-         //.Select(leaveType => leaveType.Id)
-         .ToList();
-            //  _employeeLeaveRequestVM.SelectedLeaveTypeId = leaveTypeList.FirstOrDefault();
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+                .Where(leaveType => leaveType.Gender == selectedGender)
+                .ToList();
 
+            SetUserImageViewBag();
 
             ViewData["SelectedLeaveTypeId"] = new SelectList(leaveTypeList, "Id", "Name");
             ViewBag.LeaveTypeList = Enum.GetValues(typeof(GenderType))
@@ -91,8 +86,6 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
                     Text = c.ToString()
                 });
 
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
             return View();
 
 
@@ -101,17 +94,17 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
 
         }
 
+
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,StartDate,EndDate,DateRequest,Gender,SelectedLeaveTypeId, NumberOfDaysOff")] EmployeeLeaveRequestVM employeeLeaveRequest)
         {
-            //EmployeeLeaveRequestValidator validator = new EmployeeLeaveRequestValidator();
 
             var validate = _validator.Validate(employeeLeaveRequest);
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
+            var user = _employeeLeaveRequestService.GetByIdEmployee(User.FindFirstValue(ClaimTypes.NameIdentifier));
             var selectedGender = user.Gender;
             var leaveTypeList = _hrDb.EmployeeLeaveTypes
          .Where(leaveType => leaveType.Gender == selectedGender)
@@ -125,10 +118,7 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
                 var numberofdays = _employeeLeaveTypeService.GetByIdType(employeeLeaveRequest.NumberOfDaysOff);
 
                 employeeLeaveRequest.RequestingId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                //var person = _hrDb.Users.Find(User.FindFirstValue(ClaimTypes.NameIdentifier));
-                //var mappingPerson = _mapper.Map<EmployeeVM>(person);
-
-                //expenditureRequest.Employee = mappingPerson;
+     
 
                 var mappingQuery = _mapper.Map<EmployeeLeaveRequest>(employeeLeaveRequest);
 
@@ -139,13 +129,9 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
-            else
-            {
-                //var errorMessage = $"Leave period can not be greater than default day";
-                //ModelState.AddModelError("numberofdays", errorMessage);
-            }
 
-            //ModelValid Değilse
+
+
             ViewData["SelectedLeaveTypeId"] = new SelectList(leaveTypeList, "Id", "Name");
 
             ViewData["SelectedLeaveTypeId"] = new SelectList(_hrDb.EmployeeLeaveTypes, "Id", "Name", /*employeeLeaveRequest.EmployeeType.Name ,*/ employeeLeaveRequest.SelectedLeaveTypeId);
@@ -157,7 +143,7 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
                   Text = c.ToString()
               });
 
-
+            SetUserImageViewBag();
 
             return View(employeeLeaveRequest);
 
@@ -174,8 +160,7 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+            SetUserImageViewBag();
 
             return View(mapli);
         }
@@ -186,9 +171,7 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
-
+            SetUserImageViewBag();
 
             _employeeLeaveRequestService.TDelete(_mapper.Map<EmployeeLeaveRequest>(typeVm));
             return RedirectToAction("Index");
@@ -209,10 +192,9 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
 
             foreach (var item in mappingQuery) _employeeLeaveRequestService.GetLeaveApprovelName(item);
             var waitingForApprovalLeave = mappingQuery.Where(item => item.Approved == null);
-          
+
             var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+            SetUserImageViewBag();
             return View(waitingForApprovalLeave);
         }
 
@@ -228,27 +210,11 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
                 item.LeaveTypeName = (_employeeLeaveTypeService.GetByIdType(item.SelectedLeaveTypeId)).Name;
             }
 
-            //foreach (var item in mappingQuery)
-            //{
-            //    if (item.Approved == null)
-            //    {
-            //        item.LeaveApprovalStatusName = "Waiting";
-            //    }
-            //    else if (item.Approved == true)
-            //    {
-            //        item.LeaveApprovalStatusName = "Confirmed";
-            //    }
-            //    else
-            //    {
-            //        item.LeaveApprovalStatusName = "Not Confirmed";
-            //    }
-            //}
             foreach (var item in mappingQuery) _employeeLeaveRequestService.GetLeaveApprovelName(item);
 
 
             var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+            SetUserImageViewBag();
             var confirmedLeave = mappingQuery.Where(item => item.Approved == true);
             return View(confirmedLeave);
 
@@ -266,28 +232,10 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
                 item.LeaveTypeName = (_employeeLeaveTypeService.GetByIdType(item.SelectedLeaveTypeId)).Name;
             }
             foreach (var item in mappingQuery) _employeeLeaveRequestService.GetLeaveApprovelName(item);
-            //foreach (var item in mappingQuery)
-            //{
-            //    if (item.Approved == null)
-            //    {
-            //        item.LeaveApprovalStatusName = "Waiting";
-            //    }
-            //    else if (item.Approved == true)
-            //    {
-            //        item.LeaveApprovalStatusName = "Confirmed";
-            //    }
-            //    else
-            //    {
-            //        item.LeaveApprovalStatusName = "Not Confirmed";
-            //    }
-            //}
+
             var notConfirmedLeave = mappingQuery.Where(item => item.Approved == false);
-
-           
-
             var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+            SetUserImageViewBag();
 
             return View(notConfirmedLeave);
 

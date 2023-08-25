@@ -50,7 +50,7 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
             var mappingQuery = _mapper.Map<IEnumerable<ExpenditureRequestVM>>(expList)
                 .Where(expenditure => userCompanyIds.Contains(expenditure.EmployeeId)).ToList();
 
-            foreach (var item in mappingQuery) _expenditureService.GetExpenditureApprovelName(item);
+            _expenditureService.GetExpenditureApprovelName(mappingQuery);
 
             foreach (var item in mappingQuery)
             {
@@ -100,7 +100,7 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
 
             var mappingQuery = _mapper.Map<IEnumerable<ExpenditureRequestVM>>(query)
                .Where(advances => userCompanyIds.Contains(advances.EmployeeId)).ToList();
-            foreach (var item in mappingQuery) _expenditureService.GetExpenditureApprovelName(item);
+          _expenditureService.GetExpenditureApprovelName(mappingQuery);
             foreach (var item in mappingQuery)
             {
                 //item.LeaveTypeName = (_LeaveTypeService.GetByIdType(item.SelectedLeaveTypeId)).Name;
@@ -132,7 +132,7 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
 
             var mappingQuery = _mapper.Map<IEnumerable<ExpenditureRequestVM>>(query)
                .Where(advances => userCompanyIds.Contains(advances.EmployeeId)).ToList();
-            foreach (var item in mappingQuery) _expenditureService.GetExpenditureApprovelName(item);
+          _expenditureService.GetExpenditureApprovelName(mappingQuery);
 
             foreach (var item in mappingQuery)
             {
@@ -165,7 +165,7 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
 
             var mappingQuery = _mapper.Map<IEnumerable<ExpenditureRequestVM>>(query)
                .Where(advances => userCompanyIds.Contains(advances.EmployeeId)).ToList();
-            foreach (var item in mappingQuery) _expenditureService.GetExpenditureApprovelName(item);
+       _expenditureService.GetExpenditureApprovelName(mappingQuery);
             foreach (var item in mappingQuery)
             {
                 //item.TypeName = (_expenditureTypeService.GetByIdExpenditureType(item.ExpenditureTypeId)).ExpenditureName;

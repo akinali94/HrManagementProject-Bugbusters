@@ -1,6 +1,7 @@
 ﻿using BugBustersHR.BLL.Services.Abstract;
 using BugBustersHR.DAL.Context;
 using BugBustersHR.DAL.Repository.Abstract;
+using BugBustersHR.ENTITY.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,11 @@ namespace BugBustersHR.BLL.Services.Concrete
             _repository = repository;
             _unitOfWork = unitOfWork;
             _db = db;
+        }
+
+        public Employee GetByIdEmployee(string id)
+        {
+            return _repository.GetByIdEmployee(id);
         }
 
         public async Task TAddAsync(T entity)

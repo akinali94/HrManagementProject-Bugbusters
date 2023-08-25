@@ -17,9 +17,11 @@ namespace BugBustersHR.BLL.Services.Concrete.ExpenditureConcreteServices
     public class ExpenditureRequestService : Service<ExpenditureRequest>, IExpenditureRequestService
     {
         protected readonly IExpenditureRequestRepository _requestrepository;
-        public ExpenditureRequestService(IBaseRepository<ExpenditureRequest> repository, IUnitOfWork unitOfWork, HrDb db, IExpenditureRequestRepository requestrepository) : base(repository, unitOfWork, db)
+        protected readonly IExpenditureTypeService _typeservice;
+        public ExpenditureRequestService(IBaseRepository<ExpenditureRequest> repository, IUnitOfWork unitOfWork, HrDb db, IExpenditureRequestRepository requestrepository, IExpenditureTypeService typeservice) : base(repository, unitOfWork, db)
         {
             _requestrepository = requestrepository;
+            _typeservice = typeservice;
         }
 
         public IEnumerable<ExpenditureRequest> GetAllExReq()
@@ -32,23 +34,34 @@ namespace BugBustersHR.BLL.Services.Concrete.ExpenditureConcreteServices
             return _requestrepository.GetByIdExpenditureRequest(id);
         }
 
-        public async Task GetExpenditureApprovelName(ExpenditureRequestVM request)
+        public async Task GetExpenditureApprovelName(IEnumerable<ExpenditureRequestVM> request)
         {
-            if (request.ApprovalStatus == null)
+            foreach (var item in request)
             {
-                request.ApprovalStatusName = "Waiting for Approval";
+                if (item.ApprovalStatus == null)
+                {
+                    item.ApprovalStatusName = "Waiting for Approval";
+                }
+                else if (item.ApprovalStatus == true)
+                {
+                    item.ApprovalStatusName = "Confirmed";
+                }
+                else
+                {
+                    item.ApprovalStatusName = "Not Confirmed";
+                }
             }
-            else if (request.ApprovalStatus == true)
-            {
-                request.ApprovalStatusName = "Confirmed";
-            }
-            else
-            {
-                request.ApprovalStatusName = "Not Confirmed";
-            }
+        
         }
 
-    
+        public async Task GetExpenditureTypeName(IEnumerable<ExpenditureRequestVM> request)
+        {
+            foreach (var item in request)
+            {
+                item.TypeName = (_typeservice.GetByIdExpenditureType(item.ExpenditureTypeId)).ExpenditureName;
+            }
+           
+        }
 
         public async Task TChangeToFalseforExpenditure(int id)
         {

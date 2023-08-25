@@ -44,43 +44,21 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
         public IActionResult Index()
         {
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
-
-            var query = _expenditureRequestService.GetAllExReq().Where(x => x.EmployeeId == userId);
+            var query = _expenditureRequestService.GetAllExReq().Where(x => x.EmployeeId == GetEmployee().Id);
             var mappingQuery = _mapper.Map<IEnumerable<ExpenditureRequestVM>>(query);
-
-            foreach (var item in mappingQuery)
-            {
-                item.TypeName = (_typeService.GetByIdExpenditureType(item.ExpenditureTypeId)).ExpenditureName;
-            }
-
-            foreach (var item in mappingQuery) _expenditureRequestService.GetExpenditureApprovelName(item);
-        
-
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+            _expenditureRequestService.GetExpenditureTypeName(mappingQuery);
+            _expenditureRequestService.GetExpenditureApprovelName(mappingQuery);
+                   
+            SetUserImageViewBag();
             return View(mappingQuery);
         }
 
         public IActionResult Create()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
-
-            ViewData["ExpentitureTypeId"] = new SelectList(_hrDb.ExpenditureTypes, "Id", "ExpenditureName");
-            ViewBag.CurrencyList = Enum.GetValues(typeof(Currency))
-                .Cast<Currency>()
-                .Select(c => new SelectListItem
-                {
-                    Value = c.ToString(),
-                    Text = c.ToString()
-                });
-
+            SetUserImageViewBag();
+            GetExpenditureTypes();
+            GetCurrencyType();
             return View();
-
         }
 
         [HttpPost]
@@ -89,22 +67,21 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
         {
             //ModelState.Clear();
 
-            ViewData["ExpentitureTypeId"] = new SelectList(_hrDb.ExpenditureTypes, "Id", "ExpenditureName");
-            ViewBag.CurrencyList = Enum.GetValues(typeof(Currency))
-                .Cast<Currency>()
-                .Select(c => new SelectListItem
-                {
-                    Value = c.ToString(),
-                    Text = c.ToString()
-                });
+            GetExpenditureTypes();
+            GetCurrencyType();
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var existingPendingRequest = _expenditureRequestService.GetAllExReq().FirstOrDefault(x => x.EmployeeId == userId && x.ApprovalStatus == null);
+            var existingPendingRequest = _expenditureRequestService.GetAllExReq().FirstOrDefault(x => x.EmployeeId == GetEmployee().Id && x.ApprovalStatus == null);
 
             if (existingPendingRequest != null)
             {
                 ModelState.AddModelError("", "You already have a pending request. Please wait for its approval.");
+
+                ViewData["ExpentitureTypeId"] = new SelectList(_hrDb.ExpenditureTypes, "Id", "ExpenditureName", expenditureRequest.ExpenditureTypeId);
+                GetCurrencyType();
+                SetUserImageViewBag();
                 return View(expenditureRequest);
+
+
             }
 
             var expenditureType = _typeService.GetByIdExpenditureType(expenditureRequest.ExpenditureTypeId);
@@ -184,8 +161,7 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
                             Text = c.ToString()
                         });
             var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+            SetUserImageViewBag();
             return View(expenditureRequest);
         }
         public IActionResult Delete(int id)
@@ -197,8 +173,7 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+            SetUserImageViewBag();
             return View(mapli);
         }
 
@@ -208,8 +183,7 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+            SetUserImageViewBag();
 
             _expenditureRequestService.TDelete(_mapper.Map<ExpenditureRequest>(requestVm));
             return RedirectToAction("Index");
@@ -226,13 +200,10 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
             {
                 item.TypeName = (_typeService.GetByIdExpenditureType(item.ExpenditureTypeId)).ExpenditureName;
             }
-
-            foreach (var item in mappingQuery) _expenditureRequestService.GetExpenditureApprovelName(item);
+           _expenditureRequestService.GetExpenditureApprovelName(mappingQuery);
 
             var waitingForApprovalexp = mappingQuery.Where(item => item.ApprovalStatus == null);
-            var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+            SetUserImageViewBag();
             return View(waitingForApprovalexp);
 
         }
@@ -250,12 +221,10 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
                 item.TypeName = (_typeService.GetByIdExpenditureType(item.ExpenditureTypeId)).ExpenditureName;
             }
 
-            foreach (var item in mappingQuery) _expenditureRequestService.GetExpenditureApprovelName(item);
+          _expenditureRequestService.GetExpenditureApprovelName(mappingQuery);
 
             var confirmedForApprovalexp = mappingQuery.Where(item => item.ApprovalStatus == true);
-            var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+            SetUserImageViewBag();
             return View(confirmedForApprovalexp);
 
         }
@@ -273,16 +242,45 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
                 item.TypeName = (_typeService.GetByIdExpenditureType(item.ExpenditureTypeId)).ExpenditureName;
             }
 
-            foreach (var item in mappingQuery) _expenditureRequestService.GetExpenditureApprovelName(item);
+
+
+                _expenditureRequestService.GetExpenditureApprovelName(mappingQuery);
 
 
             var notConfirmedApprovalExp = mappingQuery.Where(item => item.ApprovalStatus == false);
-            var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+            SetUserImageViewBag();
             return View(notConfirmedApprovalExp);
 
 
+        }
+        [NonAction]
+        private void SetUserImageViewBag()
+        {
+            var qury2 = _expenditureRequestService.GetByIdEmployee(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            ViewBag.UserImageUrl = qury2?.ImageUrl;
+            ViewBag.UserFullName = qury2?.FullName;
+
+        }
+        [NonAction]
+        private void GetCurrencyType()
+        {
+            ViewBag.CurrencyList = Enum.GetValues(typeof(Currency))
+                .Cast<Currency>()
+                .Select(c => new SelectListItem
+                {
+                    Value = c.ToString(),
+                    Text = c.ToString()
+                });
+        }
+        [NonAction]
+        private Employee GetEmployee()
+        {
+            return _expenditureRequestService.GetByIdEmployee(User.FindFirstValue(ClaimTypes.NameIdentifier));
+        }
+        [NonAction]
+        private void GetExpenditureTypes()
+        {
+            ViewData["ExpentitureTypeId"] = new SelectList(_hrDb.ExpenditureTypes, "Id", "ExpenditureName");
         }
     }
 }

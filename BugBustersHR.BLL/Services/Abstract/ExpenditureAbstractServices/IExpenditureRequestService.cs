@@ -17,6 +17,7 @@ namespace BugBustersHR.BLL.Services.Abstract.ExpenditureAbstractServices
         Task TChangeToTrueforExpenditure(int id);
         Task TChangeToFalseforExpenditure(int id);
 
-        Task GetExpenditureApprovelName(ExpenditureRequestVM request);
+        Task GetExpenditureApprovelName(IEnumerable<ExpenditureRequestVM> request);
+        Task GetExpenditureTypeName(IEnumerable<ExpenditureRequestVM> request);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using BugBustersHR.DAL.Context;
 using BugBustersHR.DAL.Repository.Abstract;
 using BugBustersHR.ENTITY.Abstract;
+using BugBustersHR.ENTITY.Concrete;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,10 @@ namespace BugBustersHR.DAL.Repository.Concrete
     public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
         protected readonly HrDb _hrDb;
+
+        public BaseRepository()
+        {
+        }
 
         public BaseRepository(HrDb hrDb)
         {
@@ -41,9 +46,16 @@ namespace BugBustersHR.DAL.Repository.Concrete
             return _hrDb.Set<T>().Find(id);
         }
 
+        public Employee GetByIdEmployee(string id)
+        {
+            return _hrDb.Personels.FirstOrDefault(e => e.Id == id);
+        }
+
         public void Update(T entity)
         {
             _hrDb.Update(entity);
         }
+
+        
     }
 }
