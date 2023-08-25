@@ -26,26 +26,26 @@
             <div class="col-12">
                 <div class="bg-light card card-body mx-2 mx-md-4 bg-light">
                     <div class="col-md-12 d-flex justify-content-center align-items-center">
-                        <h2 class="mb-1 mt-4">Employee List</h2>
+                        <h2 class="mb-1 mt-4">Accepted Leave List</h2>
                     </div>
                     <div class="card-body mt-5 p-0">
-                        <div class="row">
+                        <div class="row justify-content-center">
                             <div class="col-md-12">
                                 <div class="table-responsive m-0 p-0 scrollable-table" style="margin: 0 !important; padding: 0 !important;">
                                     <table class="table table-bordered table-hover">
                                         <thead class="thead-dark sticky-header">
                                             <tr>
                                                 <th>
-                                                    @Html.DisplayNameFor(model => model.ImageUrl)
+                                                    Image
                                                 </th>
                                                 <th>
-                                                    @Html.DisplayNameFor(model => model.FullName)
+                                                    Full Name
                                                 </th>
                                                 <th>
                                                     @Html.DisplayNameFor(model => model.Email)
                                                 </th>
                                                 <th>
-                                                    @Html.DisplayNameFor(model => model.TelephoneNumber)
+                                                    Phone Number
                                                 </th>
                                                 <th>
                                                     @Html.DisplayNameFor(model => model.Section)
@@ -90,9 +90,22 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row justify-content-center">
+                            <div class="col-md-12 bg-light">
+                                <hr />
+                                <ul class="nav flex-column nav-pills bg-light">
+                                    <li class="nav-item mt-2">
+                                        <a asp-controller="Default" asp-action="Index" class="btn btn-dark btn-outline-secondary text-lg-center">
+                                            <i class="fas fa-home"></i> Home
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </body>
+

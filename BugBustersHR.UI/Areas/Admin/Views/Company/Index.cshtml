@@ -22,25 +22,7 @@
                     <div class="col-md-12 d-flex justify-content-center align-items-center">
                         <h2 class="mb-1 mt-4">Company List</h2>
                     </div>
-                    <div class="card-body mt-5 p-0">
-                        <div class="row">
-                            <div class="col-md-12 bg-light">
-                                <ul class="nav flex-row nav-pills bg-light">
-                                    <li class="nav-item">
-                                        <a class="nav-link active" asp-area="Manager" asp-controller="Expenditure" asp-action="Index" style="font-weight: bold;">All</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" asp-area="Manager" asp-controller="Expenditure" asp-action="ConfirmedApprovalExpenditure" style="font-weight: bold; color:forestgreen">Confirmed</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" asp-area="Manager" asp-controller="Expenditure" asp-action="WaitingForApprovalExpenditure" style="font-weight: bold; color:orange">Waiting for Approval</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" asp-area="Manager" asp-controller="Expenditure" asp-action="NotConfirmedApprovalExpenditure" style="font-weight: bold; color:darkred">Not Confirmed</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+                    <div class="card-body mt-2 p-0">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="table-responsive m-0 p-0 scrollable-table" style="margin: 0 !important; padding: 0 !important;">
@@ -48,22 +30,22 @@
                                         <thead class="thead-dark sticky-header">
                                             <tr>
                                                 <th>
-                                                    @Html.DisplayNameFor(model => model.CompanyName)
+                                                    Company Name
                                                 </th>
                                                 <th>
-                                                    @Html.DisplayNameFor(model => model.CompanyTitle)
+                                                    Title
                                                 </th>
                                                 <th>
-                                                    @Html.DisplayNameFor(model => model.MersisNo)
+                                                    Mersis
                                                 </th>
                                                 <th>
-                                                    @Html.DisplayNameFor(model => model.TaxNumber)
+                                                    Tax No
                                                 </th>
                                                 <th>
                                                     @Html.DisplayNameFor(model => model.Logo)
                                                 </th>
                                                 <th>
-                                                    @Html.DisplayNameFor(model => model.TelephoneNumber)
+                                                    Phone Number
                                                 </th>
                                                 <th>
                                                     @Html.DisplayNameFor(model => model.Address)
@@ -72,16 +54,16 @@
                                                     @Html.DisplayNameFor(model => model.Email)
                                                 </th>
                                                 <th>
-                                                    @Html.DisplayNameFor(model => model.EmployeeNumber)
+                                                    Employee Number
                                                 </th>
                                                 <th>
-                                                    @Html.DisplayNameFor(model => model.FoundationYear)
+                                                    Foundation Year
                                                 </th>
                                                 <th>
-                                                    @Html.DisplayNameFor(model => model.ContractStartDate)
+                                                    Contract Start
                                                 </th>
                                                 <th>
-                                                    @Html.DisplayNameFor(model => model.ContractEndDate)
+                                                    Contract End
                                                 </th>
                                                 <th>
                                                     @Html.DisplayNameFor(model => model.IsActive)
@@ -152,7 +134,7 @@
                                         <a href="@Url.Action("Create")" class="btn btn-primary">
                                             <i class="fas fa-plus"></i>New Request
                                         </a>
-                                        <a asp-controller="Company" asp-action="Index" class="btn btn-dark btn-outline-secondary text-lg-center">
+                                        <a asp-controller="Default" asp-action="Index" class="btn btn-dark btn-outline-secondary text-lg-center">
                                             <i class="fas fa-home"></i> Home
                                         </a>
                                     </li>

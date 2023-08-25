@@ -48,6 +48,7 @@
                                         <a class="nav-link" asp-area="Manager" asp-controller="Confirmation" asp-action="NotAcceptedApprovalLeave" style="font-weight: bold; color:darkred">Not Confirmed</a>
                                     </li>
                                 </ul>
+                                <hr />
                             </div>
                         </div>
                         <div class="row justify-content-center">
@@ -58,30 +59,30 @@
                                             <tr>
 
                                                 <th>
-                                                    @Html.DisplayNameFor(model => model.FullName)
+                                                    Full Name
                                                 </th>
 
                                                 <th>
                                                     @Html.DisplayNameFor(model => model.Title)
                                                 </th>
                                                 <th>
-                                                    @Html.DisplayNameFor(model => model.StartDate)
+                                                    Start Date
                                                 </th>
                                                 <th>
-                                                    @Html.DisplayNameFor(model => model.EndDate)
+                                                    End Date
                                                 </th>
                                                 <th>
-                                                    @Html.DisplayNameFor(model => model.DateRequest)
+                                                    Request Date
                                                 </th>
 
                                                 @*        <th>
                                                 @Html.DisplayNameFor(model => model.LeaveApprovalDate)
                                                 </th>*@
                                                 <th>
-                                                    @Html.DisplayNameFor(model => model.LeaveTypeName)
+                                                    Leave Type
                                                 </th>
                                                 <th>
-                                                    @Html.DisplayNameFor(model => model.LeaveApprovalStatusName)
+                                                    Approval Status
                                                 </th>
                                                 <th>
                                                     @Html.DisplayNameFor(model => model.NumberOfDaysOff)

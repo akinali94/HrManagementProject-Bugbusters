@@ -39,6 +39,7 @@
                                         <a class="nav-link" asp-area="Manager" asp-controller="Advances" asp-action="NotConfirmedForApprovalAdvance" style="font-weight: bold; color:darkred">Not Confirmed</a>
                                     </li>
                                 </ul>
+                                <hr />
                             </div>
                         </div>
                         <div class="row justify-content-center">
@@ -55,13 +56,13 @@
                                                     @Html.DisplayNameFor(model => model.Currency)
                                                 </th>
                                                 <th>
-                                                    @Html.DisplayNameFor(model => model.Explanation)
+                                                    Description
                                                 </th>
                                                 <th>
-                                                    @Html.DisplayNameFor(model => model.ApprovalStatusName)
+                                                    Approval Status
                                                 </th>
                                                 <th>
-                                                    @Html.DisplayNameFor(model => model.RequestDate)
+                                                    Request Date
                                                 </th>
                                             @*    <th>
                                                     @Html.DisplayNameFor(model => model.ApprovalDate)
