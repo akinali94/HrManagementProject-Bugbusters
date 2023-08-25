@@ -45,7 +45,7 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
             var mappingQuery = _mapper.Map<IEnumerable<IndividualAdvanceRequestVM>>(advancesList)
                 .Where(advances => userCompanyIds.Contains(advances.EmployeeRequestingId)).ToList();
 
-            foreach (var item in mappingQuery) _individualAdvanceService.GetAdvanceApprovelName(item);
+            _individualAdvanceService.GetAdvanceApprovelName(mappingQuery);
             foreach (var item in mappingQuery)
             {
                 //item.LeaveTypeName = (_LeaveTypeService.GetByIdType(item.SelectedLeaveTypeId)).Name;
@@ -101,7 +101,7 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
 
             var mappingQuery = _mapper.Map<IEnumerable<IndividualAdvanceRequestVM>>(query)
                .Where(advances => userCompanyIds.Contains(advances.EmployeeRequestingId)).ToList();
-            foreach (var item in mappingQuery) _individualAdvanceService.GetAdvanceApprovelName(item);
+            _individualAdvanceService.GetAdvanceApprovelName(mappingQuery);
             foreach (var item in mappingQuery)
             {
                 //item.LeaveTypeName = (_LeaveTypeService.GetByIdType(item.SelectedLeaveTypeId)).Name;
@@ -134,13 +134,12 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
 
             var mappingQuery = _mapper.Map<IEnumerable<IndividualAdvanceRequestVM>>(query)
                .Where(advances => userCompanyIds.Contains(advances.EmployeeRequestingId)).ToList();
-            foreach (var item in mappingQuery) _individualAdvanceService.GetAdvanceApprovelName(item);
+            _individualAdvanceService.GetAdvanceApprovelName(mappingQuery);
             foreach (var item in mappingQuery)
             {
                 //item.LeaveTypeName = (_LeaveTypeService.GetByIdType(item.SelectedLeaveTypeId)).Name;
                 item.FullName = (_employeeService.TGetById(item.EmployeeRequestingId)).FullName;
-                //item.Title = (_employeeService.TGetById(item.RequestingId)).Title;
-                //item.ImgLink = (_employeeService.TGetById(item.EmployeeRequestingId)).ImageUrl;
+                
                 item.CompanyName = (_employeeService.TGetById(item.EmployeeRequestingId)).CompanyName;
 
             }

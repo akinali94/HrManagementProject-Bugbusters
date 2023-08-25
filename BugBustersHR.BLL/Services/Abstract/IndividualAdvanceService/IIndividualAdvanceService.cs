@@ -13,7 +13,7 @@ namespace BugBustersHR.BLL.Services.Abstract.IndividualAdvanceService
         void RemainCalculation(IndividualAdvance ındividual);
         Task TChangeToTrueforAdvance(int id);
         Task TChangeToFalseforAdvance(int id);
-        Task GetAdvanceApprovelName(IndividualAdvanceRequestVM request);
+        Task GetAdvanceApprovelName(IEnumerable<IndividualAdvanceRequestVM> request);
 
     }
 }

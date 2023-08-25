@@ -25,21 +25,27 @@ namespace BugBustersHR.BLL.Services.Concrete.IndividualAdvanceService
             _employeeRepository = employeeRepository;
         }
 
-        public async Task GetAdvanceApprovelName(IndividualAdvanceRequestVM request)
+        public async Task GetAdvanceApprovelName(IEnumerable<IndividualAdvanceRequestVM> request)
         {
-            if (request.ApprovalStatus == null)
+            foreach (var item in request) 
+            
             {
-                request.ApprovalStatusName = "Waiting for Approval";
-            }
-            else if (request.ApprovalStatus == true)
-            {
-                request.ApprovalStatusName = "Confirmed";
-            }
-            else
-            {
-                request.ApprovalStatusName = "Not Confirmed";
+                if (item.ApprovalStatus == null)
+                {
+                    item.ApprovalStatusName = "Waiting for Approval";
+                }
+                else if (item.ApprovalStatus == true)
+                {
+                    item.ApprovalStatusName = "Confirmed";
+                }
+                else
+                {
+                    item.ApprovalStatusName = "Not Confirmed";
+                }
             }
         }
+
+   
 
         public IEnumerable<IndividualAdvance> GetAllIndividualAdvanceReq()
         {
