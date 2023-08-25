@@ -145,7 +145,31 @@ namespace BugBustersHR.UI.Areas.Identity.Pages.Account
                     string sanitizedLastName = Surname.Replace(" ", "").Replace("ı", "i").Replace("ö", "o").Replace("ü", "u").Replace("ğ", "g").Replace("ç", "c").Replace("ş", "s").ToLower();
 
 
+                    if (Role==AppRoles.Role_Admin)
+                    {
+                        if (SecondSurname == null && SecondName == null)
+                        {
+                            return $"{sanitizedFirstName}.{sanitizedLastName}@bilgeadam.com";
+                        }
+                        else if (SecondSurname == null && SecondName != null)
+                        {
+                            string? sanitizedSecondName = SecondName.Replace(" ", "").Replace("ı", "i").Replace("ö", "o").Replace("ü", "u").Replace("ğ", "g").Replace("ç", "c").Replace("ş", "s").ToLower();
 
+
+                            return $"{sanitizedFirstName}{sanitizedSecondName}.{sanitizedLastName}@bilgeadam.com";
+                        }
+                        else if (SecondSurname != null && SecondName == null)
+                        {
+                            string? sanitizedSecondLastName = SecondSurname.Replace(" ", "").Replace("ı", "i").Replace("ö", "o").Replace("ü", "u").Replace("ğ", "g").Replace("ç", "c").Replace("ş", "s").ToLower();
+                            return $"{sanitizedFirstName}{sanitizedLastName}.{sanitizedSecondLastName}@bilgeadam.com";
+                        }
+                        else
+                        {
+                            string? sanitizedSecondName1 = SecondName.Replace(" ", "").Replace("ı", "i").Replace("ö", "o").Replace("ü", "u").Replace("ğ", "g").Replace("ç", "c").Replace("ş", "s").ToLower();
+                            string? sanitizedSecondLastName2 = SecondSurname.Replace(" ", "").Replace("ı", "i").Replace("ö", "o").Replace("ü", "u").Replace("ğ", "g").Replace("ç", "c").Replace("ş", "s").ToLower();
+                            return $"{sanitizedFirstName}{sanitizedSecondName1}.{sanitizedLastName}{sanitizedSecondLastName2}@bilgeadam.com";
+                        }
+                    }
 
                     if (SecondSurname == null && SecondName == null)
                     {
