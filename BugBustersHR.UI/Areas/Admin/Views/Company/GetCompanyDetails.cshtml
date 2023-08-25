@@ -1,0 +1,110 @@
+﻿@model IEnumerable<BugBustersHR.BLL.ViewModels.CompanyViewModel.CompanyDetailsVM>
+
+@{
+    ViewData["Title"] = "GetCompanyDetails";
+}
+
+<h1>CompanyDetails</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CompanyName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CompanyTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MersisNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TaxNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Logo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TelephoneNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmployeeNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FoundationYear)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ContractStartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ContractEndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsActive)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompanyName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompanyTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MersisNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TaxNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Logo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TelephoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmployeeNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FoundationYear)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContractStartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContractEndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsActive)
+            </td>
+            @*<td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>*@
+        </tr>
+}
+    </tbody>
+</table>

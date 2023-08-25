@@ -13,6 +13,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
+using System.Security.Claims;
 
 namespace BugBustersHR.UI.Areas.Admin.Controllers
 {
@@ -25,6 +26,7 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
         private readonly IMapper _mapper;
        
         private readonly IValidator<CompanyVM> _companyValidator;
+        private readonly CompanyVM _companyVM;
         private readonly HrDb _hrDb;
 
         public CompanyController(ICompanyService service, IMapper mapper, IValidator<CompanyVM> companyValidator, HrDb hrDb)
@@ -51,8 +53,9 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CompanyVM companyVm)
         {
-            CompanyValidator validator = new CompanyValidator();
-            var validationResult = validator.Validate(companyVm);
+            //CompanyValidator validator = new CompanyValidator();
+            
+            var validationResult = _companyValidator.Validate(companyVm);
 
             if (validationResult.IsValid)
             {
@@ -81,8 +84,9 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Edit(CompanyVM companyVM)
         {
-            CompanyValidator validator = new CompanyValidator();
-            var validationResult = validator.Validate(companyVM);
+            //CompanyValidator validator = new CompanyValidator();
+
+            var validationResult = _companyValidator.Validate(companyVM);
 
             if (validationResult.IsValid)
             {
@@ -113,6 +117,22 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
             _service.TDelete(_mapper.Map<Companies>(companyVM));
             return RedirectToAction("Index");
 
+
+        }
+
+        [HttpGet]
+        public IActionResult GetCompanyDetails(string id)
+        {
+
+            var getCompany = _service.TGetById(id);
+            var mappingQuery1 = _mapper.Map<CompanyDetailsVM>(getCompany);
+
+
+            var adminID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var admin = _hrDb.Personels.FirstOrDefault(u => u.Id == adminID);
+            ViewBag.UserImageUrl = admin?.ImageUrl;
+            ViewBag.UserFullName = admin?.FullName;
+            return View(mappingQuery1);
 
         }
 

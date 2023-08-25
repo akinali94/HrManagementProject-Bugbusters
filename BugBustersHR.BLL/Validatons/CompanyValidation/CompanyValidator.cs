@@ -14,8 +14,6 @@ namespace BugBustersHR.BLL.Validatons.CompanyValidation
     public class CompanyValidator : AbstractValidator<CompanyVM>
     {
         private readonly ICompanyService _companyService;
-
-        
         public CompanyValidator(ICompanyService companyService)
         {
             _companyService = companyService;
@@ -57,8 +55,8 @@ namespace BugBustersHR.BLL.Validatons.CompanyValidation
 
         }
 
-        public CompanyValidator()
-        {
+        //public CompanyValidator()
+        //{
 
 
             //    RuleFor(x => x.TelephoneNumber).
@@ -91,7 +89,7 @@ namespace BugBustersHR.BLL.Validatons.CompanyValidation
             //    RuleFor(x => x.MersisNo).
             //        Must((viewModel, mersisNo) => IncludeTax(mersisNo, viewModel.TaxNumber)).
             //        WithMessage("Mersis No should include tax number");
-        }
+        //}
 
         private bool IncludeTax(string mersisNo, string taxNo)
         {
