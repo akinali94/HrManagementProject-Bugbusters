@@ -15,5 +15,6 @@ namespace BugBustersHR.DAL.Repository.Abstract.ExpenditureAbstractRepos
 
         Task ChangeToTrueforExpenditure(int id);
         Task ChangeToFalseforExpenditure(int id);
+        
     }
 }

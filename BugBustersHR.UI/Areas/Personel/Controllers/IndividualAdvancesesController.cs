@@ -44,7 +44,19 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
             _hrDb = hrDb;
             _employeeRepository = employeeRepository;
         }
+        [NonAction]
+        private void SetUserImageViewBag()
+        {
+            var qury2 = _ındividualAdvanceRequestService.GetByIdEmployee(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            ViewBag.UserImageUrl = qury2?.ImageUrl;
+            ViewBag.UserFullName = qury2?.FullName;
 
+        }
+        [NonAction]
+        private Employee GetEmployee()
+        {
+            return _ındividualAdvanceRequestService.GetByIdEmployee(User.FindFirstValue(ClaimTypes.NameIdentifier));
+        }
         public IActionResult Index()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -77,73 +89,24 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
 
             return View();
         }
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create(IndividualAdvanceRequestVM individualAdvanceRequest)
-        //{
-        //    var validation = _validator.Validate(individualAdvanceRequest);
-        //    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        //    var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
-
-
-
-        //    var harcama = individualAdvanceRequest.Amount;
-
-
-
-        //    if (validation.IsValid)
-        //    {
-        //        if (user.MaxAdvanceAmount > harcama)
-        //        {
-
-
-
-        //            individualAdvanceRequest.EmployeeRequestingId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        //            var mappingQuery = _mapper.Map<IndividualAdvance>(individualAdvanceRequest);
-        //            await _hrDb.AddAsync(mappingQuery);
-        //            await _hrDb.SaveChangesAsync();
-
-
-        //            var newmax = user.MaxAdvanceAmount - individualAdvanceRequest.Amount;
-
-        //            user.MaxAdvanceAmount = newmax;
-
-
-        //            _hrDb.Update(user);
-        //            _hrDb.SaveChanges();
-        //            return RedirectToAction("Index");
-
-        //        }
-        //        else
-        //        {
-        //            ModelState.AddModelError("Amount", "Requested amount exceeds the maximum allowance.");
-
-        //            ViewBag.UserImageUrl = user?.ImageUrl;
-        //            ViewBag.UserFullName = user?.FullName;
-
-
-
-        //            return View(individualAdvanceRequest);
-        //        }
-        //    }
-
-
-
-        //    // Doğrulama başarısız ise
-
-        //    ViewBag.UserImageUrl = user?.ImageUrl;
-        //    ViewBag.UserFullName = user?.FullName;
-
-        //    var currencyValues = Enum.GetValues(typeof(Currency));
-        //    ViewBag.CurrencyOptions = new SelectList(currencyValues);
-
-        //    return View(individualAdvanceRequest);
-        //}
+       
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(IndividualAdvanceRequestVM individualAdvanceRequest)
         {
+            var existingPendingRequest = _ındividualAdvanceRequestService.GetAllIndividualAdvanceReq().FirstOrDefault(x => x.EmployeeRequestingId ==GetEmployee().Id && x.ApprovalStatus==null);
+
+            if (existingPendingRequest!=null)
+            {
+                ModelState.AddModelError("", "You already have a pending request. Please wait for its approval.");
+                SetUserImageViewBag();
+
+
+            }
+
+
+
             var validation = _validator.Validate(individualAdvanceRequest);
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
