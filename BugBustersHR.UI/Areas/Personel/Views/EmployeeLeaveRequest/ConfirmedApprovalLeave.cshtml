@@ -74,7 +74,7 @@
                                                     <td>@Html.DisplayFor(modelItem => item.LeaveApprovalStatusName)</td>
                                
                                                     <td>
-                                                        @if (item.Approved != true)
+                                                        @if (item.Approved == null)
                                                         {
                                                             <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-danger btn-md">
                                                                 <i class="fas fa-trash" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"></i>

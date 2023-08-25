@@ -40,9 +40,10 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
-            var query = _employeeLeaveRequestService.GetAllLeaveReq().Where(x => x.RequestingId == userId);
+
+            var user = _employeeLeaveRequestService.GetByIdEmployee(User.FindFirstValue(ClaimTypes.NameIdentifier));
+         
+            var query = _employeeLeaveRequestService.GetAllLeaveReq().Where(x => x.RequestingId == user.Id);
             var mappingQuery = _mapper.Map<IEnumerable<EmployeeLeaveRequestVM>>(query);
 
             foreach (var item in mappingQuery) _employeeLeaveRequestService.GetLeaveTypeName(item);
@@ -61,14 +62,12 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
 
         public async Task<IActionResult> Create()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
+            var user = _employeeLeaveRequestService.GetByIdEmployee(User.FindFirstValue(ClaimTypes.NameIdentifier));
             var selectedGender = user.Gender;
             var leaveTypeList = _hrDb.EmployeeLeaveTypes
          .Where(leaveType => leaveType.Gender == selectedGender)
-         //.Select(leaveType => leaveType.Id)
          .ToList();
-            //  _employeeLeaveRequestVM.SelectedLeaveTypeId = leaveTypeList.FirstOrDefault();
+
             ViewBag.UserImageUrl = user?.ImageUrl;
             ViewBag.UserFullName = user?.FullName;
 
@@ -100,9 +99,7 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
 
             var validate = _validator.Validate(employeeLeaveRequest);
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
+            var user = _employeeLeaveRequestService.GetByIdEmployee(User.FindFirstValue(ClaimTypes.NameIdentifier));
             var selectedGender = user.Gender;
             var leaveTypeList = _hrDb.EmployeeLeaveTypes
          .Where(leaveType => leaveType.Gender == selectedGender)
@@ -219,21 +216,6 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
                 item.LeaveTypeName = (_employeeLeaveTypeService.GetByIdType(item.SelectedLeaveTypeId)).Name;
             }
 
-            //foreach (var item in mappingQuery)
-            //{
-            //    if (item.Approved == null)
-            //    {
-            //        item.LeaveApprovalStatusName = "Waiting";
-            //    }
-            //    else if (item.Approved == true)
-            //    {
-            //        item.LeaveApprovalStatusName = "Confirmed";
-            //    }
-            //    else
-            //    {
-            //        item.LeaveApprovalStatusName = "Not Confirmed";
-            //    }
-            //}
             foreach (var item in mappingQuery) _employeeLeaveRequestService.GetLeaveApprovelName(item);
 
 
@@ -257,25 +239,8 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
                 item.LeaveTypeName = (_employeeLeaveTypeService.GetByIdType(item.SelectedLeaveTypeId)).Name;
             }
             foreach (var item in mappingQuery) _employeeLeaveRequestService.GetLeaveApprovelName(item);
-            //foreach (var item in mappingQuery)
-            //{
-            //    if (item.Approved == null)
-            //    {
-            //        item.LeaveApprovalStatusName = "Waiting";
-            //    }
-            //    else if (item.Approved == true)
-            //    {
-            //        item.LeaveApprovalStatusName = "Confirmed";
-            //    }
-            //    else
-            //    {
-            //        item.LeaveApprovalStatusName = "Not Confirmed";
-            //    }
-            //}
+
             var notConfirmedLeave = mappingQuery.Where(item => item.Approved == false);
-
-
-
             var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
             ViewBag.UserImageUrl = user?.ImageUrl;
             ViewBag.UserFullName = user?.FullName;
