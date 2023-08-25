@@ -32,9 +32,9 @@
                         <h2 class="mb-1 mt-4">Leave Request List</h2>
                     </div>
                     <div class="card-body mt-5 p-0">
-                        <div class="row">
-                            <div class="col-md-3 bg-light">
-                                <ul class="nav flex-column nav-pills bg-light">
+                        <div class="row justify-content-center">
+                            <div class="col-md-12 bg-light">
+                                <ul class="nav flex-row nav-pills bg-light">
                                     <li class="nav-item">
                                         <a class="nav-link active" asp-area="Manager" asp-controller="Confirmation" asp-action="LeaveConfirmation" style="font-weight: bold;">All</a>
                                     </li>
@@ -47,121 +47,131 @@
                                     <li class="nav-item">
                                         <a class="nav-link" asp-area="Manager" asp-controller="Confirmation" asp-action="NotAcceptedApprovalLeave" style="font-weight: bold; color:darkred">Not Confirmed</a>
                                     </li>
-                                    <li class="nav-item mt-5">
-                                        <a asp-controller="Employee" asp-action="Index" class="btn btn-dark btn-outline-secondary text-lg-center">
+                                </ul>
+                                <hr />
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-md-12">
+                                <div class="table-responsive m-0 p-0 scrollable-table" style="margin: 0 !important; padding: 0 !important;">
+                                    <table class="table table-bordered table-hover">
+                                        <thead class="thead-dark sticky-header">
+                                            <tr>
+
+                                                <th>
+                                                    Full Name
+                                                </th>
+
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Title)
+                                                </th>
+                                                <th>
+                                                    Start Date
+                                                </th>
+                                                <th>
+                                                    End Date
+                                                </th>
+                                                <th>
+                                                    Request Date
+                                                </th>
+
+                                                @*        <th>
+                                                @Html.DisplayNameFor(model => model.LeaveApprovalDate)
+                                                </th>*@
+                                                <th>
+                                                    Leave Type
+                                                </th>
+                                                <th>
+                                                    Approval Status
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.NumberOfDaysOff)
+                                                </th>
+
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+
+                                                var companyNames = ((List<Employee>)ViewBag.ManagerComp) /// ViewBag.ManagerComp içindeki veriyi List<Employee> türüne dönüştürüyor.
+                                                .Select(emp => emp.CompanyName) // Her bir Employee nesnesinin CompanyName özelliğini seçiyor.
+                                                .ToList(); // Elde edilen şirket adlarını bir liste olarak oluşturuyor.
+
+                                                if (companyNames.Contains(item.CompanyName))
+                                                {
+                                                    <tr>
+
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.FullName)
+                                                        </td>
+
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.Title)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.StartDate)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.EndDate)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.DateRequest)
+                                                        </td>
+
+                                                        @*      <td>
+                                                @Html.DisplayFor(modelItem => item.LeaveApprovalDate)
+                                                </td>*@
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.LeaveTypeName)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.LeaveApprovalStatusName)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.NumberOfDaysOff)
+                                                        </td>
+
+
+                                                        <td>
+                                                            @{
+                                                                if (item.Approved == null)
+                                                                {
+                                                                    <a href="/Manager/Confirmation/LeaveRefused/@item.Id" class="btn btn-outline-warning">Refuse</a>
+                                                                    <a href="/Manager/Confirmation/LeaveAccepted/@item.Id" class="btn btn-outline-info">Accept</a>
+                                                                    //@Html.ActionLink("Accept Leave", "LeaveAccepted", new { id=item.Id  })
+                                                                    //@Html.ActionLink("Refuse Leave", "LeaveRefused", new { id=item.Id })
+
+                                                                }
+                                                                if (item.Approved != null)
+                                                                {
+
+                                                                    <h6>Leave situation was evaluated!</h6>
+
+                                                                }
+                                                            }
+
+                                                        </td>
+                                                    </tr>
+                                                }
+
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-md-12 bg-light">
+                                <hr />
+                                <ul class="nav flex-column nav-pills bg-light">
+                                    <li class="nav-item mt-2">
+                                        <a asp-controller="Default" asp-action="Index" class="btn btn-dark btn-outline-secondary text-lg-center">
                                             <i class="fas fa-home"></i> Home
                                         </a>
                                     </li>
                                 </ul>
-                            </div>
-                            <div class="col-md-9">
-                                <div class="table-responsive m-0 p-0 scrollable-table" style="margin: 0 !important; padding: 0 !important;">
-                                    <table class="table table-bordered table-hover">
-                                        <thead class="thead-dark sticky-header">
-                                                    <tr>
-
-                                                        <th>
-                                                            @Html.DisplayNameFor(model => model.FullName)
-                                                        </th>
-
-                                                        <th>
-                                                            @Html.DisplayNameFor(model => model.Title)
-                                                        </th>
-                                                        <th>
-                                                            @Html.DisplayNameFor(model => model.StartDate)
-                                                        </th>
-                                                        <th>
-                                                            @Html.DisplayNameFor(model => model.EndDate)
-                                                        </th>
-                                                        <th>
-                                                            @Html.DisplayNameFor(model => model.DateRequest)
-                                                        </th>
-                                   
-                                                @*        <th>
-                                                            @Html.DisplayNameFor(model => model.LeaveApprovalDate)
-                                                        </th>*@
-                                                        <th>
-                                                            @Html.DisplayNameFor(model => model.LeaveTypeName)
-                                                        </th>
-                                                        <th>
-                                                            @Html.DisplayNameFor(model => model.LeaveApprovalStatusName)
-                                                        </th>
-                                                        <th>
-                                                            @Html.DisplayNameFor(model => model.NumberOfDaysOff)
-                                                        </th>
-                                                   
-                                                        <th>Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach (var item in Model)
-                                                    {
-
-                                                        var companyNames = ((List<Employee>)ViewBag.ManagerComp) /// ViewBag.ManagerComp içindeki veriyi List<Employee> türüne dönüştürüyor.
-                                                        .Select(emp => emp.CompanyName) // Her bir Employee nesnesinin CompanyName özelliğini seçiyor.
-                                                        .ToList(); // Elde edilen şirket adlarını bir liste olarak oluşturuyor.
-
-                                                        if (companyNames.Contains(item.CompanyName))
-                                                        {
-                                                            <tr>
-
-                                                                <td>
-                                                                    @Html.DisplayFor(modelItem => item.FullName)
-                                                                </td>
-
-                                                                <td>
-                                                                    @Html.DisplayFor(modelItem => item.Title)
-                                                                </td>
-                                                                <td>
-                                                                    @Html.DisplayFor(modelItem => item.StartDate)
-                                                                </td>
-                                                                <td>
-                                                                    @Html.DisplayFor(modelItem => item.EndDate)
-                                                                </td>
-                                                                <td>
-                                                                    @Html.DisplayFor(modelItem => item.DateRequest)
-                                                                </td>
-                                                        
-                                                          @*      <td>
-                                                                    @Html.DisplayFor(modelItem => item.LeaveApprovalDate)
-                                                                </td>*@
-                                                                <td>
-                                                                    @Html.DisplayFor(modelItem => item.LeaveTypeName)
-                                                                </td>
-                                                                <td>
-                                                                    @Html.DisplayFor(modelItem => item.LeaveApprovalStatusName)
-                                                                </td>
-                                                                <td>
-                                                                    @Html.DisplayFor(modelItem => item.NumberOfDaysOff)
-                                                                </td>
-                                                        
-
-                                                                <td>
-                                                                    @{
-                                                                        if (item.Approved == null)
-                                                                        {
-                                                                            <a href="/Manager/Confirmation/LeaveRefused/@item.Id" class="btn btn-outline-warning">Refuse</a>
-                                                                            <a href="/Manager/Confirmation/LeaveAccepted/@item.Id" class="btn btn-outline-info">Accept</a>
-                                                                            //@Html.ActionLink("Accept Leave", "LeaveAccepted", new { id=item.Id  })
-                                                                            //@Html.ActionLink("Refuse Leave", "LeaveRefused", new { id=item.Id })
-
-                                                                        }
-                                                                        if (item.Approved != null)
-                                                                        {
-
-                                                                            <h6>Leave situation was evaluated!</h6>
-
-                                                                        }
-                                                                    }
-
-                                                                </td>
-                                                            </tr>
-                                                        }
-
-                                                    }
-                                                </tbody>
-                                            </table>
-                                </div>
                             </div>
                         </div>
                     </div>

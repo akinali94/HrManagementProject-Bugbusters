@@ -21,7 +21,7 @@ namespace BugBustersHR.BLL.ViewModels.EmployeeViewModel
         public string TC { get; set; }
         public DateTime BirthDate { get; set; }
         public DateTime StartedDate { get; set; }
-        public DateTime? HireDate { get; set; }
+        public DateTime? HiredDate { get; set; }
         public bool IsActive { get; set; }
         public string Title { get; set; }
         public string Section { get; set; }

@@ -20,7 +20,7 @@
             <div class="col-12">
                 <div class="bg-light card card-body mx-2 mx-md-4 bg-light">
                     <div class="col-md-12 d-flex justify-content-center align-items-center">
-                        <h2 class="mb-1 mt-4">Expenditure Request List</h2>
+                        <h2 class="mb-1 mt-4">Corporate Allowance Approval Waiting List</h2>
                     </div>
                     <div class="card-body mt-5 p-0">
                         <div class="row">
@@ -67,6 +67,8 @@
                                                     Expenditure Type
                                                 </th>
 
+
+                                                <th>Bill Preview</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -92,6 +94,19 @@
                                                         @Html.DisplayFor(modelItem => item.TypeName)
                                                     </td>
 
+                                                    <td>
+                                                        @if (!string.IsNullOrEmpty(item.ImageUrl))
+                                                        {
+                                                            @if (item.ImageUrl.EndsWith(".pdf"))
+                                                            {
+                                                                <iframe src="@item.ImageUrl" width="100" height="100"></iframe>
+                                                            }
+                                                            else
+                                                            {
+                                                                <img src="@item.ImageUrl" alt="Document Preview" style="max-width: 100px; max-height: 100px;">
+                                                            }
+                                                        }
+                                                    </td>
                                                     <td>
                                                         @if (item.ApprovalStatus == null)
                                                         {

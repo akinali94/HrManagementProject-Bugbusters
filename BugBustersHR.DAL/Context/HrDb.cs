@@ -28,6 +28,7 @@ namespace BugBustersHR.DAL.Context
         public DbSet<Admin> Admins { get; set; }
         public DbSet<InstitutionalAllowanceType> InstitutionalAllowanceTypes { get; set; }
         public DbSet<InstitutionalAllowance> InstitutionalAllowances { get; set; }
+        public DbSet<Companies> Companies { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

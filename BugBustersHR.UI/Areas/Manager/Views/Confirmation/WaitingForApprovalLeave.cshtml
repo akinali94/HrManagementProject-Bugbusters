@@ -24,9 +24,9 @@
                         <h2 class="mb-1 mt-4">Waiting Approval Leave List</h2>
                     </div>
                     <div class="card-body mt-5 p-0">
-                        <div class="row">
-                            <div class="col-md-3 bg-light">
-                                <ul class="nav flex-column nav-pills bg-light">
+                        <div class="row justify-content-center">
+                            <div class="col-md-12 bg-light">
+                                <ul class="nav flex-row nav-pills bg-light">
                                     <li class="nav-item">
                                         <a class="nav-link active" asp-area="Manager" asp-controller="Confirmation" asp-action="LeaveConfirmation" style="font-weight: bold;">All</a>
                                     </li>
@@ -39,14 +39,12 @@
                                     <li class="nav-item">
                                         <a class="nav-link" asp-area="Manager" asp-controller="Confirmation" asp-action="NotAcceptedApprovalLeave" style="font-weight: bold; color:darkred">Not Confirmed</a>
                                     </li>
-                                    <li class="nav-item mt-5">
-                                        <a asp-controller="Employee" asp-action="Index" class="btn btn-dark btn-outline-secondary text-lg-center">
-                                            <i class="fas fa-home"></i> Home
-                                        </a>
-                                    </li>
                                 </ul>
+                                <hr />
                             </div>
-                            <div class="col-md-9">
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-md-12">
                                 <div class="table-responsive m-0 p-0 scrollable-table" style="margin: 0 !important; padding: 0 !important;">
                                     <table class="table table-bordered table-hover">
                                         <thead class="thead-dark sticky-header">
@@ -97,6 +95,18 @@
                                         </tbody>
                                     </table>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-md-12 bg-light">
+                                <hr />
+                                <ul class="nav flex-column nav-pills bg-light">
+                                    <li class="nav-item mt-2">
+                                        <a asp-controller="Default" asp-action="Index" class="btn btn-dark btn-outline-secondary text-lg-center">
+                                            <i class="fas fa-home"></i> Home
+                                        </a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>

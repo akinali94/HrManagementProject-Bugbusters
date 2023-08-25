@@ -46,6 +46,14 @@ using BugBustersHR.UI.Email.ServiceEmail;
 using BugBustersHR.UI.OptionsModels;
 using BugBustersHR.BLL.ViewModels.ManagerViewModel;
 using BugBustersHR.BLL.Validatons.CreateEnployeeValidations;
+using BugBustersHR.BLL.ViewModels.AdminViewModel;
+using BugBustersHR.BLL.Validatons.CreateManagerValidation;
+using BugBustersHR.DAL.Repository.Abstract.CompanyRepos;
+using BugBustersHR.DAL.Repository.Concrete.Company;
+using BugBustersHR.BLL.Services.Abstract.CompanyService;
+using BugBustersHR.BLL.Services.Concrete.CompanyService;
+using BugBustersHR.BLL.ViewModels.CompanyViewModel;
+using BugBustersHR.BLL.Validatons.CompanyValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -98,6 +106,9 @@ builder.Services.AddScoped<IInstitutionalAllowanceRepository, InstitutionalAllow
 builder.Services.AddScoped<IInstitutionalAllowanceTypeRepository, InstitutionalAllowanceTypeRepository>();
 builder.Services.AddScoped<IInstitutionalAllowanceTypeService, InstitutionalAllowanceTypeService>();
 builder.Services.AddScoped<IInstitutionalAllowanceService, InstitutionalAllowanceService>();
+// Company
+builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
+builder.Services.AddScoped<ICompanyService, CompanyService>();
 
 
 
@@ -108,6 +119,7 @@ builder.Services.AddAutoMapper(typeof(MapProfile));
 builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 builder.Services.AddScoped(typeof(IService<>), typeof(Service<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+//builder.Services.AddScoped<AzureOptions>();  evet onu denicektim
 builder.Services.Configure<AzureOptions>(builder.Configuration.GetSection("Azure"));
 builder.Services.AddDbContext<HrDb>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DBConnection")));
 builder.Services.AddScoped<EmployeeLeaveRequestVM>();
@@ -117,8 +129,15 @@ builder.Services.AddScoped<EmployeeLeaveRequestListVM>();
 builder.Services.AddScoped<EmployeeLeaveTypeVM>();
 builder.Services.AddScoped<IndividualAdvanceRequestVM>();
 builder.Services.AddScoped<InstitutionalAllowanceVM>();
+builder.Services.AddScoped<CompanyVM>();
 
 builder.Services.AddScoped<CreateEmployeeFromManagerVM>();
+builder.Services.AddScoped<CreateManagerFromAdminVM>();
+builder.Services.AddScoped<GetManagerListVM>();
+builder.Services.AddScoped<AdminUpdateVM>();
+builder.Services.AddScoped<AdminSummaryListVM>();
+builder.Services.AddScoped<AdminListWithoutSalaryVM>();
+builder.Services.AddScoped<GetManagerListVM>();
 
 builder.Services.AddScoped<EmployeeVM>();
 
@@ -134,6 +153,10 @@ builder.Services.AddScoped<IValidator<EmployeeLeaveRequestVM>, EmployeeLeaveRequ
 builder.Services.AddScoped<IValidator<IndividualAdvanceRequestVM>, IndividualAdvanceValidator>();
 builder.Services.AddScoped<IValidator<InstitutionalAllowanceVM>, InstitutionalAllowanceValidator>();
 builder.Services.AddScoped<IValidator<CreateEmployeeFromManagerVM>, CreateEmployeeValidator>();
+builder.Services.AddScoped<IValidator<CreateManagerFromAdminVM>, CreateManagerValidator>();
+builder.Services.AddScoped<IValidator<AdminUpdateVM>, AdminValidator>();
+builder.Services.AddScoped<IValidator<CompanyVM>, CompanyValidator>();
+
 
 
 builder.Services.ConfigureApplicationCookie(options =>

@@ -1,0 +1,88 @@
+﻿@using BugBustersHR.BLL.ViewModels.AdminViewModel;
+
+@model AdminSummaryListVM
+
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@*<div class="container-fluid d-flex justify-content-center align-items-center" >
+        <div class="col-12 col-md-6 mt-8">
+            <img src="~/assets/img/logo-bugbusters.webp" class="img-fluid border-radius-xl" alt="BugBusters Logo">
+        </div>
+    </div>
+*@
+<div class="container-fluid mt-6 px-md-4 d-flex justify-content-end align-items-center">
+    <div class="col-10">
+        <div class="page-header min-height-300 border-radius-xl" style="background-image: url('https://images.unsplash.com/photo-1531512073830-ba890ca4eba2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');">
+            <span class="mask bg-gradient-secondary opacity-6"></span>
+        </div>
+    </div>
+</div>
+<div class="container-fluid px-2 px-md-4 d-flex justify-content-end align-items-center mt-n11 " style="min-height: 100vh">
+    <div class="col-10 mt-n11">
+        <div class="card card-body mx-3 mx-md-4 bg-light">
+            <div class="card-header pb-0 p-3 bg-light">
+                <div class="row">
+                    <div class="col-12 justify-content-end text-end">
+                        <a asp-controller="Default" asp-action="Edit">
+                            <i class="fa fa-user-edit text-secondary text-sm bg-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Profile"></i>
+                        </a>
+                    </div>
+                    <div class="col-md-12 d-flex justify-content-center align-items-center bg-light">
+                        <h2 class="mb-4">Profile Information</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row gx-4 mb-0 justify-content-center align-items-center bg-light">
+                <div class="col-md-10 d-flex align-items-center p-4">
+                    <div class="avatar avatar-xl position-relative">
+                        <img src="@Model.ImageUrl" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+                    </div>
+                    <div class="row col-sm-3 mt-3 justify-content-center">
+                        <h4 class="mb-1">
+                            &nbsp; @Model.FullName
+                        </h4>
+                        <h5 class="mt-1 font-weight-normal text-sm">
+                            &nbsp; @Model.Title
+                        </h5>
+                    </div>
+                    <div class="col-sm-4 bg-light">
+                        <ul class="list-group">
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm bg-light"><strong class="text-dark">Full Name:</strong> &nbsp; @Model.FullName</li>
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm bg-light"><strong class="text-dark">Title:</strong> &nbsp; @Model.Title</li>
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm bg-light"><strong class="text-dark">Section:</strong> &nbsp; @Model.Section</li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-4 bg-light">
+                        <ul class="list-group">
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm bg-light"><strong class="text-dark">Mobile:</strong> &nbsp; @Model.TelephoneNumber</li>
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm bg-light"><strong class="text-dark">Email:</strong> &nbsp; @Model.Email</li>
+                            <li class="list-group-item border-0 ps-0 pt-0 text-sm bg-light"><strong class="text-dark">Address:</strong> &nbsp; @Model.Address</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="row justify-content-center">
+                <div class="col-sm-3 text-center">
+                    <a asp-controller="Default" asp-action="Edit" class="btn btn-outline-dark btn-light">
+                        <i class="fas fa-pencil-alt"></i> Update Info
+                    </a>
+                </div>
+                <div class="col-sm-3 text-center">
+                    <a asp-controller="Default" asp-action="Details" class="btn btn-outline-dark btn-light">
+                        <i class="fas fa-info-circle"></i> Detailed Info
+                    </a>
+                </div>
+                <div class="col-sm-3 text-center">
+                    <a asp-controller="Default" asp-action="Index" class="btn btn-dark btn-outline-secondary text-lg-center">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

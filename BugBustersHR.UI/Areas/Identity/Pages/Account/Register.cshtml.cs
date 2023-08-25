@@ -145,7 +145,31 @@ namespace BugBustersHR.UI.Areas.Identity.Pages.Account
                     string sanitizedLastName = Surname.Replace(" ", "").Replace("ı", "i").Replace("ö", "o").Replace("ü", "u").Replace("ğ", "g").Replace("ç", "c").Replace("ş", "s").ToLower();
 
 
+                    if (Role==AppRoles.Role_Admin)
+                    {
+                        if (SecondSurname == null && SecondName == null)
+                        {
+                            return $"{sanitizedFirstName}.{sanitizedLastName}@bilgeadam.com";
+                        }
+                        else if (SecondSurname == null && SecondName != null)
+                        {
+                            string? sanitizedSecondName = SecondName.Replace(" ", "").Replace("ı", "i").Replace("ö", "o").Replace("ü", "u").Replace("ğ", "g").Replace("ç", "c").Replace("ş", "s").ToLower();
 
+
+                            return $"{sanitizedFirstName}{sanitizedSecondName}.{sanitizedLastName}@bilgeadam.com";
+                        }
+                        else if (SecondSurname != null && SecondName == null)
+                        {
+                            string? sanitizedSecondLastName = SecondSurname.Replace(" ", "").Replace("ı", "i").Replace("ö", "o").Replace("ü", "u").Replace("ğ", "g").Replace("ç", "c").Replace("ş", "s").ToLower();
+                            return $"{sanitizedFirstName}{sanitizedLastName}.{sanitizedSecondLastName}@bilgeadam.com";
+                        }
+                        else
+                        {
+                            string? sanitizedSecondName1 = SecondName.Replace(" ", "").Replace("ı", "i").Replace("ö", "o").Replace("ü", "u").Replace("ğ", "g").Replace("ç", "c").Replace("ş", "s").ToLower();
+                            string? sanitizedSecondLastName2 = SecondSurname.Replace(" ", "").Replace("ı", "i").Replace("ö", "o").Replace("ü", "u").Replace("ğ", "g").Replace("ç", "c").Replace("ş", "s").ToLower();
+                            return $"{sanitizedFirstName}{sanitizedSecondName1}.{sanitizedLastName}{sanitizedSecondLastName2}@bilgeadam.com";
+                        }
+                    }
 
                     if (SecondSurname == null && SecondName == null)
                     {
@@ -255,7 +279,8 @@ namespace BugBustersHR.UI.Areas.Identity.Pages.Account
             var roles = new SelectList(new List<SelectListItem>
             {
                 new SelectListItem{Text = "Manager", Value = AppRoles.Role_Manager},
-                new SelectListItem{Text = "Employee", Value = AppRoles.Role_Employee}
+                new SelectListItem{Text = "Employee", Value = AppRoles.Role_Employee},
+                new SelectListItem{Text = "Admin", Value = AppRoles.Role_Admin}
             }, "Value", "Text");
 
             return roles;
@@ -332,7 +357,16 @@ namespace BugBustersHR.UI.Areas.Identity.Pages.Account
                         await _roleManager.CreateAsync(new IdentityRole(AppRoles.Role_Manager));
                     }
 
+       
+
+
+                    else if (!await _roleManager.RoleExistsAsync(AppRoles.Role_Admin) && Input.Role == AppRoles.Role_Admin)
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole(AppRoles.Role_Admin));
+                    }
+
                     await _userManager.AddToRoleAsync(user, Input.Role);
+
 
                     //if (!await _roleManager.RoleExistsAsync(AppRoles.Role_Employee))
                     //{

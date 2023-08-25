@@ -26,11 +26,11 @@
             <div class="col-12">
                 <div class="bg-light card card-body mx-2 mx-md-4 bg-light">
                     <div class="col-md-12 d-flex justify-content-center align-items-center">
-                        <h2 class="mb-1 mt-4">Individiual Allowance Request List</h2>
+                        <h2 class="mb-1 mt-4">Individiual Allowance Approval Waiting List</h2>
                     </div>
                     <div class="card-body mt-5 p-0">
                         <div class="row justify-content-center">
-                            <div class="col-md-9 bg-light">
+                            <div class="col-md-12 bg-light">
                                 <ul class="nav flex-row nav-pills bg-light">
                                     <li class="nav-item">
                                         <a class="nav-link active" asp-controller="IndividualAdvanceses" asp-action="Index" style="font-weight: bold;">All</a>
@@ -49,7 +49,7 @@
                             </div>
                         </div>
                         <div class="row justify-content-center">
-                            <div class="col-md-9">
+                            <div class="col-md-12">
                                 <div class="table-responsive m-0 p-0 scrollable-table" style="margin: 0 !important; padding: 0 !important;">
                                     <table class="table table-bordered table-hover">
                                         <thead class="thead-light sticky-header">
@@ -68,6 +68,8 @@
                                                 <th>
                                                     @Html.DisplayNameFor(model => model.ApprovalStatusName)
                                                 </th>
+
+                                                <th>Bill Preview</th>
 
                                                 <th>Action</th>
                                             </tr>
@@ -90,6 +92,20 @@
                                                         @Html.DisplayFor(modelItem => item.ApprovalStatusName)
                                                     </td>
 
+
+                                                    <td>
+                                                        @if (!string.IsNullOrEmpty(item.ImageUrl))
+                                                        {
+                                                            @if (item.ImageUrl.EndsWith(".pdf"))
+                                                            {
+                                                                <iframe src="@item.ImageUrl" width="100" height="100"></iframe>
+                                                            }
+                                                            else
+                                                            {
+                                                                <img src="@item.ImageUrl" alt="Document Preview" style="max-width: 100px; max-height: 100px;">
+                                                            }
+                                                        }
+                                                    </td>
                                                     <td>
                                                         @if (item.ApprovalStatus == null)
                                                         {
@@ -107,6 +123,21 @@
                                         </tbody>
                                     </table>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-md-12 bg-light">
+                                <hr />
+                                <ul class="nav flex-column nav-pills bg-light">
+                                    <li class="nav-item mt-2">
+                                        <a href="@Url.Action("Create")" class="btn btn-primary">
+                                            <i class="fas fa-plus"></i>New Request
+                                        </a>
+                                        <a asp-controller="Employee" asp-action="Index" class="btn btn-dark btn-outline-secondary text-lg-center">
+                                            <i class="fas fa-home"></i> Home
+                                        </a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                         <div class="row justify-content-center">

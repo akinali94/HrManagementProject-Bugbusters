@@ -16,6 +16,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System.Security.Claims;
 using BugBustersHR.ENTITY.Concrete;
+using System.Threading.RateLimiting;
+using Azure.Identity;
+using System.Diagnostics.Tracing;
 
 namespace BugBustersHR.UI.Areas.Identity.Pages.Account
 {
@@ -169,22 +172,31 @@ namespace BugBustersHR.UI.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
-                    var userName = User.Identity.Name;
-                    if (!string.IsNullOrEmpty(userName))
+
+                    //var userName = User.Identity.Name;
+                    var userName = await _signInManager.UserManager.FindByEmailAsync(Input.Email); // Kullanıcıyı email ile bulun
+                    var getUser = userName;
+                    if (userName!=null)
                     {
-                        var getUser = await _signInManager.UserManager.FindByNameAsync(userName);
+                       
+                        //var getUser = await _signInManager.UserManager.FindByNameAsync(userName);
                         if (getUser != null)
                         {
                             var userRole = await _signInManager.UserManager.GetRolesAsync(getUser);
                             if (userRole.Contains("Manager"))
                             {
-                                _logger.LogInformation("User-Admin logged in.");
+                                _logger.LogInformation("Manager logged in.");
                                 return RedirectToAction("Index", "Default", new { area = "Manager" });
                             }
                             else if (userRole.Contains(AppRoles.Role_Employee))
                             {
-                                _logger.LogInformation("User-Admin logged in.");
+                                _logger.LogInformation("Employee logged in.");
                                 return RedirectToAction("Index", "Employee", new { area = "Personel" });
+                            }
+                            else if (userRole.Contains(AppRoles.Role_Admin))
+                            {
+                                _logger.LogInformation("Admin logged in.");
+                                return RedirectToAction("Index", "Default", new { area = "Admin" });
                             }
                         }
                     }

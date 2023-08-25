@@ -30,7 +30,7 @@
                     </div>
                     <div class="card-body mt-5 p-0">
                         <div class="row justify-content-center">
-                            <div class="col-md-9 bg-light">
+                            <div class="col-md-12 bg-light">
                                 <ul class="nav flex-row nav-pills bg-light">
                                     <li class="nav-item">
                                         <a class="nav-link active" asp-controller="EmployeeLeaveRequest" asp-action="Index" style="font-weight: bold;">All</a>
@@ -48,8 +48,9 @@
                                 <hr />
                             </div>
                         </div>
+
                         <div class="row justify-content-center">
-                            <div class="col-md-9">
+                            <div class="col-md-12">
                                 <div class="table-responsive m-0 p-0 scrollable-table" style="margin: 0 !important; padding: 0 !important;">
                                     <table class="table table-bordered table-hover">
                                         <thead class="thead-dark sticky-header">
@@ -60,7 +61,7 @@
                                                 <th>Leave Type</th>
                                                 <th>Days</th>
                                                 <th>Leave Approval Status</th>
-                       
+
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -74,7 +75,7 @@
                                                     <td>@Html.DisplayFor(modelItem => item.LeaveTypeName)</td>
                                                     <td>@Html.DisplayFor(modelItem => item.NumberOfDaysOff)</td>
                                                     <td>@Html.DisplayFor(modelItem => item.LeaveApprovalStatusName)</td>
-              
+
                                                     <td>
                                                         @if (item.Approved != true)
                                                         {
@@ -95,7 +96,7 @@
                             </div>
                         </div>
                         <div class="row justify-content-center">
-                            <div class="col-md-9 bg-light">
+                            <div class="col-md-12 bg-light">
                                 <hr />
                                 <ul class="nav flex-column nav-pills bg-light">
                                     <li class="nav-item mt-2">

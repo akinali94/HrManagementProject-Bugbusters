@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BugBustersHR.DAL.Migrations
 {
     [DbContext(typeof(HrDb))]
-    [Migration("20230822054801_ınıtj")]
-    partial class ınıtj
+    [Migration("20230824195738_mig55")]
+    partial class mig55
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -65,6 +65,74 @@ namespace BugBustersHR.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Admins");
+                });
+
+            modelBuilder.Entity("BugBustersHR.ENTITY.Concrete.Companies", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CompanyName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CompanyTitle")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ContractEndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ContractStartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmployeeNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("FoundationYear")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Logo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MersisNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TaxNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TelephoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Companies");
                 });
 
             modelBuilder.Entity("BugBustersHR.ENTITY.Concrete.EmployeeLeaveRequest", b =>
@@ -645,11 +713,11 @@ namespace BugBustersHR.DAL.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "90323c5c-ceb3-4f6e-969e-276be2eb36c5",
+                            ConcurrencyStamp = "2d55fd9c-f818-4672-9bad-77a463821171",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "30d252f0-de09-4634-80b7-24905b5d7d46",
+                            SecurityStamp = "1eed7527-4d48-4e1b-a055-2805f01b6c80",
                             TwoFactorEnabled = false,
                             Address = "Cicek sokak no:14",
                             AdvanceAmount = 0m,

@@ -23,11 +23,11 @@
             <div class="col-12">
                 <div class="bg-light card card-body mx-2 mx-md-4 bg-light">
                     <div class="col-md-12 d-flex justify-content-center align-items-center">
-                        <h2 class="mb-1 mt-4">Leave Request List</h2>
+                        <h2 class="mb-1 mt-4">Leave Approval Waiting List</h2>
                     </div>
                     <div class="card-body mt-5 p-0">
-                        <div class="row justify-content-center">
-                            <div class="col-md-9 bg-light">
+                        <div class="row">
+                            <div class="col-md-12 bg-light">
                                 <ul class="nav flex-row nav-pills bg-light">
                                     <li class="nav-item">
                                         <a class="nav-link active" asp-controller="EmployeeLeaveRequest" asp-action="Index" style="font-weight: bold;">All</a>
@@ -44,9 +44,7 @@
                                 </ul>
                                 <hr />
                             </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-md-9">
+                            <div class="col-md-12">
                                 <div class="table-responsive m-0 p-0 scrollable-table" style="margin: 0 !important; padding: 0 !important;">
                                     <table class="table table-bordered table-hover">
                                         <thead class="thead-dark sticky-header">
@@ -57,41 +55,41 @@
                                                 <th>Leave Type</th>
                                                 <th>Days</th>
                                                 <th>Leave Approval Status</th>
-                                 
+
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach (var item in Model)
                                             {
-                                                <tr>
-                                                    <td>@item.StartDate.ToString("dd.MM.yyyy")</td>
-                                                    <td>@item.EndDate.ToString("dd.MM.yyyy")</td>
-                                                    <td>@item.DateRequest.ToString("dd.MM.yyyy")</td>
-                                                    <td>@Html.DisplayFor(modelItem => item.LeaveTypeName)</td>
-                                                    <td>@Html.DisplayFor(modelItem => item.NumberOfDaysOff)</td>
-                                                    <td>@Html.DisplayFor(modelItem => item.LeaveApprovalStatusName)</td>
-                                       
-                                                    <td>
-                                                        @if (item.Approved != true)
+                                            <tr>
+                                                <td>@item.StartDate.ToString("dd.MM.yyyy")</td>
+                                                <td>@item.EndDate.ToString("dd.MM.yyyy")</td>
+                                                <td>@item.DateRequest.ToString("dd.MM.yyyy")</td>
+                                                <td>@Html.DisplayFor(modelItem => item.LeaveTypeName)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.NumberOfDaysOff)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.LeaveApprovalStatusName)</td>
+
+                                                <td>
+                                                    @if (item.Approved != true)
                                                         {
-                                                            <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-danger btn-md">
-                                                                <i class="fas fa-trash" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"></i>
-                                                            </a>
+                                                    <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-danger btn-md">
+                                                        <i class="fas fa-trash" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"></i>
+                                                    </a>
                                                         }
                                                         else
                                                         {
-                                                            <span class="text-muted">--</span>
+                                                    <span class="text-muted">--</span>
                                                         }
-                                                    </td>
-                                                </tr>
+                                                </td>
+                                            </tr>
                                             }
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                             <div class="row justify-content-center">
-                                <div class="col-md-9 bg-light">
+                                <div class="col-md-12 bg-light">
                                     <hr />
                                     <ul class="nav flex-column nav-pills bg-light">
                                         <li class="nav-item mt-2">
