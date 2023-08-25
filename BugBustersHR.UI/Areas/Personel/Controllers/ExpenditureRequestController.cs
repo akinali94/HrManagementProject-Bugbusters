@@ -40,14 +40,23 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
             _requestValidator = requestValidator;
             _azureOptions = azureOptions.Value;
         }
+        [NonAction]
+        private void SetUserImageViewBag()
+        {
+            var qury2 = _expenditureRequestService.GetByIdEmployee(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            ViewBag.UserImageUrl = qury2?.ImageUrl;
+            ViewBag.UserFullName = qury2?.FullName;
 
+        }
+        [NonAction]
+        private Employee GetEmployee()
+        {
+            return _expenditureRequestService.GetByIdEmployee(User.FindFirstValue(ClaimTypes.NameIdentifier));
+        }
         public IActionResult Index()
         {
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
-
-            var query = _expenditureRequestService.GetAllExReq().Where(x => x.EmployeeId == userId);
+            var query = _expenditureRequestService.GetAllExReq().Where(x => x.EmployeeId == GetEmployee().Id);
             var mappingQuery = _mapper.Map<IEnumerable<ExpenditureRequestVM>>(query);
 
             foreach (var item in mappingQuery)
@@ -56,10 +65,7 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
             }
 
             foreach (var item in mappingQuery) _expenditureRequestService.GetExpenditureApprovelName(item);
-        
-
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+            SetUserImageViewBag();
             return View(mappingQuery);
         }
 
@@ -67,8 +73,7 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+            SetUserImageViewBag();
 
             ViewData["ExpentitureTypeId"] = new SelectList(_hrDb.ExpenditureTypes, "Id", "ExpenditureName");
             ViewBag.CurrencyList = Enum.GetValues(typeof(Currency))
@@ -114,8 +119,7 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
                             });
                 var userId1 = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var user2 = _hrDb.Personels.FirstOrDefault(u => u.Id == userId1);
-                ViewBag.UserImageUrl = user2?.ImageUrl;
-                ViewBag.UserFullName = user2?.FullName;
+                SetUserImageViewBag();
                 return View(expenditureRequest);
 
            
@@ -198,8 +202,7 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
                             Text = c.ToString()
                         });
             var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+            SetUserImageViewBag();
             return View(expenditureRequest);
         }
         public IActionResult Delete(int id)
@@ -211,8 +214,7 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+            SetUserImageViewBag();
             return View(mapli);
         }
 
@@ -222,8 +224,7 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+            SetUserImageViewBag();
 
             _expenditureRequestService.TDelete(_mapper.Map<ExpenditureRequest>(requestVm));
             return RedirectToAction("Index");
@@ -244,9 +245,7 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
             foreach (var item in mappingQuery) _expenditureRequestService.GetExpenditureApprovelName(item);
 
             var waitingForApprovalexp = mappingQuery.Where(item => item.ApprovalStatus == null);
-            var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+            SetUserImageViewBag();
             return View(waitingForApprovalexp);
 
         }
@@ -267,9 +266,7 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
             foreach (var item in mappingQuery) _expenditureRequestService.GetExpenditureApprovelName(item);
 
             var confirmedForApprovalexp = mappingQuery.Where(item => item.ApprovalStatus == true);
-            var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+            SetUserImageViewBag();
             return View(confirmedForApprovalexp);
 
         }
@@ -291,9 +288,7 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
 
 
             var notConfirmedApprovalExp = mappingQuery.Where(item => item.ApprovalStatus == false);
-            var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+            SetUserImageViewBag();
             return View(notConfirmedApprovalExp);
 
 

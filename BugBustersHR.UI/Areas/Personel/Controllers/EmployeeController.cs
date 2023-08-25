@@ -33,29 +33,38 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
             _personelValidator = personelValidator;
             _hrDb = hrDb;
         }
-      
+        [NonAction]
+        private void SetUserImageViewBag()
+        {
+            var qury2 = _service.TGetById(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            ViewBag.UserImageUrl = qury2?.ImageUrl;
+            ViewBag.UserFullName = qury2?.FullName;
+
+        }
+        [NonAction]
+        private Employee GetEmployee()
+        {
+            return _service.TGetById(User.FindFirstValue(ClaimTypes.NameIdentifier));
+        }
+  
+
         public IActionResult Index()
         {
-
-            var qury1 = _service.TGetById(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            //var qury1 = _service.TGetById(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var qury1 = GetEmployee();
             var mappingQuery = _mapper.Map<EmployeeSummaryListVM>(qury1);
 
-
-            ViewBag.UserImageUrl = qury1?.ImageUrl;
-            ViewBag.UserFullName = qury1?.FullName;
+            SetUserImageViewBag();
 
             return View(mappingQuery);
         }
 
         public IActionResult Edit(string id)
         {
-
             var personel = _service.TGetById(User.FindFirstValue(ClaimTypes.NameIdentifier));
             var mapli = _mapper.Map<EmployeeUpdateVM>(personel);
 
-
-            ViewBag.UserImageUrl = personel?.ImageUrl;
-            ViewBag.UserFullName = personel?.FullName;
+            SetUserImageViewBag();
 
             return View(mapli);
         }
@@ -144,8 +153,7 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
             var query1 = _service.TGetById(userId);
             var mappingQuery1 = _mapper.Map<EmployeeListWithoutSalaryVM>(query1);
 
-            ViewBag.UserImageUrl = query1?.ImageUrl;
-            ViewBag.UserFullName = query1?.FullName;
+            SetUserImageViewBag();
             return View(mappingQuery1);
         }
     }
