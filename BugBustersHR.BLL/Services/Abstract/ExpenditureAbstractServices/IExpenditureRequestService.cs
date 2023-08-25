@@ -1,4 +1,6 @@
-﻿using BugBustersHR.ENTITY.Concrete;
+﻿using BugBustersHR.BLL.ViewModels.ExpenditureRequestViewModel;
+using BugBustersHR.BLL.ViewModels.LeaveRequestViewModel;
+using BugBustersHR.ENTITY.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +16,7 @@ namespace BugBustersHR.BLL.Services.Abstract.ExpenditureAbstractServices
 
         Task TChangeToTrueforExpenditure(int id);
         Task TChangeToFalseforExpenditure(int id);
+
+        Task GetExpenditureApprovelName(ExpenditureRequestVM request);
     }
 }

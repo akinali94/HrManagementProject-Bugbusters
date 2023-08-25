@@ -1,4 +1,5 @@
-﻿using BugBustersHR.BLL.ViewModels.EmployeeViewModel;
+﻿using BugBustersHR.BLL.ViewModels.BaseViewModel;
+using BugBustersHR.BLL.ViewModels.EmployeeViewModel;
 using BugBustersHR.ENTITY.Concrete;
 using BugBustersHR.ENTITY.Enums;
 using System;
@@ -9,13 +10,16 @@ using System.Threading.Tasks;
 
 namespace BugBustersHR.BLL.ViewModels.IndividualAdvanceViewModel
 {
-    public class IndividualAdvanceRequestVM
+    public class IndividualAdvanceRequestVM:BaseVM
     {
-       
+        
 
         public int Id { get; set; }
         public string RequestingId { get; set; }
 
+        // Eklediğimiz özellik
+        public string ImageUrl { get; set; }
+        public ImageModel ImageModel { get; set; }
         public EmployeeVM EmployeeType { get; set; }
         public string? FullName { get; set; }
         public Currency? Currency { get; set; }

@@ -1,4 +1,5 @@
 ﻿using BugBustersHR.BLL.Services.Abstract.InstitutionalAllowanceAbstractServices;
+using BugBustersHR.BLL.ViewModels.InstitutionalAllowanceViewModel;
 using BugBustersHR.DAL.Context;
 using BugBustersHR.DAL.Repository.Abstract;
 using BugBustersHR.DAL.Repository.Abstract.InstitutionalAllowanceRepos;
@@ -30,6 +31,22 @@ namespace BugBustersHR.BLL.Services.Concrete.InstitutionalAllowanceConcreteServi
         public InstitutionalAllowance GetByIdInstitutionalAllowance(int id)
         {
             return _allowanceRepository.GetByIdInsAllowance(id);
+        }
+
+        public async Task GetInstAllApprovelName(InstitutionalAllowanceVM request)
+        {
+            if (request.ApprovalStatus == null)
+            {
+                request.ApprovalStatusName = "Waiting for Approval";
+            }
+            else if (request.ApprovalStatus == true)
+            {
+                request.ApprovalStatusName = "Confirmed";
+            }
+            else
+            {
+                request.ApprovalStatusName = "Not Confirmed";
+            }
         }
 
         public async Task TChangeToFalseforAllowance(int id)
