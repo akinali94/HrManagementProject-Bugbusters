@@ -58,7 +58,7 @@ namespace BugBustersHR.BLL.Mapping
             CreateMap<CreateManagerFromAdminVM, Employee>().ReverseMap();
             CreateMap<GetManagerListVM, Employee>().ReverseMap();
 
-
+            CreateMap<GetManagerListVM, Employee>().ReverseMap();
 
             CreateMap<CompanyVM,Companies>().ReverseMap();    
 

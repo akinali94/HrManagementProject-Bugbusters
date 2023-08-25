@@ -4,104 +4,152 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.CompanyName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CompanyTitle)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MersisNo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TaxNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Logo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TelephoneNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EmployeeNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FoundationYear)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ContractStartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ContractEndDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsActive)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CompanyName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CompanyTitle)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MersisNo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TaxNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Logo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TelephoneNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EmployeeNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FoundationYear)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ContractStartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ContractEndDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsActive)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<body class="g-sidenav-show  bg-gray-200">
+    <div class="container-fluid mt-6 px-md-4 d-flex justify-content-end align-items-center">
+        <div class="col-10">
+            <div class="page-header min-height-300 border-radius-xl" style="background-image: url('https://images.unsplash.com/photo-1531512073830-ba890ca4eba2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');">
+                <span class="mask bg-gradient-secondary opacity-6"></span>
+            </div>
+        </div>
+    </div>
+
+    @*Here goes the content withour Navbar*@
+    <div class="container-fluid px-2 px-md-4 d-flex justify-content-end align-items-center mt-n12" style="height: 100vh;">
+        <div class="col-10 mt-n8">
+            <div class="col-12">
+                <div class="bg-light card card-body mx-2 mx-md-4 bg-light">
+                    <div class="col-md-12 d-flex justify-content-center align-items-center">
+                        <h2 class="mb-1 mt-4">Company List</h2>
+                    </div>
+                    <div class="card-body mt-5 p-0">
+                        <div class="row">
+                            <div class="col-md-3 bg-light">
+                                <ul class="nav flex-column nav-pills bg-light">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" asp-area="Manager" asp-controller="Expenditure" asp-action="Index" style="font-weight: bold;">All</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-area="Manager" asp-controller="Expenditure" asp-action="ConfirmedApprovalExpenditure" style="font-weight: bold; color:forestgreen">Confirmed</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-area="Manager" asp-controller="Expenditure" asp-action="WaitingForApprovalExpenditure" style="font-weight: bold; color:orange">Waiting for Approval</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-area="Manager" asp-controller="Expenditure" asp-action="NotConfirmedApprovalExpenditure" style="font-weight: bold; color:darkred">Not Confirmed</a>
+                                    </li>
+                                    <li class="nav-item mt-5">
+                                        <a asp-controller="Default" asp-action="Index" class="btn btn-dark btn-outline-secondary text-lg-center">
+                                            <i class="fas fa-home"></i> Home
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="table-responsive m-0 p-0 scrollable-table" style="margin: 0 !important; padding: 0 !important;">
+                                    <table class="table table-bordered table-hover">
+                                        <thead class="thead-dark sticky-header">
+                                            <tr>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.CompanyName)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.CompanyTitle)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.MersisNo)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.TaxNumber)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Logo)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.TelephoneNumber)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Address)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.Email)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.EmployeeNumber)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.FoundationYear)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.ContractStartDate)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.ContractEndDate)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.IsActive)
+                                                </th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.CompanyName)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.CompanyTitle)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.MersisNo)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.TaxNumber)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Logo)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.TelephoneNumber)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Address)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.Email)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.EmployeeNumber)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.FoundationYear)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.ContractStartDate)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.ContractEndDate)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.IsActive)
+                                                    </td>
+                                                    <td>
+                                                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                                                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                                                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

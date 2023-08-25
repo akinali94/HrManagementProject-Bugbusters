@@ -9,6 +9,7 @@ namespace BugBustersHR.BLL.ViewModels.CompanyViewModel
 {
     public class CompanyVM
     {
+        public int Id { get; set; }
         public string CompanyName { get; set; }
         public CompanyTitle CompanyTitle { get; set; }
         public string MersisNo { get; set; }

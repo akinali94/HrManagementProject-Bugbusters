@@ -131,62 +131,49 @@
                         <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white " asp-area="Manager" asp-controller="Default" asp-action="Index">
+                        <a class="nav-link text-white " asp-area="Admin" asp-controller="Default" asp-action="Index">
                             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                                 <i class="material-icons opacity-10">person</i>
                             </div>
                             <span class="nav-link-text ms-1">Profile</span>
                         </a>
                     </li>
+                    <li class="nav-item mt-3">
+                        <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Managers</h6>
+                    </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white " asp-area="Manager" asp-controller="Default" asp-action="CreateEmployee">
+                        <a class="nav-link text-white " asp-area="Admin" asp-controller="Default" asp-action="CreateManager">
                             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                                 <i class="bi bi-plus"></i>
                             </div>
-                            <span class="nav-link-text ms-1">Add Employee</span>
+                            <span class="nav-link-text ms-1">Add Manager</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white " asp-area="Manager" asp-controller="Default" asp-action="GetEmployeeList">
+                        <a class="nav-link text-white " asp-area="Admin" asp-controller="Default" asp-action="GetManagerList">
                             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                                 <i class="bi bi-card-list"></i>
                             </div>
-                            <span class="nav-link-text ms-1">Employee List</span>
+                            <span class="nav-link-text ms-1">Manager List</span>
                         </a>
                     </li>
                     <li class="nav-item mt-3">
-                        <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Approvals</h6>
+                        <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Companies</h6>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white " asp-area="Manager" asp-controller="Confirmation" asp-action="LeaveConfirmation">
+                        <a class="nav-link text-white " asp-area="Admin" asp-controller="Company" asp-action="Create">
                             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="bi bi-airplane-fill"></i>
+                                <i class="bi bi-plus"></i>
                             </div>
-                            <span class="nav-link-text ms-1">Leave List</span>
+                            <span class="nav-link-text ms-1">Add Company</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white " asp-area="Manager" asp-controller="Expenditure" asp-action="Index">
+                        <a class="nav-link text-white " asp-area="Admin" asp-controller="Company" asp-action="Index">
                             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="bi bi-wallet-fill"></i>
+                                <i class="bi bi-plus"></i>
                             </div>
-                            <span class="nav-link-text ms-1">Expenditure List</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white " asp-area="Manager" asp-controller="Advances" asp-action="Index">
-                            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="bi bi-cash"></i>
-                            </div>
-                            <span class="nav-link-text ms-1">Individual Allowance List</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white " asp-area="Manager" asp-controller="Allowance" asp-action="Index">
-                            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <i class="bi bi-cash-stack"></i>
-                            </div>
-                            <span class="nav-link-text ms-1">Corporate Allowance List</span>
+                            <span class="nav-link-text ms-1">Company List</span>
                         </a>
                     </li>
                 </ul>

@@ -159,7 +159,6 @@ builder.Services.AddScoped<IValidator<CompanyVM>, CompanyValidator>();
 
 
 
-
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = $"/Identity/Account/Login";

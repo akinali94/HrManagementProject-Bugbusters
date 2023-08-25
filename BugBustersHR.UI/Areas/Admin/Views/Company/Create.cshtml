@@ -3,93 +3,114 @@
 
 @{
     ViewData["Title"] = "Create";
-    Layout = null; //silinecekk
 }
 
-<h1>Create</h1>
 
-<h4>CompanyVM</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="CompanyName" class="control-label"></label>
-                <input asp-for="CompanyName" class="form-control" />
-                <span asp-validation-for="CompanyName" class="text-danger"></span>
+<body class="g-sidenav-show  bg-gray-200">
+    <div class="container-fluid mt-6 px-md-4 d-flex justify-content-end align-items-center">
+        <div class="col-10">
+            <div class="page-header min-height-300 border-radius-xl" style="background-image: url('https://images.unsplash.com/photo-1531512073830-ba890ca4eba2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');">
+                <span class="mask bg-gradient-secondary opacity-6"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="CompanyTitle" class="control-label">CompanyTitle</label>
-                <select asp-for="CompanyTitle" asp-items="@Html.GetEnumSelectList<CompanyTitle>()" class="form-control shadow-sm"></select>
-                <span asp-validation-for="CompanyTitle" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MersisNo" class="control-label"></label>
-                <input asp-for="MersisNo" class="form-control" />
-                <span asp-validation-for="MersisNo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TaxNumber" class="control-label"></label>
-                <input asp-for="TaxNumber" class="form-control" />
-                <span asp-validation-for="TaxNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Logo" class="control-label"></label>
-                <input asp-for="Logo" class="form-control" />
-                <span asp-validation-for="Logo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TelephoneNumber" class="control-label"></label>
-                <input asp-for="TelephoneNumber" class="form-control" />
-                <span asp-validation-for="TelephoneNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EmployeeNumber" class="control-label"></label>
-                <input asp-for="EmployeeNumber" class="form-control" />
-                <span asp-validation-for="EmployeeNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FoundationYear" class="control-label"></label>
-                <input asp-for="FoundationYear" class="form-control" />
-                <span asp-validation-for="FoundationYear" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ContractStartDate" class="control-label"></label>
-                <input asp-for="ContractStartDate" class="form-control" />
-                <span asp-validation-for="ContractStartDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ContractEndDate" class="control-label"></label>
-                <input asp-for="ContractEndDate" class="form-control" />
-                <span asp-validation-for="ContractEndDate" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
-                </label>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
+    @*Here goes the content withour Navbar*@
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div class="container-fluid px-2 px-md-4 d-flex justify-content-end align-items-center mt-n10" style="height: 100vh;">
+        <div class="col-10 mt-n9">
+            <div class="bg-light card card-body mx-2 mx-md-4 bg-light">
+                <div class="col-md-12 d-flex justify-content-center align-items-center">
+                    <h2 class="mb-1 mt-4">Manager Register</h2>
+                </div>
+                <div class="card-body">
+                    <form asp-controller="Company" asp-action="Create" id="registerForm" asp-route-returnUrl="" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <!-- Column 1 -->
+                                <div class="form-group">
+                                    <label asp-for="CompanyName" class="control-label"></label>
+                                    <input asp-for="CompanyName" class="form-control" />
+                                    <span asp-validation-for="CompanyName" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="CompanyTitle" class="control-label">CompanyTitle</label>
+                                    <select asp-for="CompanyTitle" asp-items="@Html.GetEnumSelectList<CompanyTitle>()" class="form-control shadow-sm"></select>
+                                    <span asp-validation-for="CompanyTitle" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="MersisNo" class="control-label"></label>
+                                    <input asp-for="MersisNo" class="form-control" />
+                                    <span asp-validation-for="MersisNo" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="TaxNumber" class="control-label"></label>
+                                    <input asp-for="TaxNumber" class="form-control" />
+                                    <span asp-validation-for="TaxNumber" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Logo" class="control-label"></label>
+                                    <input asp-for="Logo" class="form-control" />
+                                    <span asp-validation-for="Logo" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <!-- Column 2 -->
+                                <div class="form-group">
+                                    <label asp-for="TelephoneNumber" class="control-label"></label>
+                                    <input asp-for="TelephoneNumber" class="form-control" />
+                                    <span asp-validation-for="TelephoneNumber" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Address" class="control-label"></label>
+                                    <input asp-for="Address" class="form-control" />
+                                    <span asp-validation-for="Address" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Email" class="control-label"></label>
+                                    <input asp-for="Email" class="form-control" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="EmployeeNumber" class="control-label"></label>
+                                    <input asp-for="EmployeeNumber" class="form-control" />
+                                    <span asp-validation-for="EmployeeNumber" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <!-- Column 3 -->
+                                <div class="form-group">
+                                    <label asp-for="FoundationYear" class="control-label"></label>
+                                    <input asp-for="FoundationYear" class="form-control" />
+                                    <span asp-validation-for="FoundationYear" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="ContractStartDate" class="control-label"></label>
+                                    <input asp-for="ContractStartDate" class="form-control" />
+                                    <span asp-validation-for="ContractStartDate" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="ContractEndDate" class="control-label"></label>
+                                    <input asp-for="ContractEndDate" class="form-control" />
+                                    <span asp-validation-for="ContractEndDate" class="text-danger"></span>
+                                </div>
+                                <div class="form-group form-check">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" value="Create" class="btn btn-primary" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <partial name="_ValidationScriptsPartial" />
 }
