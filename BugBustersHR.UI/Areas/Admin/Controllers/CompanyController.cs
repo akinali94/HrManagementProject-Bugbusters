@@ -169,8 +169,8 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
             var mappingQuery1 = _mapper.Map<CompanyDetailsVM>(getCompany);
 
             SetUserImageViewBag();
-            return View(mappingQuery1);
-            //new List<CompanyDetailsVM> { mappingQuery1 }
+            return View(new List<CompanyDetailsVM> { mappingQuery1 });
+            
         }
 
 
