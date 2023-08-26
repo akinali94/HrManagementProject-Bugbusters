@@ -59,34 +59,19 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
         }
         public IActionResult Index()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var user = _hrDb.Personels.First(x => x.Id == userId);
-
-            var query = _ındividualAdvanceRequestService.GetAllIndividualAdvanceReq().Where(x => x.EmployeeRequestingId == userId);
-
+            var query = _ındividualAdvanceRequestService.GetAllIndividualAdvanceReq().Where(x => x.EmployeeRequestingId == GetEmployee().Id);
             var mapping = _mapper.Map<IEnumerable<IndividualAdvanceRequestVM>>(query);
-            foreach (var item in mapping) _ındividualAdvanceRequestService.GetAdvanceApprovelName(item);
-        
-
-
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+            _ındividualAdvanceRequestService.GetAdvanceApprovelName(mapping);
+            SetUserImageViewBag();
             return View(mapping);
         }
 
         public IActionResult Create()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
-
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+            SetUserImageViewBag();
             var currencyValues = Enum.GetValues(typeof(Currency));
             ViewBag.CurrencyOptions = new SelectList(currencyValues);
-
-
-
             return View();
         }
        
@@ -170,8 +155,7 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
 
                 }
             }
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+            SetUserImageViewBag();
 
             var currencyValues = Enum.GetValues(typeof(Currency));
             ViewBag.CurrencyOptions = new SelectList(currencyValues);
@@ -189,10 +173,7 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
 
             var request = _ındividualAdvanceRequestService.GetByIdIndividualAdvanceRequest(id);
             var mapli = _mapper.Map<IndividualAdvanceRequestVM>(request);
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+            SetUserImageViewBag();
             return View(mapli);
         }
 
@@ -200,11 +181,7 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
         public IActionResult Delete(IndividualAdvanceRequestVM requestVm)
         {
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
-
+            SetUserImageViewBag();
             _ındividualAdvanceRequestService.TDelete(_mapper.Map<IndividualAdvance>(requestVm));
             return RedirectToAction("Index");
 
@@ -213,18 +190,13 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
 
         public IActionResult NotConfirmedForApprovalexp()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
-
-            var query = _ındividualAdvanceRequestService.GetAllIndividualAdvanceReq().Where(x => x.EmployeeRequestingId == userId);
+            var query = _ındividualAdvanceRequestService.GetAllIndividualAdvanceReq().Where(x => x.EmployeeRequestingId == GetEmployee().Id);
             var mappingQuery = _mapper.Map<IEnumerable<IndividualAdvanceRequestVM>>(query);
 
-
-            foreach (var item in mappingQuery) _ındividualAdvanceRequestService.GetAdvanceApprovelName(item);
+            _ındividualAdvanceRequestService.GetAdvanceApprovelName(mappingQuery);
 
             var notConfirmedApprovalExp = mappingQuery.Where(item => item.ApprovalStatus == false);
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+            SetUserImageViewBag();
             return View(notConfirmedApprovalExp);
 
 
@@ -233,18 +205,17 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
 
         public IActionResult ConfirmedForApprovalexp()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
+          
 
-            var query = _ındividualAdvanceRequestService.GetAllIndividualAdvanceReq().Where(x => x.EmployeeRequestingId == userId);
+            var query = _ındividualAdvanceRequestService.GetAllIndividualAdvanceReq().Where(x => x.EmployeeRequestingId == GetEmployee().Id);
             var mappingQuery = _mapper.Map<IEnumerable<IndividualAdvanceRequestVM>>(query);
 
 
-            foreach (var item in mappingQuery) _ındividualAdvanceRequestService.GetAdvanceApprovelName(item);
+            _ındividualAdvanceRequestService.GetAdvanceApprovelName(mappingQuery);
 
             var confirmedForApprovalexp = mappingQuery.Where(item => item.ApprovalStatus == true);
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+          
+            SetUserImageViewBag();
             return View(confirmedForApprovalexp);
 
 
@@ -253,17 +224,12 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
 
         public IActionResult WaitingForApprovalexp()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
-
-            var query = _ındividualAdvanceRequestService.GetAllIndividualAdvanceReq().Where(x => x.EmployeeRequestingId == userId);
+           
+            var query = _ındividualAdvanceRequestService.GetAllIndividualAdvanceReq().Where(x => x.EmployeeRequestingId == GetEmployee().Id);
             var mappingQuery = _mapper.Map<IEnumerable<IndividualAdvanceRequestVM>>(query);
-
-            foreach (var item in mappingQuery) _ındividualAdvanceRequestService.GetAdvanceApprovelName(item);
-
+            _ındividualAdvanceRequestService.GetAdvanceApprovelName(mappingQuery);
             var waitingForApprovalexp = mappingQuery.Where(item => item.ApprovalStatus == null);
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+            SetUserImageViewBag();
             return View(waitingForApprovalexp);
         }
     }

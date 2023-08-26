@@ -48,7 +48,7 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
             var mappingQuery = _mapper.Map<IEnumerable<ExpenditureRequestVM>>(query);
             _expenditureRequestService.GetExpenditureTypeName(mappingQuery);
             _expenditureRequestService.GetExpenditureApprovelName(mappingQuery);
-                   
+
             SetUserImageViewBag();
             return View(mappingQuery);
         }
@@ -75,21 +75,17 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
             if (existingPendingRequest != null)
             {
                 ModelState.AddModelError("", "You already have a pending request. Please wait for its approval.");
-
-                ViewData["ExpentitureTypeId"] = new SelectList(_hrDb.ExpenditureTypes, "Id", "ExpenditureName", expenditureRequest.ExpenditureTypeId);
+                GetExpenditureTypes();
                 GetCurrencyType();
                 SetUserImageViewBag();
                 return View(expenditureRequest);
 
-
             }
 
             var expenditureType = _typeService.GetByIdExpenditureType(expenditureRequest.ExpenditureTypeId);
-
             if (expenditureType == null)
-            {
                 ModelState.AddModelError("ExpenditureTypeId", "Please select a valid Expenditure Type.");
-            }
+
             else
             {
                 var minPrice = expenditureType.MinPrice;
@@ -137,12 +133,10 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
 
                     if (validationResults2.IsValid)
                     {
-                        
                         expenditureRequest.EmployeeId = GetEmployee().Id;
                         var mappingQuery = _mapper.Map<ExpenditureRequest>(expenditureRequest);
                         await _hrDb.AddAsync(mappingQuery);
                         await _hrDb.SaveChangesAsync();
-
                         return RedirectToAction(nameof(Index));
                     }
                     else
@@ -155,28 +149,19 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
                 }
             }
 
-            ViewData["ExpentitureTypeId"] = new SelectList(_hrDb.ExpenditureTypes, "Id", "ExpenditureName", expenditureRequest.ExpenditureTypeId);
-            ViewBag.CurrencyList = Enum.GetValues(typeof(Currency))
-                        .Cast<Currency>()
-                        .Select(c => new SelectListItem
-                        {
-                            Value = c.ToString(),
-                            Text = c.ToString()
-                        });
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
+            GetExpenditureTypes();
+            GetCurrencyType();
             SetUserImageViewBag();
             return View(expenditureRequest);
         }
+
+
         public IActionResult Delete(int id)
         {
 
             var request = _expenditureRequestService.GetByIdExpenditureRequest(id);
-
             var mapli = _mapper.Map<ExpenditureRequestVM>(request);
-
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
+            var user = _hrDb.Personels.FirstOrDefault(u => u.Id == GetEmployee().Id);
             SetUserImageViewBag();
             return View(mapli);
         }
@@ -185,27 +170,18 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
         public IActionResult Delete(ExpenditureRequestVM requestVm)
         {
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
             SetUserImageViewBag();
-
             _expenditureRequestService.TDelete(_mapper.Map<ExpenditureRequest>(requestVm));
             return RedirectToAction("Index");
 
         }
         public IActionResult WaitingForApprovalexp()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            var query = _expenditureRequestService.GetAllExReq().Where(x => x.EmployeeId == userId);
+            var query = _expenditureRequestService.GetAllExReq().Where(x => x.EmployeeId == GetEmployee().Id);
             var mappingQuery = _mapper.Map<IEnumerable<ExpenditureRequestVM>>(query);
 
-            foreach (var item in mappingQuery)
-            {
-                item.TypeName = (_typeService.GetByIdExpenditureType(item.ExpenditureTypeId)).ExpenditureName;
-            }
-           _expenditureRequestService.GetExpenditureApprovelName(mappingQuery);
-
+            _expenditureRequestService.GetExpenditureTypeName(mappingQuery);
+            _expenditureRequestService.GetExpenditureApprovelName(mappingQuery);
             var waitingForApprovalexp = mappingQuery.Where(item => item.ApprovalStatus == null);
             SetUserImageViewBag();
             return View(waitingForApprovalexp);
@@ -215,18 +191,10 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
 
         public IActionResult ConfirmedForApprovalexp()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            var query = _expenditureRequestService.GetAllExReq().Where(x => x.EmployeeId == userId);
+            var query = _expenditureRequestService.GetAllExReq().Where(x => x.EmployeeId == GetEmployee().Id);
             var mappingQuery = _mapper.Map<IEnumerable<ExpenditureRequestVM>>(query);
-
-            foreach (var item in mappingQuery)
-            {
-                item.TypeName = (_typeService.GetByIdExpenditureType(item.ExpenditureTypeId)).ExpenditureName;
-            }
-
-          _expenditureRequestService.GetExpenditureApprovelName(mappingQuery);
-
+            _expenditureRequestService.GetExpenditureTypeName(mappingQuery);
+            _expenditureRequestService.GetExpenditureApprovelName(mappingQuery);
             var confirmedForApprovalexp = mappingQuery.Where(item => item.ApprovalStatus == true);
             SetUserImageViewBag();
             return View(confirmedForApprovalexp);
@@ -236,20 +204,12 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
 
         public IActionResult NotConfirmedForApprovalexp()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            var query = _expenditureRequestService.GetAllExReq().Where(x => x.EmployeeId == userId);
+           
+            var query = _expenditureRequestService.GetAllExReq().Where(x => x.EmployeeId == GetEmployee().Id);
             var mappingQuery = _mapper.Map<IEnumerable<ExpenditureRequestVM>>(query);
 
-            foreach (var item in mappingQuery)
-            {
-                item.TypeName = (_typeService.GetByIdExpenditureType(item.ExpenditureTypeId)).ExpenditureName;
-            }
-
-
-
-                _expenditureRequestService.GetExpenditureApprovelName(mappingQuery);
-
+            _expenditureRequestService.GetExpenditureTypeName(mappingQuery);
+            _expenditureRequestService.GetExpenditureApprovelName(mappingQuery);
 
             var notConfirmedApprovalExp = mappingQuery.Where(item => item.ApprovalStatus == false);
             SetUserImageViewBag();

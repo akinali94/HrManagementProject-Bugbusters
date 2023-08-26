@@ -61,30 +61,16 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
         public IActionResult Index()
         {
             
-            var findAdminID = User.FindFirstValue(ClaimTypes.NameIdentifier);
-           
-            var getAdmin = _employeeService.TGetById(findAdminID);
-
-            var mappingQuery = _mapper.Map<AdminSummaryListVM>(getAdmin);
-
-            var user = _hrDb.Personels.FirstOrDefault(u => u.Id == findAdminID);
-            ViewBag.AdminImagerUrl = user?.ImageUrl;
-            ViewBag.AdminFullName = user?.FullName;
+            var mappingQuery = _mapper.Map<AdminSummaryListVM>(GetEmployee());
+            SetUserImageViewBag();
 
             return View(mappingQuery);
         }
 
         public IActionResult Edit(string id)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            var personel = _employeeService.TGetById(userId);
-
-            var mapli = _mapper.Map<AdminUpdateVM>(personel);
-
-            var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+            var mapli = _mapper.Map<AdminUpdateVM>(GetEmployee());
+            SetUserImageViewBag();
 
             return View(mapli);
         }
@@ -156,32 +142,28 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
                     }
 
                     _employeeService.TUpdate(entity);
-
+                    SetUserImageViewBag();
                     return RedirectToAction("Index", new { imageUrl = entity.ImageUrl, backgroundImageUrl = entity.BackgroundImageUrl });
 
 
                 }
                 catch (Exception ex)
                 {
+                    SetUserImageViewBag();
                     Console.WriteLine(ex);
                 }
             }
 
-            var adminID = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var admin = _hrDb.Personels.FirstOrDefault(u => u.Id == adminID);
-            ViewBag.UserImageUrl = admin?.ImageUrl;
-            ViewBag.UserFullName = admin?.FullName;
+            SetUserImageViewBag();
             return View(updateVm);
         }
 
         public IActionResult Details(string id)
         {
-            var adminId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var query1 = _employeeService.TGetById(adminId);
+  
+            var query1 = _employeeService.TGetById(GetEmployee().Id);
             var mappingQuery1 = _mapper.Map<AdminListWithoutSalaryVM>(query1);
-            var user = _hrDb.Personels.FirstOrDefault(u => u.Id == adminId);
-            ViewBag.AdminImageUrl = user?.ImageUrl;
-            ViewBag.AdminFullName = user?.FullName;
+            SetUserImageViewBag();
 
             return View(mappingQuery1);
         }
@@ -197,12 +179,7 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
                 new SelectListItem{Text = "Man", Value = "0"}
             }, "Value", "Text");
 
-            var adminId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            //Bunun servisi yazılabilir
-            var adminID = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var admin = _hrDb.Personels.FirstOrDefault(u => u.Id == adminID);
-
+       
             IEnumerable<Companies> companies = _companyService.GetAllCompany();
 
             List<SelectListItem> companyItems = companies.Select(c => new SelectListItem
@@ -215,9 +192,7 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
 
             string passwordGenerated = _employeeService.GenerateRandomPassword(null);
             ViewBag.GeneratedPassword = passwordGenerated;
-
-            ViewBag.UserImageUrl = admin?.ImageUrl;
-            ViewBag.UserFullName = admin?.FullName;
+            SetUserImageViewBag();
             return View();
         }
 
@@ -234,10 +209,7 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
                 mapManager.UserName = createManagerFromAdminVM.Email;
                 mapManager.Role = AppRoles.Role_Manager;
 
-                //await _userStore.SetUserNameAsync(mapEmployee, createEmployeeVM.Email, CancellationToken.None);
-                //await _emailStore.SetEmailAsync(mapEmployee, createEmployeeVM.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(mapManager, createManagerFromAdminVM.Password);
-                //_service.TAddAsync(mapEmployee);
 
                 if (!await _roleManager.RoleExistsAsync(AppRoles.Role_Manager))
                 {
@@ -254,7 +226,7 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
 
 
                 await _emailService.SendConfirmEmail(link, mapManager.Email, mapManager.PasswordHash);
-
+                SetUserImageViewBag();
                 return RedirectToAction("Index", "Default");
             }
 
@@ -263,16 +235,9 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
                 new SelectListItem{Text = "Woman", Value = "1"},
                 new SelectListItem{Text = "Man", Value = "0"}
             }, "Value", "Text");
-
+            SetUserImageViewBag();
             var adminId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            //Bunun servisi yazılabilir
-            var adminID = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var admin = _hrDb.Personels.FirstOrDefault(u => u.Id == adminID);
-
-            ViewBag.UserImageUrl = admin?.ImageUrl;
-            ViewBag.UserFullName = admin?.FullName;
-          
 
             string passwordGenerated = _employeeService.GenerateRandomPassword(null);
             ViewBag.GeneratedPassword = passwordGenerated;
@@ -283,16 +248,30 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
 
         public IActionResult GetManagerList()
         {
-            var adminID = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var admin = _hrDb.Personels.FirstOrDefault(u => u.Id == adminID);
-            //ROLE ÇEKİLECEK
 
             var getList = _hrDb.Personels.Where(x => x.Role == AppRoles.Role_Manager).ToList();
 
             var mappingList = _mapper.Map<List<GetManagerListVM>>(getList);
+            SetUserImageViewBag();
+            return View(mappingList);
+        }
+
+        [NonAction]
+        private void SetUserImageViewBag()
+        {
+
+
+            var adminID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var admin = _hrDb.Personels.FirstOrDefault(u => u.Id == adminID);
             ViewBag.UserImageUrl = admin?.ImageUrl;
             ViewBag.UserFullName = admin?.FullName;
-            return View(mappingList);
+
+
+        }
+        [NonAction]
+        private Employee GetEmployee()
+        {
+            return _employeeService.GetByIdEmployee(User.FindFirstValue(ClaimTypes.NameIdentifier));
         }
     }
 }
