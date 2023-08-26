@@ -196,6 +196,12 @@ namespace BugBustersHR.UI.Areas.Identity.Pages.Account
                         _logger.LogInformation("User-Admin logged in.");
                         return RedirectToAction("Index", "Employee", new { area = "Personel" });
                     }
+                    else if (userRole.Contains(AppRoles.Role_Admin))
+                    {
+                        await Task.Delay(1000);
+                        _logger.LogInformation("User-Admin logged in.");
+                        return RedirectToAction("Index", "Default", new { area = "Admin" });
+                    }
 
                     await Task.Delay(2000);
                     _logger.LogInformation("User logged in.");

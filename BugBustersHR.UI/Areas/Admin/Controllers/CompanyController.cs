@@ -11,6 +11,7 @@ using BugBustersHR.DAL.Context;
 using BugBustersHR.ENTITY.Concrete;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Security.Claims;
@@ -24,17 +25,19 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
 
         private readonly ICompanyService _service;
         private readonly IMapper _mapper;
-       
+        private readonly IWebHostEnvironment _webHostEnvironment;
+
         private readonly IValidator<CompanyVM> _companyValidator;
         private readonly CompanyVM _companyVM;
         private readonly HrDb _hrDb;
 
-        public CompanyController(ICompanyService service, IMapper mapper, IValidator<CompanyVM> companyValidator, HrDb hrDb)
+        public CompanyController(ICompanyService service, IMapper mapper, IValidator<CompanyVM> companyValidator, HrDb hrDb, IWebHostEnvironment webHostEnvironment)
         {
             _service = service;
             _mapper = mapper;
             _companyValidator = companyValidator;
             _hrDb = hrDb;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult Index()
@@ -65,7 +68,36 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
                 return RedirectToAction("Index");
                 //await _service.TAddAsync(_mapper.Map<EmployeeLeaveType>(typeVm));
                 //return RedirectToAction("Index");
+
+                
+
+                if (validationResult.IsValid)
+                {
+                   
+
+                    // Handle logo file
+                    if (companyVm.LogoFile != null)
+                    {
+                        // Upload and save logo file to a desired location
+                        var logoFileName = Guid.NewGuid().ToString() + Path.GetExtension(companyVm.LogoFile.FileName);
+                        var logoFilePath = Path.Combine(_webHostEnvironment.WebRootPath, "logo_uploads", logoFileName);
+
+                        using (var fileStream = new FileStream(logoFilePath, FileMode.Create))
+                        {
+                            await companyVm.LogoFile.CopyToAsync(fileStream);
+                        }
+
+                        company.Logo = "/logo_uploads/" + logoFileName; // Store relative path in the database
+                    }
+
+                    await _service.TAddAsync(company);
+                    return RedirectToAction("Index");
+                }
+
+                return View(companyVm);
             }
+
+
 
             return View(companyVm);
         }

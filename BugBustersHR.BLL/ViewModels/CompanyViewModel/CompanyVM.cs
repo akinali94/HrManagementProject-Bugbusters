@@ -1,6 +1,8 @@
 ﻿using BugBustersHR.ENTITY.Enums;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +11,8 @@ namespace BugBustersHR.BLL.ViewModels.CompanyViewModel
 {
     public class CompanyVM
     {
+        [Display(Name = "Logo")]
+        public IFormFile LogoFile { get; set; }
         public int Id { get; set; }
         public string CompanyName { get; set; }
         public CompanyTitle CompanyTitle { get; set; }

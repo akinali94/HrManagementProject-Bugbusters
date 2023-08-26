@@ -102,6 +102,7 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
                 }
                 else
                 {
+
                     try
                     {
                         if (expenditureRequest.ImageModel.File != null)
@@ -133,9 +134,11 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
 
                     var validationResults2 = _requestValidator.Validate(expenditureRequest);
 
+
                     if (validationResults2.IsValid)
                     {
-                        expenditureRequest.EmployeeId = userId;
+                        
+                        expenditureRequest.EmployeeId = GetEmployee().Id;
                         var mappingQuery = _mapper.Map<ExpenditureRequest>(expenditureRequest);
                         await _hrDb.AddAsync(mappingQuery);
                         await _hrDb.SaveChangesAsync();
@@ -160,6 +163,7 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
                             Value = c.ToString(),
                             Text = c.ToString()
                         });
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = _hrDb.Personels.FirstOrDefault(u => u.Id == userId);
             SetUserImageViewBag();
             return View(expenditureRequest);
