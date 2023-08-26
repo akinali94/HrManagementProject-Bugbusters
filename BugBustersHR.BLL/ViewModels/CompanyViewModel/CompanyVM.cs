@@ -33,7 +33,15 @@ namespace BugBustersHR.BLL.ViewModels.CompanyViewModel
         public DateTime ContractStartDate { get; set; }
         public DateTime ContractEndDate { get; set; }
 
-        public bool IsActive { get; set; } 
+        public bool IsActive { get 
+            { 
+                if (ContractEndDate>DateTime.Now)
+                {
+                    return false;
+                }
+                else 
+                { return true; }
+            } } 
 
     }
 }

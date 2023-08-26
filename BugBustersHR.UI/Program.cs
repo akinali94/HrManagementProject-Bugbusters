@@ -138,6 +138,7 @@ builder.Services.AddScoped<AdminUpdateVM>();
 builder.Services.AddScoped<AdminSummaryListVM>();
 builder.Services.AddScoped<AdminListWithoutSalaryVM>();
 builder.Services.AddScoped<GetManagerListVM>();
+builder.Services.AddScoped<CompanyDetailsVM>();
 
 builder.Services.AddScoped<EmployeeVM>();
 
@@ -156,6 +157,7 @@ builder.Services.AddScoped<IValidator<CreateEmployeeFromManagerVM>, CreateEmploy
 builder.Services.AddScoped<IValidator<CreateManagerFromAdminVM>, CreateManagerValidator>();
 builder.Services.AddScoped<IValidator<AdminUpdateVM>, AdminValidator>();
 builder.Services.AddScoped<IValidator<CompanyVM>, CompanyValidator>();
+
 
 
 

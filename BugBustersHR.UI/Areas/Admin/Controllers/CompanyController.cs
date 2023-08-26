@@ -167,16 +167,15 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetCompanyDetails(string id)
+        public IActionResult GetCompanyDetails(int id)
         {
-
-            var getCompany = _service.TGetById(id);
+            var getCompany = _service.GetByIdCompany(id);
             var mappingQuery1 = _mapper.Map<CompanyDetailsVM>(getCompany);
 
             SetUserImageViewBag();
-            return View(mappingQuery1);
-
+            return View(new List<CompanyDetailsVM> { mappingQuery1 });
         }
+
 
 
         [NonAction]

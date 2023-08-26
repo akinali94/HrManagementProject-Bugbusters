@@ -39,36 +39,17 @@
                                                     Title
                                                 </th>
                                                 <th>
-                                                    Mersis
-                                                </th>
-                                                <th>
-                                                    Tax No
+                                                    Email
                                                 </th>
                                                
                                                 <th>
                                                     Phone Number
                                                 </th>
                                                 <th>
-                                                    @Html.DisplayNameFor(model => model.Address)
+                                                    Address
                                                 </th>
-                                                <th>
-                                                    @Html.DisplayNameFor(model => model.Email)
-                                                </th>
-                                                <th>
-                                                    Employee Number
-                                                </th>
-                                                <th>
-                                                    Foundation Year
-                                                </th>
-                                                <th>
-                                                    Contract Start
-                                                </th>
-                                                <th>
-                                                    Contract End
-                                                </th>
-                                                <th>
-                                                    @Html.DisplayNameFor(model => model.IsActive)
-                                                </th>
+                                               
+                                               
                                                 <th></th>
                                             </tr>
                                         </thead>
@@ -86,12 +67,7 @@
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.CompanyTitle)
                                                 </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.MersisNo)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.TaxNumber)
-                                                </td>
+                                            
                                               
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.TelephoneNumber)
@@ -102,24 +78,11 @@
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.Email)
                                                 </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.EmployeeNumber)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.FoundationYear)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.ContractStartDate)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.ContractEndDate)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.IsActive)
-                                                </td>
+                                            
+                                          
                                                 <td>
                                                     @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                                                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                                                        @Html.ActionLink("Details", "GetCompanyDetails", new {  id=item.Id  }) |
                                                     @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
                                                 </td>
                                             </tr>

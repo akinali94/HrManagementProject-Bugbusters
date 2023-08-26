@@ -106,11 +106,11 @@
                                     <input asp-for="EmployeeNumber" class="form-control shadow-sm" />
                                     <span asp-validation-for="EmployeeNumber" class="text-danger"></span>
                                 </div>
-                                <div class="form-group form-check">
+                                @*<div class="form-group form-check">
                                     <label class="form-check-label">
                                         <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
                                     </label>
-                                </div>
+                                </div>*@
                             </div>
                         </div>
                         <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary mt-3">Create Company</button>
