@@ -8,9 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Admin\Models\**" />
     <Compile Remove="Areas\Utilities\**" />
+    <Content Remove="Areas\Admin\Models\**" />
     <Content Remove="Areas\Utilities\**" />
+    <EmbeddedResource Remove="Areas\Admin\Models\**" />
     <EmbeddedResource Remove="Areas\Utilities\**" />
+    <None Remove="Areas\Admin\Models\**" />
     <None Remove="Areas\Utilities\**" />
   </ItemGroup>
 
@@ -41,7 +45,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Manager\Data\" />
     <Folder Include="Areas\Manager\Models\" />
   </ItemGroup>
