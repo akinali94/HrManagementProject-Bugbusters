@@ -41,20 +41,21 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
         {
             var query = _service.GetAllCompany();
             var mappingQuery = _mapper.Map<List<CompanyVM>>(query);
-           
+
+            SetUserImageViewBag();
             return View(mappingQuery);
        
         }
 
         public IActionResult Create()
         {
+            SetUserImageViewBag();
             return View();
         }
         [HttpPost]
         public async Task<IActionResult> Create(CompanyVM companyVm)
         {
-            //CompanyValidator validator = new CompanyValidator();
-            
+
             var validationResult = _companyValidator.Validate(companyVm);
 
             if (validationResult.IsValid)
@@ -62,11 +63,11 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
                 var company = _mapper.Map<Companies>(companyVm);
                 
                 await _service.TAddAsync(company);
+                SetUserImageViewBag();
                 return RedirectToAction("Index");
-                //await _service.TAddAsync(_mapper.Map<EmployeeLeaveType>(typeVm));
-                //return RedirectToAction("Index");
+                
             }
-
+            SetUserImageViewBag();
             return View(companyVm);
         }
 
@@ -78,22 +79,24 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
             var company = _service.GetByIdCompany(id);
 
             var mapli = _mapper.Map<CompanyVM>(company);
-
+            SetUserImageViewBag();
             return View(mapli);
+          
         }
         [HttpPost]
         public IActionResult Edit(CompanyVM companyVM)
         {
-            //CompanyValidator validator = new CompanyValidator();
+    
 
             var validationResult = _companyValidator.Validate(companyVM);
 
             if (validationResult.IsValid)
             {
                 _service.TUpdate(_mapper.Map<Companies>(companyVM));
+                SetUserImageViewBag();
                 return RedirectToAction("Index");
             }
-
+            SetUserImageViewBag();
             return View(companyVM);
         }
 
@@ -104,6 +107,7 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
             var company = _service.GetByIdCompany(id);
 
             var mapli = _mapper.Map<CompanyVM>(company);
+            SetUserImageViewBag();
 
             return View(mapli);
         }
@@ -115,6 +119,7 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
 
 
             _service.TDelete(_mapper.Map<Companies>(companyVM));
+            SetUserImageViewBag();
             return RedirectToAction("Index");
 
 
@@ -127,13 +132,28 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
             var getCompany = _service.TGetById(id);
             var mappingQuery1 = _mapper.Map<CompanyDetailsVM>(getCompany);
 
+            SetUserImageViewBag();
+            return View(mappingQuery1);
+
+        }
+
+
+        [NonAction]
+        private void SetUserImageViewBag()
+        {
+      
 
             var adminID = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var admin = _hrDb.Personels.FirstOrDefault(u => u.Id == adminID);
             ViewBag.UserImageUrl = admin?.ImageUrl;
             ViewBag.UserFullName = admin?.FullName;
-            return View(mappingQuery1);
+      
 
+        }
+        [NonAction]
+        private Employee GetEmployee()
+        {
+            return _service.GetByIdEmployee(User.FindFirstValue(ClaimTypes.NameIdentifier));
         }
 
     }
