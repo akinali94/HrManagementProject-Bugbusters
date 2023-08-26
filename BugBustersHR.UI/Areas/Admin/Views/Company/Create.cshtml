@@ -23,19 +23,19 @@
                     <h2 class="mb-1 mt-4">Company Register</h2>
                 </div>
                 <div class="card-body">
-                    <form asp-controller="Company" asp-action="Create" id="registerForm" asp-route-returnUrl="" method="post">
+                    <form asp-controller="Company" asp-action="Create" method="post" enctype="multipart/form-data" id="editProfileForm">
                         <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                         <div class="row">
                             <div class="col-md-3">
                                 <!-- Column 1 -->
 
                                 <div class="form-group">
-                                    <label asp-for="LogoFile" class="control-label">Logo</label>
-                                    <input asp-for="LogoFile" type="file" class="form-control shadow-sm" />
-                                    <span asp-validation-for="LogoFile" class="text-danger"></span>
+                                    <label asp-for="ImageModel.File" class="control-label">Logo</label>
+                                    <input asp-for="ImageModel.File" type="file" class="form-control" />
+                                    <span asp-validation-for="ImageModel.File" class="text-danger"></span>
                                 </div>
 
-                                <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary mt-3">Create Company</button>
+                              
                                 <div class="form-group">
                                     <label asp-for="CompanyName" class="control-label"></label>
                                     <input asp-for="CompanyName" class="form-control shadow-sm" />
@@ -51,11 +51,7 @@
                                     <input asp-for="TaxNumber" class="form-control shadow-sm" />
                                     <span asp-validation-for="TaxNumber" class="text-danger"></span>
                                 </div>
-                                <div class="form-group">
-                                    <label asp-for="Logo" class="control-label"></label>
-                                    <input asp-for="Logo" class="form-control shadow-sm" />
-                                    <span asp-validation-for="Logo" class="text-danger"></span>
-                                </div>
+                                
                             </div>
                             <div class="col-md-3">
                                 <!-- Column 2 -->

@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Azure.Storage.Blobs.Models;
+using Azure.Storage.Blobs;
 using BugBustersHR.BLL.Options;
 using BugBustersHR.BLL.Services.Abstract;
 using BugBustersHR.BLL.Services.Abstract.CompanyService;
@@ -6,6 +8,7 @@ using BugBustersHR.BLL.Validatons.CompanyValidation;
 using BugBustersHR.BLL.Validatons.LeaveValidations;
 using BugBustersHR.BLL.ViewModels.CompanyViewModel;
 using BugBustersHR.BLL.ViewModels.EmployeeViewModel;
+using BugBustersHR.BLL.ViewModels.ExpenditureRequestViewModel;
 using BugBustersHR.BLL.ViewModels.LeaveTypeViewModel;
 using BugBustersHR.DAL.Context;
 using BugBustersHR.ENTITY.Concrete;
@@ -13,6 +16,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using System.Data;
 using System.Security.Claims;
 
@@ -25,19 +29,20 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
 
         private readonly ICompanyService _service;
         private readonly IMapper _mapper;
-        private readonly IWebHostEnvironment _webHostEnvironment;
-
+     
+        private readonly AzureOptions _azureOptions;
         private readonly IValidator<CompanyVM> _companyValidator;
         private readonly CompanyVM _companyVM;
         private readonly HrDb _hrDb;
 
-        public CompanyController(ICompanyService service, IMapper mapper, IValidator<CompanyVM> companyValidator, HrDb hrDb, IWebHostEnvironment webHostEnvironment)
+        public CompanyController(ICompanyService service, IMapper mapper, IValidator<CompanyVM> companyValidator, HrDb hrDb, IOptions<AzureOptions> azureOptions)
         {
             _service = service;
             _mapper = mapper;
             _companyValidator = companyValidator;
             _hrDb = hrDb;
-            _webHostEnvironment = webHostEnvironment;
+            _azureOptions = azureOptions.Value;
+
         }
 
         public IActionResult Index()
@@ -57,7 +62,37 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
         public async Task<IActionResult> Create(CompanyVM companyVm)
         {
             //CompanyValidator validator = new CompanyValidator();
+            try
+            {
+                if (companyVm.ImageModel.File != null)
+                {
+                    string fileExtension = Path.GetExtension(companyVm.ImageModel.File.FileName);
+                    var uniqueName = Guid.NewGuid().ToString() + fileExtension;
+
+                    using (MemoryStream fileUploadStream = new MemoryStream())
+                    {
+                        companyVm.ImageModel.File.CopyTo(fileUploadStream);
+                        fileUploadStream.Position = 0;
+
+                        BlobContainerClient blobContainerClient = new BlobContainerClient(_azureOptions.ConnectionString, _azureOptions.Container);
+                        BlobClient blobClient = blobContainerClient.GetBlobClient(uniqueName);
+
+                        blobClient.Upload(fileUploadStream, new BlobHttpHeaders
+                        {
+                            ContentType = companyVm.ImageModel.File.ContentType,
+                        });
+
+                        companyVm.Logo = "https://bugbustersstorage.blob.core.windows.net/contentupload/" + uniqueName;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
             
+
             var validationResult = _companyValidator.Validate(companyVm);
 
             if (validationResult.IsValid)
@@ -65,36 +100,14 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
                 var company = _mapper.Map<Companies>(companyVm);
                 
                 await _service.TAddAsync(company);
-                return RedirectToAction("Index");
+            
                 //await _service.TAddAsync(_mapper.Map<EmployeeLeaveType>(typeVm));
                 //return RedirectToAction("Index");
 
                 
 
-                if (validationResult.IsValid)
-                {
-                   
-
-                    // Handle logo file
-                    if (companyVm.LogoFile != null)
-                    {
-                        // Upload and save logo file to a desired location
-                        var logoFileName = Guid.NewGuid().ToString() + Path.GetExtension(companyVm.LogoFile.FileName);
-                        var logoFilePath = Path.Combine(_webHostEnvironment.WebRootPath, "logo_uploads", logoFileName);
-
-                        using (var fileStream = new FileStream(logoFilePath, FileMode.Create))
-                        {
-                            await companyVm.LogoFile.CopyToAsync(fileStream);
-                        }
-
-                        company.Logo = "/logo_uploads/" + logoFileName; // Store relative path in the database
-                    }
-
-                    await _service.TAddAsync(company);
-                    return RedirectToAction("Index");
-                }
-
-                return View(companyVm);
+               
+                return RedirectToAction("Index");
             }
 
 

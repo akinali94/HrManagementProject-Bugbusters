@@ -1,4 +1,6 @@
-﻿using BugBustersHR.ENTITY.Enums;
+﻿using BugBustersHR.BLL.ViewModels.ExpenditureTypeViewModel;
+using BugBustersHR.ENTITY.Concrete;
+using BugBustersHR.ENTITY.Enums;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -11,11 +13,15 @@ namespace BugBustersHR.BLL.ViewModels.CompanyViewModel
 {
     public class CompanyVM
     {
-        [Display(Name = "Logo")]
-        public IFormFile LogoFile { get; set; }
+        public CompanyVM()
+        {
+           
+            ImageModel = new ImageModel();
+        }
         public int Id { get; set; }
         public string CompanyName { get; set; }
         public CompanyTitle CompanyTitle { get; set; }
+        public ImageModel ImageModel { get; set; }
         public string MersisNo { get; set; }
         public string TaxNumber { get; set; }
         public string Logo { get; set; }
