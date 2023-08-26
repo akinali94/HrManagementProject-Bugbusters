@@ -63,7 +63,7 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CompanyVM companyVm)
         {
-            //CompanyValidator validator = new CompanyValidator();
+           
             try
             {
                 if (companyVm.ImageModel.File != null)
@@ -102,17 +102,12 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
                 var company = _mapper.Map<Companies>(companyVm);
                 
                 await _service.TAddAsync(company);
-            
-                //await _service.TAddAsync(_mapper.Map<EmployeeLeaveType>(typeVm));
-                //return RedirectToAction("Index");
-
-                
-
+                SetUserImageViewBag();
                
                 return RedirectToAction("Index");
             }
 
-
+            SetUserImageViewBag();
 
             return View(companyVm);
         }

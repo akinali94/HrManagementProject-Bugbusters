@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BugBustersHR.BLL.Services.Abstract;
 using BugBustersHR.BLL.Services.Abstract.LeaveAbstractService;
+using BugBustersHR.BLL.Services.Concrete;
 using BugBustersHR.BLL.Services.Concrete.LeaveConcreteService;
 using BugBustersHR.BLL.ViewModels.LeaveRequestViewModel;
 using BugBustersHR.DAL.Context;
@@ -37,12 +38,9 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
 
         public async Task<IActionResult> LeaveConfirmation()
         {
-            var managerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var manager = _employeeService.TGetById(managerId);
-            var compName = manager.CompanyName;
-            var user = _db.Personels.FirstOrDefault(u => u.Id == managerId);
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+         
+            var compName = GetEmployee().CompanyName;
+            SetUserImageViewBag();
             var leaveList = _leaveReqService.GetAllLeaveReq();
             // Yöneticinin şirketindeki tüm çalışanları al ve ID'lerini liste olarak al
             var userCompany = await _employeeService.TGetAllAsync(x => x.CompanyName == compName);
@@ -76,6 +74,7 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
 
             await _leaveReqService.TChangeToTrueforLeave(id);
             await _emailService.RequestApprovedMail("aa", user.Email, "leave");
+            SetUserImageViewBag();
 
             return RedirectToAction("LeaveConfirmation", "Confirmation", new { area = "Manager" });
         }
@@ -88,18 +87,14 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
 
             await _leaveReqService.TChangeToFalseforLeave(id);
             await _emailService.RequestApprovedMail("aa", user.Email, "leave");
+            SetUserImageViewBag();
             return RedirectToAction("LeaveConfirmation", "Confirmation", new { area = "Manager" });
         }
         public async Task<IActionResult> WaitingForApprovalLeave()
         {
 
-            var managerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var manager = _employeeService.TGetById(managerId);
-            var compName = manager.CompanyName;
-            var user = _db.Personels.FirstOrDefault(u => u.Id == managerId);
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
-
+            var compName = GetEmployee().CompanyName;
+            SetUserImageViewBag();
 
             var query = _leaveReqService.GetAllLeaveReq().Where(x => x.Approved == null);
             var userCompany = await _employeeService.TGetAllAsync(x => x.CompanyName == compName);
@@ -112,8 +107,6 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
             {
                 item.LeaveTypeName = (_LeaveTypeService.GetByIdType(item.SelectedLeaveTypeId)).Name;
                 item.FullName = (_employeeService.TGetById(item.RequestingId)).FullName;
-                //item.Title = (_employeeService.TGetById(item.RequestingId)).Title;
-                //item.ImgLink = (_employeeService.TGetById(item.EmployeeRequestingId)).ImageUrl;
                 item.CompanyName = (_employeeService.TGetById(item.RequestingId)).CompanyName;
 
 
@@ -125,12 +118,9 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
         public async Task<IActionResult> AcceptedApprovalLeave()
         {
 
-            var managerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var manager = _employeeService.TGetById(managerId);
-            var compName = manager.CompanyName;
-            var user = _db.Personels.FirstOrDefault(u => u.Id == managerId);
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+
+            var compName = GetEmployee().CompanyName;
+            SetUserImageViewBag();
 
 
             var query = _leaveReqService.GetAllLeaveReq().Where(x => x.Approved == true);
@@ -144,8 +134,6 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
             {
                 item.LeaveTypeName = (_LeaveTypeService.GetByIdType(item.SelectedLeaveTypeId)).Name;
                 item.FullName = (_employeeService.TGetById(item.RequestingId)).FullName;
-                //item.Title = (_employeeService.TGetById(item.RequestingId)).Title;
-                //item.ImgLink = (_employeeService.TGetById(item.EmployeeRequestingId)).ImageUrl;
                 item.CompanyName = (_employeeService.TGetById(item.RequestingId)).CompanyName;
 
             }
@@ -156,12 +144,8 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
         public async Task<IActionResult> NotAcceptedApprovalLeave()
         {
 
-            var managerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var manager = _employeeService.TGetById(managerId);
-            var compName = manager.CompanyName;
-            var user = _db.Personels.FirstOrDefault(u => u.Id == managerId);
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+            var compName = GetEmployee().CompanyName;
+            SetUserImageViewBag();
 
 
             var query = _leaveReqService.GetAllLeaveReq().Where(x => x.Approved == false);
@@ -175,8 +159,6 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
             {
                 item.LeaveTypeName = (_LeaveTypeService.GetByIdType(item.SelectedLeaveTypeId)).Name;
                 item.FullName = (_employeeService.TGetById(item.RequestingId)).FullName;
-                //item.Title = (_employeeService.TGetById(item.RequestingId)).Title;
-                //item.ImgLink = (_employeeService.TGetById(item.EmployeeRequestingId)).ImageUrl;
                 item.CompanyName = (_employeeService.TGetById(item.RequestingId)).CompanyName;
 
             }
@@ -185,6 +167,23 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
         }
 
 
+        [NonAction]
+        private void SetUserImageViewBag()
+        {
+
+
+            var adminID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var admin = _db.Personels.FirstOrDefault(u => u.Id == adminID);
+            ViewBag.UserImageUrl = admin?.ImageUrl;
+            ViewBag.UserFullName = admin?.FullName;
+
+
+        }
+        [NonAction]
+        private Employee GetEmployee()
+        {
+            return _leaveReqService.GetByIdEmployee(User.FindFirstValue(ClaimTypes.NameIdentifier));
+        }
     }
 }
 

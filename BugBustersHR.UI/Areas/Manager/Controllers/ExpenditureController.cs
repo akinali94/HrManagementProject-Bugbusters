@@ -36,20 +36,14 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var managerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var manager = _employeeService.TGetById(managerId);
-            var compName = manager.CompanyName;
-            var user = _db.Personels.FirstOrDefault(u => u.Id == managerId);
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+      
+            var compName = GetEmployee().CompanyName;
+            SetUserImageViewBag();
             var expList = _expenditureService.GetAllExReq();
             var userCompany = await _employeeService.TGetAllAsync(x => x.CompanyName == compName);
             var userCompanyIds = userCompany.Select(user => user.Id);
-
-           
             var mappingQuery = _mapper.Map<IEnumerable<ExpenditureRequestVM>>(expList)
                 .Where(expenditure => userCompanyIds.Contains(expenditure.EmployeeId)).ToList();
-
             _expenditureService.GetExpenditureApprovelName(mappingQuery);
 
             foreach (var item in mappingQuery)
@@ -72,6 +66,7 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
             var user = _db.Users.Find(exp.EmployeeId);
             await _expenditureService.TChangeToTrueforExpenditure(id);
             await _emailService.RequestApprovedMail("aa", user.Email, "expenditure");
+            SetUserImageViewBag();
             return RedirectToAction("Index", "Expenditure", new { area = "Manager" });
         }
 
@@ -81,17 +76,16 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
             var user = _db.Users.Find(exp.EmployeeId);
             await _expenditureService.TChangeToFalseforExpenditure(id);
             await _emailService.RequestApprovedMail("aa", user.Email, "expenditure");
+            SetUserImageViewBag();
             return RedirectToAction("Index", "Expenditure", new { area = "Manager" });
         }
         public async Task<IActionResult> WaitingForApprovalExpenditure()
         {
 
-            var managerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var manager = _employeeService.TGetById(managerId);
-            var compName = manager.CompanyName;
-            var user = _db.Personels.FirstOrDefault(u => u.Id == managerId);
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+            //var managerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //var manager = _employeeService.TGetById(managerId);
+            var compName = GetEmployee().CompanyName;
+            SetUserImageViewBag();
 
 
             var query = _expenditureService.GetAllExReq().Where(x => x.ApprovalStatus == null);
@@ -103,13 +97,8 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
           _expenditureService.GetExpenditureApprovelName(mappingQuery);
             foreach (var item in mappingQuery)
             {
-                //item.LeaveTypeName = (_LeaveTypeService.GetByIdType(item.SelectedLeaveTypeId)).Name;
-                //item.TypeName = (_expenditureTypeService.GetByIdExpenditureType(item.ExpenditureTypeId)).ExpenditureName;
                 item.FullName = (_employeeService.TGetById(item.EmployeeId)).FullName;
-                //item.Title = (_employeeService.TGetById(item.RequestingId)).Title;
-                //item.ImgLink = (_employeeService.TGetById(item.EmployeeRequestingId)).ImageUrl;
                 item.CompanyName = (_employeeService.TGetById(item.EmployeeId)).CompanyName;
-
             }
 
             return View(mappingQuery);
@@ -118,29 +107,20 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
         public async Task<IActionResult> ConfirmedApprovalExpenditure()
         {
 
-            var managerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var manager = _employeeService.TGetById(managerId);
-            var compName = manager.CompanyName;
-            var user = _db.Personels.FirstOrDefault(u => u.Id == managerId);
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+            var compName = GetEmployee().CompanyName;
+            SetUserImageViewBag();
 
 
             var query = _expenditureService.GetAllExReq().Where(x => x.ApprovalStatus == true);
             var userCompany = await _employeeService.TGetAllAsync(x => x.CompanyName == compName);
             var userCompanyIds = userCompany.Select(user => user.Id);
-
             var mappingQuery = _mapper.Map<IEnumerable<ExpenditureRequestVM>>(query)
                .Where(advances => userCompanyIds.Contains(advances.EmployeeId)).ToList();
           _expenditureService.GetExpenditureApprovelName(mappingQuery);
 
             foreach (var item in mappingQuery)
             {
-                //item.TypeName = (_expenditureTypeService.GetByIdExpenditureType(item.ExpenditureTypeId)).ExpenditureName;
-                //item.LeaveTypeName = (_LeaveTypeService.GetByIdType(item.SelectedLeaveTypeId)).Name;
                 item.FullName = (_employeeService.TGetById(item.EmployeeId)).FullName;
-                //item.Title = (_employeeService.TGetById(item.RequestingId)).Title;
-                //item.ImgLink = (_employeeService.TGetById(item.EmployeeRequestingId)).ImageUrl;
                 item.CompanyName = (_employeeService.TGetById(item.EmployeeId)).CompanyName;
 
             }
@@ -151,13 +131,9 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
         public async Task<IActionResult> NotConfirmedApprovalExpenditure()
         {
 
-            var managerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var manager = _employeeService.TGetById(managerId);
-            var compName = manager.CompanyName;
-            var user = _db.Personels.FirstOrDefault(u => u.Id == managerId);
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
-
+        
+            var compName = GetEmployee().CompanyName;
+            SetUserImageViewBag();
 
             var query = _expenditureService.GetAllExReq().Where(x => x.ApprovalStatus == false);
             var userCompany = await _employeeService.TGetAllAsync(x => x.CompanyName == compName);
@@ -168,18 +144,25 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
        _expenditureService.GetExpenditureApprovelName(mappingQuery);
             foreach (var item in mappingQuery)
             {
-                //item.TypeName = (_expenditureTypeService.GetByIdExpenditureType(item.ExpenditureTypeId)).ExpenditureName;
-                //item.LeaveTypeName = (_LeaveTypeService.GetByIdType(item.SelectedLeaveTypeId)).Name;
                 item.FullName = (_employeeService.TGetById(item.EmployeeId)).FullName;
-                //item.Title = (_employeeService.TGetById(item.RequestingId)).Title;
-                //item.ImgLink = (_employeeService.TGetById(item.EmployeeRequestingId)).ImageUrl;
                 item.CompanyName = (_employeeService.TGetById(item.EmployeeId)).CompanyName;
-
 
             }
 
             return View(mappingQuery);
         }
-        //adsadads
+        [NonAction]
+        private void SetUserImageViewBag()
+        {
+            var qury2 = _expenditureService.GetByIdEmployee(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            ViewBag.UserImageUrl = qury2?.ImageUrl;
+            ViewBag.UserFullName = qury2?.FullName;
+
+        }
+        [NonAction]
+        private Employee GetEmployee()
+        {
+            return _expenditureService.GetByIdEmployee(User.FindFirstValue(ClaimTypes.NameIdentifier));
+        }
     }
 }
