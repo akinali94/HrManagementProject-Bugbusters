@@ -1,9 +1,15 @@
-﻿@model IEnumerable<BugBustersHR.BLL.ViewModels.CompanyViewModel.CompanyDetailsVM>
+﻿@model IEnumerable<BugBustersHR.BLL.ViewModels.AdminViewModel.GetManagerListVM>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Manager Details";
 }
 
+<style>
+    .nav-item .nav-link:hover {
+        background-color: lightgray; /* You can change this color to whatever you prefer */
+        transition: background-color 0.3s ease; /* Optional: Adds a smooth transition effect */
+    }
+</style>
 
 <body class="g-sidenav-show  bg-gray-200">
     <div class="container-fluid mt-6 px-md-4 d-flex justify-content-end align-items-center">
@@ -20,7 +26,7 @@
             <div class="col-12">
                 <div class="bg-light card card-body mx-2 mx-md-4 bg-light">
                     <div class="col-md-12 d-flex justify-content-center align-items-center">
-                        <h2 class="mb-1 mt-4">Company List</h2>
+                        <h2 class="mb-1 mt-4">Manager List</h2>
                     </div>
                     <div class="card-body mt-2 p-0">
                         <div class="row">
@@ -30,21 +36,30 @@
                                         <thead class="thead-dark sticky-header">
                                             <tr>
                                                 <th>
-                                                    Logo
-                                                </th>
-                                                <th>
-                                                    Company Name
-                                                </th>
-                                                <th>
-                                                    Title
-                                                </th>
-                                                <th>
-                                                    Mersis No
-                                                </th>
-                                                <th>
-                                                    Tax No
+                                                    Image
                                                 </th>
 
+                                                <th>
+                                                    Name
+                                                </th>
+                                                <th>
+                                                    Company
+                                                </th>
+                                                <th>
+                                                    Birth Place
+                                                </th>
+                                                <th>
+                                                    TC No
+                                                </th>
+                                                <th>
+                                                    Birth Date
+                                                </th>
+                                                <th>
+                                                    Started Date
+                                                </th>
+                                                <th>
+                                                    Hired Date
+                                                </th>
                                                 <th>
                                                     Email
                                                 </th>
@@ -53,100 +68,57 @@
                                                     Phone Number
                                                 </th>
                                                 <th>
-                                                    Address
-                                                </th>
-
-                                                <th>
-                                                    Employee Number
-                                                </th>
-
-                                                <th>
-                                                    Foundation Year
+                                                    Section
                                                 </th>
                                                 <th>
-                                                    Contract Start Date
+                                                    Title
                                                 </th>
-
-                                                <th>
-                                                    Contract End Date
-                                                </th>
-                                                <th>
-                                                  Active
-                                                </th>
-
-                                                <th></th>
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach (var item in Model)
                                             {
                                                 <tr>
-                                                    <td>@if(item.Logo == null)
-                                                        {
-                                                            <h5> No logo</h5>
-                                                        }
-                                                        else
-                                                        {
-                                                            <img src="@Url.Content(item.Logo)" alt="Company Logo" class="company-logo" style="width: 100px; height: 100px;" />
-                                                        }
-                                                  
-
+                                                    <td>
+                                                        @item.ImageUrl
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.FullName)
                                                     </td>
                                                     <td>
                                                         @Html.DisplayFor(modelItem => item.CompanyName)
                                                     </td>
                                                     <td>
-                                                        @Html.DisplayFor(modelItem => item.CompanyTitle)
+                                                        @Html.DisplayFor(modelItem => item.BirthPlace)
                                                     </td>
                                                     <td>
-                                                        @Html.DisplayFor(modelItem => item.MersisNo)
+                                                        @Html.DisplayFor(modelItem => item.TC)
                                                     </td>
-
                                                     <td>
-                                                        @Html.DisplayFor(modelItem => item.TaxNumber)
+                                                        @Html.DisplayFor(modelItem => item.BirthDate)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.StartedDate)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.HiredDate)
                                                     </td>
                                                     <td>
                                                         @Html.DisplayFor(modelItem => item.Email)
                                                     </td>
-
                                                     <td>
                                                         @Html.DisplayFor(modelItem => item.TelephoneNumber)
                                                     </td>
                                                     <td>
-                                                        @Html.DisplayFor(modelItem => item.Address)
-                                                    </td>
-
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.EmployeeNumber)
-                                                    </td>
-
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.FoundationYear)
-                                                    </td>
-
-                                                    <td>
-                                                        @Html.DisplayFor(modelItem => item.ContractStartDate)
+                                                        @Html.DisplayFor(modelItem => item.Section)
                                                     </td>
                                                     <td>
-                                                        @Html.DisplayFor(modelItem => item.ContractEndDate)
+                                                        @Html.DisplayFor(modelItem => item.Title)
                                                     </td>
                                                     <td>
-                                                        @if (item.IsActive)
-                                                        {
-                                                            <span style="color:aqua" class="badge badge-success">Active</span>
-                                                        }
-                                                        else
-                                                        {
-                                                            <span style="color:red" class="badge badge-danger">Inactive</span>
-                                                        }
-
-                                                    </td>
-                                                   
-
-
-                                                    <td>
-                                                        @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-                                                        
+                                                        @*@Html.ActionLink("Edit", "ManagerEdit", new { id=item.Id }) |*@
+                                                        @*@Html.ActionLink("Details", "Details", new { id=item.Id })*@
                                                         @Html.ActionLink("Delete", "Delete", new { id=item.Id })
                                                     </td>
                                                 </tr>
@@ -177,3 +149,4 @@
         </div>
     </div>
 </body>
+

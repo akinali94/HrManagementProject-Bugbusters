@@ -22,6 +22,7 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using System.Collections;
 using BugBustersHR.BLL.Services.Abstract.CompanyService;
+using BugBustersHR.BLL.ViewModels.CompanyViewModel;
 
 namespace BugBustersHR.UI.Areas.Admin.Controllers
 {
@@ -255,6 +256,44 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
             SetUserImageViewBag();
             return View(mappingList);
         }
+
+        public IActionResult GetManagerDetails(string id)
+        {
+            var getManager = _employeeService.TGetById(id);
+            var mappingQuery = _mapper.Map<GetManagerListVM>(getManager);
+
+            SetUserImageViewBag();
+            return View(new List<GetManagerListVM>{mappingQuery});
+        }
+
+        public IActionResult Delete(string id)
+        {
+            var getManager = _employeeService.TGetById(id);
+            _employeeService.TDelete(getManager);
+            return RedirectToAction("GetManagerList");
+        }
+        //public IActionResult ManagerEdit(string id)
+        //{
+        //    ViewBag.ManagerId = id;
+        //    var manager = _employeeService.TGetById(id);
+        //    var map = _mapper.Map<ManagerUpdateVM>(manager);
+        //    SetUserImageViewBag();
+        //    return View(map);
+        //}
+        //[HttpPost]
+        //public IActionResult ManagerEdit(ManagerUpdateVM managerVM)
+        //{
+        //    ManagerValidator managerValidator = new ManagerValidator();
+        //    var validationResult = managerValidator.Validate(managerVM);
+        //    if(validationResult.IsValid)
+        //    {
+        //        _employeeService.TUpdate(_mapper.Map<Employee>(managerVM));
+        //        SetUserImageViewBag();
+        //        return RedirectToAction("GetManagerDetails", ViewBag.ManagerId);
+        //    }
+        //    SetUserImageViewBag();
+        //    return View(managerVM);
+        //}
 
         [NonAction]
         private void SetUserImageViewBag()

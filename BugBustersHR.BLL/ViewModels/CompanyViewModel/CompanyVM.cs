@@ -24,7 +24,7 @@ namespace BugBustersHR.BLL.ViewModels.CompanyViewModel
         public ImageModel ImageModel { get; set; }
         public string MersisNo { get; set; }
         public string TaxNumber { get; set; }
-        public string Logo { get; set; }
+        public string? Logo { get; set; }
         public string TelephoneNumber { get; set; }
         public string Address { get; set; }
         public string Email { get; set; }
