@@ -223,10 +223,8 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
                 mapEmployee.UserName = createEmployeeVM.Email;
                 mapEmployee.Role = AppRoles.Role_Employee;
 
-                //await _userStore.SetUserNameAsync(mapEmployee, createEmployeeVM.Email, CancellationToken.None);
-                //await _emailStore.SetEmailAsync(mapEmployee, createEmployeeVM.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(mapEmployee, createEmployeeVM.Password);
-                //_service.TAddAsync(mapEmployee);
+
 
                 if (!await _roleManager.RoleExistsAsync(AppRoles.Role_Employee))
                 {
@@ -242,7 +240,7 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
                 var link = Url.Page("/Account/ResetPassword", pageHandler: null, values: new { area = "Identity", userId = mapEmployee.Id, code }, protocol: Request.Scheme);
 
 
-                await _emailService.SendConfirmEmail(link, mapEmployee.Email, mapEmployee.PasswordHash);
+                await _emailService.SendConfirmEmail(link,mapEmployee.Email,mapEmployee.PasswordHash);
 
                 return RedirectToAction("Index", "Default");
             }
@@ -300,12 +298,6 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
             
         }
 
-        //[HttpPost]
-        //public IActionResult GetEmployeeDetails(Employee emp)
-        //{
-
-        //    return View(mappingQuery1);
-
-        //}
+  
     }
 }

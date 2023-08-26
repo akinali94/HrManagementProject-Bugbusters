@@ -33,9 +33,8 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var managerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var manager = _employeeService.TGetById(managerId);
-            var compName = manager.CompanyName;
+
+            var compName = GetEmployee().CompanyName;
 
             var advancesList = _individualAdvanceService.GetAllIndividualAdvanceReq();
             var userCompany = await _employeeService.TGetAllAsync(x => x.CompanyName == compName);
@@ -48,15 +47,11 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
             _individualAdvanceService.GetAdvanceApprovelName(mappingQuery);
             foreach (var item in mappingQuery)
             {
-                //item.LeaveTypeName = (_LeaveTypeService.GetByIdType(item.SelectedLeaveTypeId)).Name;
                 item.FullName = (_employeeService.TGetById(item.EmployeeRequestingId)).FullName;
-                //item.Title = (_employeeService.TGetById(item.RequestingId)).Title;
                 item.CompanyName = (_employeeService.TGetById(item.EmployeeRequestingId)).CompanyName;
-             
+
             }
-            var user = _db.Personels.FirstOrDefault(u => u.Id == managerId);
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+            SetUserImageViewBag();
 
             ViewBag.ManagerComp = userCompany;
 
@@ -70,7 +65,7 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
             await _individualAdvanceService.TChangeToTrueforAdvance(id);
             await _emailService.RequestApprovedMail("aa", user.Email, "individual advance");
 
-
+            SetUserImageViewBag();
             return RedirectToAction("Index", "Advances", new { area = "Manager" });
         }
 
@@ -81,18 +76,16 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
             await _individualAdvanceService.TChangeToFalseforAdvance(id);
 
             await _emailService.RequestApprovedMail("aa", user.Email, "individual advance");
+            SetUserImageViewBag();
             return RedirectToAction("Index", "Advances", new { area = "Manager" });
         }
 
         public async Task<IActionResult> WaitingForApprovalAdvance()
         {
 
-            var managerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var manager = _employeeService.TGetById(managerId);
-            var compName = manager.CompanyName;
-            var user = _db.Personels.FirstOrDefault(u => u.Id == managerId);
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+
+            var compName = GetEmployee().CompanyName;
+            SetUserImageViewBag();
 
 
             var query = _individualAdvanceService.GetAllIndividualAdvanceReq().Where(x => x.ApprovalStatus == null);
@@ -104,10 +97,8 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
             _individualAdvanceService.GetAdvanceApprovelName(mappingQuery);
             foreach (var item in mappingQuery)
             {
-                //item.LeaveTypeName = (_LeaveTypeService.GetByIdType(item.SelectedLeaveTypeId)).Name;
+               
                 item.FullName = (_employeeService.TGetById(item.EmployeeRequestingId)).FullName;
-                //item.Title = (_employeeService.TGetById(item.RequestingId)).Title;
-                //item.ImgLink = (_employeeService.TGetById(item.EmployeeRequestingId)).ImageUrl;
                 item.CompanyName = (_employeeService.TGetById(item.EmployeeRequestingId)).CompanyName;
 
             }
@@ -120,12 +111,8 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
         public async Task<IActionResult> ConfirmedApprovalAdvance()
         {
 
-            var managerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var manager = _employeeService.TGetById(managerId);
-            var compName = manager.CompanyName;
-            var user = _db.Personels.FirstOrDefault(u => u.Id == managerId);
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+            var compName = GetEmployee().CompanyName;
+            SetUserImageViewBag();
 
 
             var query = _individualAdvanceService.GetAllIndividualAdvanceReq().Where(x => x.ApprovalStatus == true);
@@ -137,9 +124,8 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
             _individualAdvanceService.GetAdvanceApprovelName(mappingQuery);
             foreach (var item in mappingQuery)
             {
-                //item.LeaveTypeName = (_LeaveTypeService.GetByIdType(item.SelectedLeaveTypeId)).Name;
+              
                 item.FullName = (_employeeService.TGetById(item.EmployeeRequestingId)).FullName;
-                
                 item.CompanyName = (_employeeService.TGetById(item.EmployeeRequestingId)).CompanyName;
 
             }
@@ -152,12 +138,8 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
         public async Task<IActionResult> NotConfirmedForApprovalAdvance()
         {
 
-            var managerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var manager = _employeeService.TGetById(managerId);
-            var compName = manager.CompanyName;
-            var user = _db.Personels.FirstOrDefault(u => u.Id == managerId);
-            ViewBag.UserImageUrl = user?.ImageUrl;
-            ViewBag.UserFullName = user?.FullName;
+            var compName = GetEmployee().CompanyName;
+            SetUserImageViewBag();
 
 
             var query = _individualAdvanceService.GetAllIndividualAdvanceReq().Where(x => x.ApprovalStatus == false);
@@ -169,16 +151,31 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
 
             foreach (var item in mappingQuery)
             {
-                //item.LeaveTypeName = (_LeaveTypeService.GetByIdType(item.SelectedLeaveTypeId)).Name;
+
                 item.FullName = (_employeeService.TGetById(item.EmployeeRequestingId)).FullName;
-                //item.Title = (_employeeService.TGetById(item.RequestingId)).Title;
-                //item.ImgLink = (_employeeService.TGetById(item.EmployeeRequestingId)).ImageUrl;
+ 
                 item.CompanyName = (_employeeService.TGetById(item.EmployeeRequestingId)).CompanyName;
 
             }
 
             return View(mappingQuery);
         }
+        [NonAction]
+        private void SetUserImageViewBag()
+        {
 
+
+            var adminID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var admin = _db.Personels.FirstOrDefault(u => u.Id == adminID);
+            ViewBag.UserImageUrl = admin?.ImageUrl;
+            ViewBag.UserFullName = admin?.FullName;
+
+
+        }
+        [NonAction]
+        private Employee GetEmployee()
+        {
+            return _individualAdvanceService.GetByIdEmployee(User.FindFirstValue(ClaimTypes.NameIdentifier));
+        }
     }
 }
