@@ -22,6 +22,7 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using System.Collections;
 using BugBustersHR.BLL.Services.Abstract.CompanyService;
+using BugBustersHR.BLL.ViewModels.CompanyViewModel;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace BugBustersHR.UI.Areas.Admin.Controllers

@@ -146,19 +146,15 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
         {
 
             var company = _service.GetByIdCompany(id);
-
-            var mapli = _mapper.Map<CompanyVM>(company);
+            _service.TDelete(company);
             SetUserImageViewBag();
 
-            return View(mapli);
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
-        public IActionResult Delete(CompanyVM companyVM)
+        public IActionResult Delete(CompanyDetailsVM companyVM)
         {
-
-
-
             _service.TDelete(_mapper.Map<Companies>(companyVM));
             SetUserImageViewBag();
             return RedirectToAction("Index");
@@ -174,6 +170,7 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
 
             SetUserImageViewBag();
             return View(new List<CompanyDetailsVM> { mappingQuery1 });
+            
         }
 
 
