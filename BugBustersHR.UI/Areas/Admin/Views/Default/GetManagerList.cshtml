@@ -65,7 +65,8 @@
                                             {
                                                 <tr>
                                                     <td>
-                                                        @item.ImageUrl
+                                                        <img src="@Url.Content(item.ImageUrl)" alt="Photo" class="company-logo" style="width: 100px; height: 100px;" />
+
                                                     </td>
                                                     <td>
                                                         @Html.DisplayFor(modelItem => item.FullName)
