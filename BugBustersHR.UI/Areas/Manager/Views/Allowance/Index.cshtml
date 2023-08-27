@@ -130,8 +130,8 @@
                                                             @{
                                                                 if (item.ApprovalStatus == null)
                                                                 {
-                                                                    <a href="/Manager/Allowance/Index/@item.Id" class="btn btn-outline-warning">Refuse</a>
-                                                                    <a href="/Manager/Allowance/Index/@item.Id" class="btn btn-outline-info">Accept</a>
+                                                                    <a href="/Manager/Allowance/AllowanceRefused/@item.Id" class="btn btn-outline-warning">Refuse</a>
+                                                                    <a href="/Manager/Allowance/AllowanceAccepted/@item.Id" class="btn btn-outline-info">Accept</a>
                                                                     //@Html.ActionLink("Accept Leave", "LeaveAccepted", new { id=item.Id  })
                                                                     //@Html.ActionLink("Refuse Leave", "LeaveRefused", new { id=item.Id })
 
