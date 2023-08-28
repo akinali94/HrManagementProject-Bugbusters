@@ -55,6 +55,7 @@ namespace BugBustersHR.BLL.Services.Concrete
         {
             _repository.Update(entity);
             _db.SaveChanges();
+            //_unitOfWork.Save();
 
         }
     }

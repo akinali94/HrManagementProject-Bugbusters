@@ -29,7 +29,7 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
 
         private readonly ICompanyService _service;
         private readonly IMapper _mapper;
-     
+
         private readonly AzureOptions _azureOptions;
         private readonly IValidator<CompanyVM> _companyValidator;
         private readonly CompanyVM _companyVM;
@@ -42,7 +42,7 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
             _companyValidator = companyValidator;
             _hrDb = hrDb;
             _azureOptions = azureOptions.Value;
-            
+
         }
 
         public IActionResult Index()
@@ -52,7 +52,7 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
 
             SetUserImageViewBag();
             return View(mappingQuery);
-       
+
         }
 
         public IActionResult Create()
@@ -63,7 +63,7 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CompanyVM companyVm)
         {
-           
+
             try
             {
                 if (companyVm.ImageModel.File != null)
@@ -93,17 +93,17 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
                 throw;
             }
 
-            
+
 
             var validationResult = _companyValidator.Validate(companyVm);
 
             if (validationResult.IsValid)
             {
                 var company = _mapper.Map<Companies>(companyVm);
-                
+
                 await _service.TAddAsync(company);
                 SetUserImageViewBag();
-               
+
                 return RedirectToAction("Index");
             }
 
@@ -122,37 +122,53 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
             var mapli = _mapper.Map<CompanyVM>(company);
             SetUserImageViewBag();
             return View(mapli);
-          
+
         }
         [HttpPost]
         public IActionResult Edit(CompanyVM companyVM)
         {
-            var existingCompany = _service.GetByIdCompany(companyVM.Id);
-            var existingMapping = _mapper.Map<UpdateCompanyVM>(existingCompany);
             var validationResult = _companyValidator.Validate(companyVM);
-            
-            
+            try
+            {
+                if (companyVM.ImageModel.File != null)
+                {
+                    string fileExtension = Path.GetExtension(companyVM.ImageModel.File.FileName);
+                    var uniqueName = Guid.NewGuid().ToString() + fileExtension;
+
+                    using (MemoryStream fileUploadStream = new MemoryStream())
+                    {
+                        companyVM.ImageModel.File.CopyTo(fileUploadStream);
+                        fileUploadStream.Position = 0;
+
+                        BlobContainerClient blobContainerClient = new BlobContainerClient(_azureOptions.ConnectionString, _azureOptions.Container);
+                        BlobClient blobClient = blobContainerClient.GetBlobClient(uniqueName);
+
+                        blobClient.Upload(fileUploadStream, new BlobHttpHeaders
+                        {
+                            ContentType = companyVM.ImageModel.File.ContentType,
+                        });
+
+                        companyVM.Logo = "https://bugbustersstorage.blob.core.windows.net/contentupload/" + uniqueName;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
             if (validationResult.IsValid)
             {
-                existingMapping = _mapper.Map<UpdateCompanyVM>(companyVM);
-                var mapped = _mapper.Map<Companies>(existingMapping);
-                //_hrDb.Update(validationResult);
-                //_hrDb.SaveChanges();
-                _service.TUpdate(mapped);
-                SetUserImageViewBag();
+                var mapping = _mapper.Map<Companies>(companyVM);
+                mapping.CompanyName = companyVM.CompanyName;
+
+                _service.TUpdate(mapping);
                 return RedirectToAction("Index");
             }
             SetUserImageViewBag();
             return View(companyVM);
 
-            //if (validationResult.IsValid)
-            //{
-            //    _service.TUpdate(_mapper.Map<Companies>(companyVM));
-            //    SetUserImageViewBag();
-            //    return RedirectToAction("Index");
-            //}
-            //SetUserImageViewBag();
-            //return View(companyVM);
+
         }
 
 
@@ -184,7 +200,7 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
 
             SetUserImageViewBag();
             return View(new List<CompanyDetailsVM> { mappingQuery1 });
-            
+
         }
 
 
@@ -192,13 +208,13 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
         [NonAction]
         private void SetUserImageViewBag()
         {
-      
+
 
             var adminID = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var admin = _hrDb.Personels.FirstOrDefault(u => u.Id == adminID);
             ViewBag.UserImageUrl = admin?.ImageUrl;
             ViewBag.UserFullName = admin?.FullName;
-      
+
 
         }
         [NonAction]

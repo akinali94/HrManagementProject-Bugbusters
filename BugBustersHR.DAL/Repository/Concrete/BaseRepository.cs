@@ -53,6 +53,7 @@ namespace BugBustersHR.DAL.Repository.Concrete
 
         public void Update(T entity)
         {
+            _hrDb.ChangeTracker.Clear();
             _hrDb.Update(entity);
         }
 
