@@ -222,6 +222,7 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
 
                 mapEmployee.UserName = createEmployeeVM.Email;
                 mapEmployee.Role = AppRoles.Role_Employee;
+                mapEmployee.EmailConfirmed = true;
 
                 var result = await _userManager.CreateAsync(mapEmployee, createEmployeeVM.Password);
 

@@ -33,7 +33,7 @@ namespace BugBustersHR.UI.Email.ServiceEmail
 
             var mailMessage = new MailMessage();
 
-            string emailTemplate = File.ReadAllText("C:\\Users\\JUVENİS\\Source\\Repos\\BugBustersFinall\\BugBustersHR.UI\\wwwroot\\assets\\mailconfirmation\\html\\emailconfirmation.html");
+            string emailTemplate = File.ReadAllText("C:\\Users\\cagri\\Desktop\\dddddddd\\BugBustersFinall\\BugBustersHR.UI\\wwwroot\\assets\\mailconfirmation\\html\\emailconfirmation.html");
 
             emailTemplate = emailTemplate.Replace("{DateTime.Now.Year}", DateTime.Now.Year.ToString());
 
@@ -79,6 +79,8 @@ namespace BugBustersHR.UI.Email.ServiceEmail
             await smptClient.SendMailAsync(mailMessage);
         }
 
+
+
         public async Task LeaveRequestApprovedMail(string ToEmail, string approvedStatus, string employeeFullName, Employee manager, EmployeeLeaveRequest request)
         {
             var smptClient = new SmtpClient();
@@ -92,24 +94,25 @@ namespace BugBustersHR.UI.Email.ServiceEmail
 
 
             var mailMessage = new MailMessage();
+            string emailTemplate = File.ReadAllText("C:\\Users\\cagri\\Desktop\\dddddddd\\BugBustersFinall\\BugBustersHR.UI\\wwwroot\\assets\\mailconfirmation\\html\\leavemail.html");
+            emailTemplate = emailTemplate.Replace("{DateTime.Now.Year}", DateTime.Now.Year.ToString());
+            emailTemplate = emailTemplate.Replace("{employeeFullName}", employeeFullName);
+            emailTemplate = emailTemplate.Replace("{approvedStatus}", approvedStatus);
+            emailTemplate = emailTemplate.Replace("{manager.FullName}", manager.FullName);
+            emailTemplate = emailTemplate.Replace("{request.StartDate.ToString(\"yyyy-MM-dd\")}", request.StartDate.ToString("yyyy-MM-dd"));
+            emailTemplate = emailTemplate.Replace("{request.EndDate.ToString(\"yyyy-MM-dd\")}", request.EndDate.ToString("yyyy-MM-dd"));
+
 
             mailMessage.From = new MailAddress(_settings.Username);
             mailMessage.To.Add(ToEmail);
             mailMessage.Subject = "Your request has been answered.";
-            mailMessage.Body = @$"<h3>Hello {employeeFullName}</h3>
-                    <h4> Your Leave request has been {approvedStatus} to by your manager {manager.FullName}</h4>
-
-                    <h4>Leave Started Date : {request.StartDate.ToString("yyyy-MM-dd")}</h4>
-                    <h4>Leave End Date : {request.EndDate.ToString("yyyy-MM-dd")}</h4>
-
-                    <h3>Please check your system. If there is an issue, please contact your manager. </h3>";
+            mailMessage.Body = emailTemplate;
 
             mailMessage.IsBodyHtml = true;
 
             await smptClient.SendMailAsync(mailMessage);
 
         }
-
         public async Task AdvanceRequestApprovedMail(string ToEmail, string approvedStatus, string employeeFullName, Employee manager, IndividualAdvance request)
         {
             var smptClient = new SmtpClient();
@@ -123,22 +126,29 @@ namespace BugBustersHR.UI.Email.ServiceEmail
 
 
             var mailMessage = new MailMessage();
+            string emailTemplate = File.ReadAllText("C:\\Users\\cagri\\Desktop\\dddddddd\\BugBustersFinall\\BugBustersHR.UI\\wwwroot\\assets\\mailconfirmation\\html\\advancemail.html");
+            emailTemplate = emailTemplate.Replace("{DateTime.Now.Year}", DateTime.Now.Year.ToString());
+            emailTemplate = emailTemplate.Replace("{employeeFullName}", employeeFullName);
+            emailTemplate = emailTemplate.Replace("{approvedStatus}", approvedStatus);
+            emailTemplate = emailTemplate.Replace("{manager.FullName}", manager.FullName);
+            emailTemplate = emailTemplate.Replace("{request.Amount}", request.Amount.ToString());
+            emailTemplate = emailTemplate.Replace("{request.RequestDate}", request.RequestDate.ToString("yyyy-MM-dd"));
+
+
 
             mailMessage.From = new MailAddress(_settings.Username);
             mailMessage.To.Add(ToEmail);
             mailMessage.Subject = "Your request has been answered.";
-            mailMessage.Body = @$"<h3>Hello {employeeFullName}</h3>
-                    <h4> Your Advance request has been {approvedStatus} to by your manager {manager.FullName}</h4>
-
-                    <h4>Amount of Advance : {request.Amount}</h4>
-                    
-                    <h3>Please check your system. If there is an issue, please contact your manager. </h3>";
+            mailMessage.Body = emailTemplate;
 
             mailMessage.IsBodyHtml = true;
 
             await smptClient.SendMailAsync(mailMessage);
         }
 
+
+
+        //--------------------------------------------------------------------------
         public async Task AllowanceRequestApprovedMail(string ToEmail, string approvedStatus, string employeeFullName, Employee manager, InstitutionalAllowance request)
         {
             var smptClient = new SmtpClient();
@@ -152,18 +162,22 @@ namespace BugBustersHR.UI.Email.ServiceEmail
 
 
             var mailMessage = new MailMessage();
+            string emailTemplate = File.ReadAllText("C:\\Users\\cagri\\Desktop\\dddddddd\\BugBustersFinall\\BugBustersHR.UI\\wwwroot\\assets\\mailconfirmation\\html\\allowanceMail.html");
+
+            emailTemplate = emailTemplate.Replace("{DateTime.Now.Year}", DateTime.Now.Year.ToString());
+            emailTemplate = emailTemplate.Replace("{employeeFullName}", employeeFullName);
+            emailTemplate = emailTemplate.Replace("{approvedStatus}", approvedStatus);
+            emailTemplate = emailTemplate.Replace("{manager.FullName}", manager.FullName);
+            emailTemplate = emailTemplate.Replace("{request.AmountOfAllowance}", request.AmountOfAllowance.ToString());
+            emailTemplate = emailTemplate.Replace("{request.Currency.Value}", request.Currency.Value.ToString());
+            emailTemplate = emailTemplate.Replace("{request.RequestDate}", request.RequestDate.ToString("yyyy-MM-dd"));
+
+
 
             mailMessage.From = new MailAddress(_settings.Username);
             mailMessage.To.Add(ToEmail);
             mailMessage.Subject = "Your request has been answered.";
-            mailMessage.Body = @$"<h3>Hello {employeeFullName}</h3>
-                    <h4> Your instituonal allowance request has been {approvedStatus} to by your manager {manager.FullName}</h4>
-
-                    <h4>Amount of Allowance : {request.AmountOfAllowance}</h4>
-                    <h4>Currency : {request.Currency.Value}</h4>
-    
-                    
-                    <h3>Please check your system. If there is an issue, please contact your manager. </h3>";
+            mailMessage.Body = emailTemplate;
 
             mailMessage.IsBodyHtml = true;
 
@@ -183,19 +197,20 @@ namespace BugBustersHR.UI.Email.ServiceEmail
 
 
             var mailMessage = new MailMessage();
+            string emailTemplate = File.ReadAllText("C:\\Users\\cagri\\Desktop\\dddddddd\\BugBustersFinall\\BugBustersHR.UI\\wwwroot\\assets\\mailconfirmation\\html\\expendituremail.html");
+            emailTemplate = emailTemplate.Replace("{DateTime.Now.Year}", DateTime.Now.Year.ToString());
+            emailTemplate = emailTemplate.Replace("{employeeFullName}", employeeFullName);
+            emailTemplate = emailTemplate.Replace("{approvedStatus}", approvedStatus);
+            emailTemplate = emailTemplate.Replace("{manager.FullName}", manager.FullName);
+            emailTemplate = emailTemplate.Replace("{request.AmountOfExpenditure}", request.AmountOfExpenditure.ToString());
+            emailTemplate = emailTemplate.Replace("{request.Currency.Value}", request.Currency.Value.ToString());
+            emailTemplate = emailTemplate.Replace("{request.RequestDate}", request.RequestDate.ToString("yyyy-MM-dd"));
+
 
             mailMessage.From = new MailAddress(_settings.Username);
             mailMessage.To.Add(ToEmail);
             mailMessage.Subject = "Your request has been answered.";
-            mailMessage.Body = @$"<h3>Hello {employeeFullName}</h3>
-                    <h4> Your expenditure request has been {approvedStatus} to by your manager {manager.FullName}</h4>
-
-                    <h4>Amount of Expenditure : {request.AmountOfExpenditure}</h4>
-                    <h4>Currency : {request.Currency.Value}</h4>
-                    
-    
-                    
-                    <h3>Please check your system. If there is an issue, please contact your manager. </h3>";
+            mailMessage.Body = emailTemplate;
 
             mailMessage.IsBodyHtml = true;
 
