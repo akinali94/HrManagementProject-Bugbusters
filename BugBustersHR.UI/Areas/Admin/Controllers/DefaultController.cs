@@ -22,6 +22,7 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using System.Collections;
 using BugBustersHR.BLL.Services.Abstract.CompanyService;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace BugBustersHR.UI.Areas.Admin.Controllers
 {
@@ -255,6 +256,85 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
             SetUserImageViewBag();
             return View(mappingList);
         }
+
+        public IActionResult GetManagerDetail(string id)
+        {
+
+            var manager = _hrDb.Personels.FirstOrDefault(x => x.Id == id && x.Role == AppRoles.Role_Manager);
+
+            if (manager == null)
+            {
+                
+                return RedirectToAction("GetManagerList"); 
+            }
+
+            var mappedManager = _mapper.Map<GetManagerListVM>(manager);
+            SetUserImageViewBag();
+            return View(mappedManager);
+        }
+
+        public IActionResult ManagerEdit(string id)
+        {
+            var getList = _hrDb.Personels.Where(x => x.Role == AppRoles.Role_Manager).ToList();
+            var mappingList = _mapper.Map<List<GetManagerListVM>>(getList);
+
+
+            var manager = _hrDb.Personels.FirstOrDefault(x => x.Id == id && x.Role == AppRoles.Role_Manager);
+            if (manager == null)
+            {
+                return View("GetManagerDetail");
+            }
+
+            var mapli = _mapper.Map<GetManagerListVM>(manager);
+
+         
+            SetUserImageViewBag();
+
+            return View(mapli);
+        }
+
+        [HttpPost]
+        public IActionResult ManagerEdit(GetManagerListVM model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var existingManager = _hrDb.Personels.FirstOrDefault(x => x.Id == model.Id && x.Role == AppRoles.Role_Manager);
+
+                if (existingManager == null)
+                {
+                    return RedirectToAction("GetManagerList");
+                }
+
+                existingManager.Id = model.Id;
+                existingManager.ImageUrl = model.ImageUrl;
+                existingManager.FullName = model.FullName;
+                existingManager.Name = model.Name;
+                existingManager.SecondName = model.SecondName;
+                existingManager.Surname = model.Surname;
+                existingManager.SecondSurname = model.SecondSurname;
+                existingManager.BirthPlace = model.BirthPlace;
+                existingManager.TC = model.TC;
+                existingManager.BirthDate = model.BirthDate;
+                existingManager.HiredDate = model.HiredDate;
+                existingManager.IsActive = model.IsActive;
+                existingManager.Title = model.Title;
+                existingManager.Section = model.Section;
+                existingManager.Salary = model.Salary;
+                existingManager.TelephoneNumber = model.TelephoneNumber;
+                existingManager.Address = model.Address;
+                existingManager.CompanyName = model.CompanyName;
+                existingManager.Email = model.Email;
+
+                _employeeService.TUpdate(existingManager);
+
+                return RedirectToAction("GetManagerDetail", new { id = model.Id });
+            }
+            var mappedManager = _mapper.Map<GetManagerListVM>(model);
+            SetUserImageViewBag();
+            return View("GetManagerDetail", mappedManager);
+        }
+
 
         [NonAction]
         private void SetUserImageViewBag()

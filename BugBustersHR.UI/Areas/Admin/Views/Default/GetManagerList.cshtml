@@ -1,4 +1,5 @@
-﻿@model IEnumerable<BugBustersHR.BLL.ViewModels.AdminViewModel.GetManagerListVM>
+﻿@model List<BugBustersHR.BLL.ViewModels.AdminViewModel.GetManagerListVM>
+
 
 @{
     ViewData["Title"] = "GetManagerList";
@@ -86,7 +87,7 @@
                                                     </td>
                                                     <td>
                                                         @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |*@
-                                                        @Html.ActionLink("Details", "GetManagerList", new { id=item.Id })
+                                                        @Html.ActionLink("Details", "GetManagerDetail", new { id=item.Id })
                                                         @*@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
                                                     </td>
                                                 </tr>

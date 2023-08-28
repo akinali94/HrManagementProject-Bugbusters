@@ -9,8 +9,13 @@ namespace BugBustersHR.BLL.ViewModels.AdminViewModel
 {
     public class GetManagerListVM
     {
+
+        public GetManagerListVM()
+        {
+
+            ImageModel = new ImageModel();
+        }
         public string Id { get; set; }
-        public string ImageUrl { get; set; }
         public string Name { get; set; }
         public string? SecondName { get; set; }
         public string Surname { get; set; }
@@ -30,5 +35,6 @@ namespace BugBustersHR.BLL.ViewModels.AdminViewModel
         public string CompanyName { get; set; }
         public string Email { get; set; }
         public ImageModel ImageModel { get; set; }
+        public string ImageUrl { get; set; }
     }
 }
