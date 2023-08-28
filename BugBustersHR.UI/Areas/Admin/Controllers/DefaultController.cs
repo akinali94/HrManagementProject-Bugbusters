@@ -252,7 +252,7 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
         {
 
             var getList = _hrDb.Personels.Where(x => x.Role == AppRoles.Role_Manager).ToList();
-
+            
             var mappingList = _mapper.Map<List<GetManagerListVM>>(getList);
             SetUserImageViewBag();
             return View(mappingList);
@@ -337,6 +337,13 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
             var mappedManager = _mapper.Map<GetManagerListVM>(model);
             SetUserImageViewBag();
             return View("GetManagerDetail", mappedManager);
+        }
+
+        public IActionResult ManagerDelete(string id)
+        {
+            var manager = _employeeService.GetByIdEmployee(id);
+            _employeeService.TDelete(manager);
+            return RedirectToAction("GetManagerList");
         }
 
 

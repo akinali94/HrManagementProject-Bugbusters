@@ -139,6 +139,7 @@ builder.Services.AddScoped<AdminSummaryListVM>();
 builder.Services.AddScoped<AdminListWithoutSalaryVM>();
 builder.Services.AddScoped<GetManagerListVM>();
 builder.Services.AddScoped<CompanyDetailsVM>();
+builder.Services.AddScoped<UpdateCompanyVM>();
 
 builder.Services.AddScoped<EmployeeVM>();
 

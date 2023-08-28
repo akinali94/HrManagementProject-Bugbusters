@@ -42,7 +42,7 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
             _companyValidator = companyValidator;
             _hrDb = hrDb;
             _azureOptions = azureOptions.Value;
-
+            
         }
 
         public IActionResult Index()
@@ -127,18 +127,32 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Edit(CompanyVM companyVM)
         {
-    
-
+            var existingCompany = _service.GetByIdCompany(companyVM.Id);
+            var existingMapping = _mapper.Map<UpdateCompanyVM>(existingCompany);
             var validationResult = _companyValidator.Validate(companyVM);
-
+            
+            
             if (validationResult.IsValid)
             {
-                _service.TUpdate(_mapper.Map<Companies>(companyVM));
+                existingMapping = _mapper.Map<UpdateCompanyVM>(companyVM);
+                var mapped = _mapper.Map<Companies>(existingMapping);
+                //_hrDb.Update(validationResult);
+                //_hrDb.SaveChanges();
+                _service.TUpdate(mapped);
                 SetUserImageViewBag();
                 return RedirectToAction("Index");
             }
             SetUserImageViewBag();
             return View(companyVM);
+
+            //if (validationResult.IsValid)
+            //{
+            //    _service.TUpdate(_mapper.Map<Companies>(companyVM));
+            //    SetUserImageViewBag();
+            //    return RedirectToAction("Index");
+            //}
+            //SetUserImageViewBag();
+            //return View(companyVM);
         }
 
 
