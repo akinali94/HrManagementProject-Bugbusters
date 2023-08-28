@@ -88,6 +88,11 @@
                         </a>
                     </div>
                     <div class="col-sm-3 text-center">
+                        <a asp-area="Admin" asp-controller="Default" asp-action="ManagerDelete" asp-route-id="@Model.Id" class="btn btn-danger">
+                            <i class="fas fa-user"></i> Delete
+                        </a>
+                    </div>
+                    <div class="col-sm-3 text-center">
                         <a asp-area="Admin" asp-controller="Default" asp-action="GetManagerList" class="btn btn-outline-dark btn-light">
                             <i class="fas fa-user"></i> Back to List
                         </a>
