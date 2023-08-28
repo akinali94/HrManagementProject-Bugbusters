@@ -10,10 +10,12 @@ namespace BugBustersHR.UI.Email.ServiceEmail
     {
 
         private readonly EmailSettings _settings;
+        private readonly IWebHostEnvironment _env;
 
-        public EmailService(IOptions<EmailSettings> options)
+        public EmailService(IOptions<EmailSettings> options, IWebHostEnvironment env)
         {
             _settings = options.Value;
+            _env = env;
         }
 
         public async Task SendConfirmEmail(string emailLink, string ToEmail, string Password)
@@ -30,13 +32,22 @@ namespace BugBustersHR.UI.Email.ServiceEmail
 
             var mailMessage = new MailMessage();
 
+            string emailTemplate = File.ReadAllText("C:\\Users\\JUVENİS\\Source\\Repos\\BugBustersFinall\\BugBustersHR.UI\\wwwroot\\assets\\mailconfirmation\\html\\emailconfirmation.html");
+
+            emailTemplate = emailTemplate.Replace("{DateTime.Now.Year}", DateTime.Now.Year.ToString());
+
+            // Replace {HtmlEncoder.Default.Encode(emailLink)} with the encoded email link
+            emailTemplate = emailTemplate.Replace("{HtmlEncoder.Default.Encode(emailLink)}", HtmlEncoder.Default.Encode(emailLink));
+
+            // Assign the modified content to mailMessage.Body
+
             mailMessage.From = new MailAddress(_settings.Username);
             mailMessage.To.Add(ToEmail);
             mailMessage.Subject = "Confirm your account.!";
-            mailMessage.Body = @$"<h4> Your account has been created by your manager. To log in, please use the link below to change your password using this email address. </h4>
-                        
-                               <p><a href='{HtmlEncoder.Default.Encode(emailLink)}'>clicking here</a> </p>"
-                             ;
+           
+
+            mailMessage.Body = emailTemplate;
+
             mailMessage.IsBodyHtml = true;
 
             await smptClient.SendMailAsync(mailMessage);
