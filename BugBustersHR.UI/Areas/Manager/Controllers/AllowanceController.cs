@@ -65,9 +65,12 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
         public async Task<IActionResult> AllowanceAccepted(int id)
         {
             var allw = _db.InstitutionalAllowances.Find(id);
-            var user = _db.Users.Find(allw.EmployeeId);
+            var user = _employeeService.TGetById(allw.EmployeeId);
+            var manager = GetEmployee();
+
+
             await _institutionalAllowanceService.TChangeToTrueforAllowance(id);
-            await _emailService.RequestApprovedMail("aa", user.Email, "allowance");
+            await _emailService.AllowanceRequestApprovedMail(user.Email, "confirmed", user.FullName, manager, allw);
             SetUserImageViewBag();
             return RedirectToAction("Index", "Allowance", new { area = "Manager" });
         }
@@ -75,9 +78,12 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
         public async Task<IActionResult> AllowanceRefused(int id)
         {
             var allw = _db.InstitutionalAllowances.Find(id);
-            var user = _db.Users.Find(allw.EmployeeId);
+            var user = _employeeService.TGetById(allw.EmployeeId);
+            var manager = GetEmployee();
+
+
             await _institutionalAllowanceService.TChangeToFalseforAllowance(id);
-            await _emailService.RequestApprovedMail("aa", user.Email, "allowance");
+            await _emailService.AllowanceRequestApprovedMail(user.Email, "refused", user.FullName, manager, allw);
             SetUserImageViewBag();
             return RedirectToAction("Index", "Allowance", new { area = "Manager" });
         }

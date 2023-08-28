@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using System.Net.Mail;
 using System.Net;
 using System.Text.Encodings.Web;
+using BugBustersHR.ENTITY.Concrete;
 
 namespace BugBustersHR.UI.Email.ServiceEmail
 {
@@ -78,6 +79,127 @@ namespace BugBustersHR.UI.Email.ServiceEmail
             await smptClient.SendMailAsync(mailMessage);
         }
 
+        public async Task LeaveRequestApprovedMail(string ToEmail, string approvedStatus, string employeeFullName, Employee manager, EmployeeLeaveRequest request)
+        {
+            var smptClient = new SmtpClient();
 
+            smptClient.Host = _settings.Host;
+            smptClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+            smptClient.UseDefaultCredentials = false;
+            smptClient.Port = 587;
+            smptClient.Credentials = new NetworkCredential(_settings.Username, _settings.Password);
+            smptClient.EnableSsl = true;
+
+
+            var mailMessage = new MailMessage();
+
+            mailMessage.From = new MailAddress(_settings.Username);
+            mailMessage.To.Add(ToEmail);
+            mailMessage.Subject = "Your request has been answered.";
+            mailMessage.Body = @$"<h3>Hello {employeeFullName}</h3>
+                    <h4> Your Leave request has been {approvedStatus} to by your manager {manager.FullName}</h4>
+
+                    <h4>Leave Started Date : {request.StartDate.ToString("yyyy-MM-dd")}</h4>
+                    <h4>Leave End Date : {request.EndDate.ToString("yyyy-MM-dd")}</h4>
+
+                    <h3>Please check your system. If there is an issue, please contact your manager. </h3>";
+
+            mailMessage.IsBodyHtml = true;
+
+            await smptClient.SendMailAsync(mailMessage);
+
+        }
+
+        public async Task AdvanceRequestApprovedMail(string ToEmail, string approvedStatus, string employeeFullName, Employee manager, IndividualAdvance request)
+        {
+            var smptClient = new SmtpClient();
+
+            smptClient.Host = _settings.Host;
+            smptClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+            smptClient.UseDefaultCredentials = false;
+            smptClient.Port = 587;
+            smptClient.Credentials = new NetworkCredential(_settings.Username, _settings.Password);
+            smptClient.EnableSsl = true;
+
+
+            var mailMessage = new MailMessage();
+
+            mailMessage.From = new MailAddress(_settings.Username);
+            mailMessage.To.Add(ToEmail);
+            mailMessage.Subject = "Your request has been answered.";
+            mailMessage.Body = @$"<h3>Hello {employeeFullName}</h3>
+                    <h4> Your Advance request has been {approvedStatus} to by your manager {manager.FullName}</h4>
+
+                    <h4>Amount of Advance : {request.Amount}</h4>
+                    
+                    <h3>Please check your system. If there is an issue, please contact your manager. </h3>";
+
+            mailMessage.IsBodyHtml = true;
+
+            await smptClient.SendMailAsync(mailMessage);
+        }
+
+        public async Task AllowanceRequestApprovedMail(string ToEmail, string approvedStatus, string employeeFullName, Employee manager, InstitutionalAllowance request)
+        {
+            var smptClient = new SmtpClient();
+
+            smptClient.Host = _settings.Host;
+            smptClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+            smptClient.UseDefaultCredentials = false;
+            smptClient.Port = 587;
+            smptClient.Credentials = new NetworkCredential(_settings.Username, _settings.Password);
+            smptClient.EnableSsl = true;
+
+
+            var mailMessage = new MailMessage();
+
+            mailMessage.From = new MailAddress(_settings.Username);
+            mailMessage.To.Add(ToEmail);
+            mailMessage.Subject = "Your request has been answered.";
+            mailMessage.Body = @$"<h3>Hello {employeeFullName}</h3>
+                    <h4> Your instituonal allowance request has been {approvedStatus} to by your manager {manager.FullName}</h4>
+
+                    <h4>Amount of Allowance : {request.AmountOfAllowance}</h4>
+                    <h4>Currency : {request.Currency.Value}</h4>
+    
+                    
+                    <h3>Please check your system. If there is an issue, please contact your manager. </h3>";
+
+            mailMessage.IsBodyHtml = true;
+
+            await smptClient.SendMailAsync(mailMessage);
+        }
+
+        public async Task ExpenditureRequestApprovedMail(string ToEmail, string approvedStatus, string employeeFullName, Employee manager, ExpenditureRequest request)
+        {
+            var smptClient = new SmtpClient();
+
+            smptClient.Host = _settings.Host;
+            smptClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+            smptClient.UseDefaultCredentials = false;
+            smptClient.Port = 587;
+            smptClient.Credentials = new NetworkCredential(_settings.Username, _settings.Password);
+            smptClient.EnableSsl = true;
+
+
+            var mailMessage = new MailMessage();
+
+            mailMessage.From = new MailAddress(_settings.Username);
+            mailMessage.To.Add(ToEmail);
+            mailMessage.Subject = "Your request has been answered.";
+            mailMessage.Body = @$"<h3>Hello {employeeFullName}</h3>
+                    <h4> Your expenditure request has been {approvedStatus} to by your manager {manager.FullName}</h4>
+
+                    <h4>Amount of Expenditure : {request.AmountOfExpenditure}</h4>
+                    <h4>Currency : {request.Currency.Value}</h4>
+                    
+    
+                    
+                    <h3>Please check your system. If there is an issue, please contact your manager. </h3>";
+
+            mailMessage.IsBodyHtml = true;
+
+            await smptClient.SendMailAsync(mailMessage);
+        }
     }
 }

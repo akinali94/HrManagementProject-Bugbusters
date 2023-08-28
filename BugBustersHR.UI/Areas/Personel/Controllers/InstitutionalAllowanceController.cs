@@ -86,11 +86,15 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
         {
             // Kullanıcının bekleyen talebini kontrol et
             var hasPendingRequest = _ınstitutionalAllowanceService.GetAllInstitutionalAllowances()
-                .Any(x => x.EmployeeId == User.FindFirstValue(ClaimTypes.NameIdentifier) && x.ApprovalStatus == null);
+                .FirstOrDefault(x => x.EmployeeId == GetEmployee().Id && x.ApprovalStatus == null);
 
-            if (hasPendingRequest)
+            if (hasPendingRequest!=null)
             {
                 ModelState.AddModelError("", "You already have a pending allowance request. Please wait for its approval.");
+                SetUserImageViewBag();
+                GetExpenditureTypes();
+                GetCurrencyType();
+                return View(request);
             }
             else
             {
@@ -230,7 +234,34 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
 
 
         }
+        [NonAction]
+        private void SetUserImageViewBag()
+        {
+            var qury2 = _ınstitutionalAllowanceService.GetByIdEmployee(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            ViewBag.UserImageUrl = qury2?.ImageUrl;
+            ViewBag.UserFullName = qury2?.FullName;
 
-
+        }
+        [NonAction]
+        private Employee GetEmployee()
+        {
+            return _ınstitutionalAllowanceService.GetByIdEmployee(User.FindFirstValue(ClaimTypes.NameIdentifier));
+        }
+        [NonAction]
+        private void GetExpenditureTypes()
+        {
+            ViewData["ExpentitureTypeId"] = new SelectList(_hrDb.ExpenditureTypes, "Id", "ExpenditureName");
+        }
+        [NonAction]
+        private void GetCurrencyType()
+        {
+            ViewBag.CurrencyList = Enum.GetValues(typeof(Currency))
+                .Cast<Currency>()
+                .Select(c => new SelectListItem
+                {
+                    Value = c.ToString(),
+                    Text = c.ToString()
+                });
+        }
     }
 }

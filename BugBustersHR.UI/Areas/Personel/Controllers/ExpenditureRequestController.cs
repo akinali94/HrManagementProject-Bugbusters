@@ -65,22 +65,9 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Title,Currency,ApprovalStatus,RequestDate,ExpenditureTypeId,AmountOfExpenditure,ImageModel,ImageModel.File")] ExpenditureRequestVM expenditureRequest)
         {
-            //ModelState.Clear();
 
             GetExpenditureTypes();
             GetCurrencyType();
-
-            var existingPendingRequest = _expenditureRequestService.GetAllExReq().FirstOrDefault(x => x.EmployeeId == GetEmployee().Id && x.ApprovalStatus == null);
-
-            if (existingPendingRequest != null)
-            {
-                ModelState.AddModelError("", "You already have a pending request. Please wait for its approval.");
-                GetExpenditureTypes();
-                GetCurrencyType();
-                SetUserImageViewBag();
-                return View(expenditureRequest);
-
-            }
 
             var expenditureType = _typeService.GetByIdExpenditureType(expenditureRequest.ExpenditureTypeId);
             if (expenditureType == null)

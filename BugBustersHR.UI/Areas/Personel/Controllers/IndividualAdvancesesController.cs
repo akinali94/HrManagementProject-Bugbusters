@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Azure.Core;
 using BugBustersHR.BLL.Services.Abstract;
 using BugBustersHR.BLL.Services.Abstract.IndividualAdvanceService;
 using BugBustersHR.BLL.Services.Abstract.LeaveAbstractService;
@@ -86,7 +87,9 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
             {
                 ModelState.AddModelError("", "You already have a pending request. Please wait for its approval.");
                 SetUserImageViewBag();
-
+                GetExpenditureTypes();
+                GetCurrencyType();
+                return View(individualAdvanceRequest);
 
             }
 
@@ -164,10 +167,6 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
 
         }
 
-
-
-
-
         public IActionResult Delete(int id)
         {
 
@@ -232,6 +231,26 @@ namespace BugBustersHR.UI.Areas.Personel.Controllers
             SetUserImageViewBag();
             return View(waitingForApprovalexp);
         }
+
+
+        [NonAction]
+        private void GetExpenditureTypes()
+        {
+            ViewData["ExpentitureTypeId"] = new SelectList(_hrDb.ExpenditureTypes, "Id", "ExpenditureName");
+        }
+        [NonAction]
+        private void GetCurrencyType()
+        {
+            ViewBag.CurrencyList = Enum.GetValues(typeof(Currency))
+                .Cast<Currency>()
+                .Select(c => new SelectListItem
+                {
+                    Value = c.ToString(),
+                    Text = c.ToString()
+                });
+        }
+
+
     }
 
 
