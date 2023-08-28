@@ -96,11 +96,7 @@
                                     <select asp-for="CompanyTitle" asp-items="@Html.GetEnumSelectList<CompanyTitle>()" class="form-control shadow-sm"></select>
                                     <span asp-validation-for="CompanyTitle" class="text-danger"></span>
                                 </div>
-                                <div class="form-group">
-                                    <label asp-for="ContractStartDate" class="control-label"></label>
-                                    <input asp-for="ContractStartDate" class="form-control shadow-sm" />
-                                    <span asp-validation-for="ContractStartDate" class="text-danger"></span>
-                                </div>
+                            
                                 <div class="form-group">
                                     <label asp-for="EmployeeNumber" class="control-label"></label>
                                     <input asp-for="EmployeeNumber" class="form-control shadow-sm" />

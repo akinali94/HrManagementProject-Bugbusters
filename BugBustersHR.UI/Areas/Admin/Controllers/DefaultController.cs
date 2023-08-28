@@ -275,8 +275,7 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
 
         public IActionResult ManagerEdit(string id)
         {
-            var getList = _hrDb.Personels.Where(x => x.Role == AppRoles.Role_Manager).ToList();
-            var mappingList = _mapper.Map<List<GetManagerListVM>>(getList);
+            
 
 
             var manager = _hrDb.Personels.FirstOrDefault(x => x.Id == id && x.Role == AppRoles.Role_Manager);
@@ -297,9 +296,9 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
         public IActionResult ManagerEdit(GetManagerListVM model)
         {
 
-            if (ModelState.IsValid)
-            {
+           
                 var existingManager = _hrDb.Personels.FirstOrDefault(x => x.Id == model.Id && x.Role == AppRoles.Role_Manager);
+
 
                 if (existingManager == null)
                 {
@@ -307,7 +306,7 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
                 }
 
                 existingManager.Id = model.Id;
-                existingManager.ImageUrl = model.ImageUrl;
+
                 existingManager.FullName = model.FullName;
                 existingManager.Name = model.Name;
                 existingManager.SecondName = model.SecondName;
@@ -326,10 +325,14 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
                 existingManager.CompanyName = model.CompanyName;
                 existingManager.Email = model.Email;
 
-                _employeeService.TUpdate(existingManager);
+           
+
+            _hrDb.Update(existingManager);
+                _hrDb.SaveChanges();    
+               
 
                 return RedirectToAction("GetManagerDetail", new { id = model.Id });
-            }
+            
             var mappedManager = _mapper.Map<GetManagerListVM>(model);
             SetUserImageViewBag();
             return View("GetManagerDetail", mappedManager);

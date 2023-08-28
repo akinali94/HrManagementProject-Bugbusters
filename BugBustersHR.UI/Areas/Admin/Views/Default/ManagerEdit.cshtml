@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "ManagerEdit";
+    Layout = null;
 }
 
 <h1>ManagerEdit</h1>
@@ -12,11 +13,10 @@
     <div class="col-md-4">
         <form asp-action="ManagerEdit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
-                <span asp-validation-for="Id" class="text-danger"></span>
-            </div>
+         <div class="avatar avatar-xl position-relative">
+    <img src="@Model.ImageUrl" alt="profile_image" class="w-100 border-radius-lg shadow-sm" style="max-width: 150px; max-height: 150px;">
+</div>
+
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
@@ -107,16 +107,12 @@
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ImageUrl" class="control-label"></label>
-                <input asp-for="ImageUrl" class="form-control" />
-                <span asp-validation-for="ImageUrl" class="text-danger"></span>
-            </div>
+         
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
             <div class="col-sm-3 text-center">
-                <a asp-area="Manager" asp-controller="Default" asp-action="GetEmployeeList" class="btn btn-outline-dark btn-light">
+                <a asp-area="Manager" asp-controller="Default" asp-action="GetManagerList" class="btn btn-outline-dark btn-light">
                     <i class="fas fa-user"></i> Back to List
                 </a>
             </div>
