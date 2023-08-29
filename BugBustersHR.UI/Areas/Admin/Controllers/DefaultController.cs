@@ -284,7 +284,8 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
                 return View("GetManagerDetail");
             }
 
-            var mapli = _mapper.Map<ManagerUpdateVM>(manager);
+            var mapli = _mapper.Map<GetManagerListVM>(manager);
+            mapli.SalaryString=mapli.Salary.ToString().Replace(",",".");
 
          
             SetUserImageViewBag();
@@ -293,94 +294,44 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult ManagerEdit(ManagerUpdateVM model)
+        public IActionResult ManagerEdit(GetManagerListVM model)
         {
-            //var existingManager = _employeeService.GetByIdEmployee(model.Id);
-            ManagerValidator managerValidator = new ManagerValidator();
-            var validationResult = managerValidator.Validate(model);
 
-            string fileExtension = Path.GetExtension(model.ImageModel.File.FileName);
-            var uniqueName = Guid.NewGuid().ToString() + fileExtension;
+            var existingManager = _hrDb.Personels.FirstOrDefault(x => x.Id == model.Id && x.Role == AppRoles.Role_Manager);
 
-            using (MemoryStream fileUploadStream = new MemoryStream())
+
+            if (existingManager == null)
             {
-                model.ImageModel.File.CopyTo(fileUploadStream);
-                fileUploadStream.Position = 0;
-
-                BlobContainerClient blobContainerClient = new BlobContainerClient(
-                    _azureOptions.ConnectionString,
-                    _azureOptions.Container);
-
-                BlobClient blobClient = blobContainerClient.GetBlobClient(uniqueName);
-
-                blobClient.Upload(fileUploadStream, new BlobHttpHeaders()
-                {
-                    ContentType = model.ImageModel.File.ContentType,
-                });
-
-                _employeeService.GetByIdEmployee(model.Id).ImageUrl = "https://bugbustersstorage.blob.core.windows.net/contentupload/" + uniqueName;
+                return RedirectToAction("GetManagerList");
             }
 
-            if (validationResult.IsValid)
-            {
-                var mapping = _mapper.Map<Employee>(model);
-                string full = mapping.Name + " " + mapping.SecondName + " " + mapping.Surname + " " + mapping.SecondName;
-                mapping.ImageUrl = _employeeService.GetByIdEmployee(model.Id).ImageUrl = "https://bugbustersstorage.blob.core.windows.net/contentupload/" + uniqueName;
-                mapping.FullName = full;
-                mapping.ConcurrencyStamp = _employeeService.GetByIdEmployee(model.Id).ConcurrencyStamp;
-                mapping.Role = _employeeService.GetByIdEmployee(model.Id).Role;
-                mapping.UserName = _employeeService.GetByIdEmployee(model.Id).UserName;
-                mapping.NormalizedUserName = _employeeService.GetByIdEmployee(model.Id).NormalizedUserName;
-                mapping.NormalizedEmail = _employeeService.GetByIdEmployee(model.Id).NormalizedEmail;
-                mapping.PasswordHash = _employeeService.GetByIdEmployee(model.Id).PasswordHash;
-                mapping.SecurityStamp = _employeeService.GetByIdEmployee(model.Id).SecurityStamp;
-                mapping.LockoutEnabled = _employeeService.GetByIdEmployee(model.Id).LockoutEnabled;
+            existingManager.Id = model.Id;
 
-                _employeeService.TUpdateEmployee(mapping);
-                return RedirectToAction("GetManagerDetail","Default",model.Id);
-            }
-            SetUserImageViewBag();
-            return View(model);
-
-            //var existingManager = _hrDb.Personels.FirstOrDefault(x => x.Id == model.Id && x.Role == AppRoles.Role_Manager);
+            existingManager.FullName = model.FullName;
+            existingManager.Name = model.Name;
+            existingManager.SecondName = model.SecondName;
+            existingManager.Surname = model.Surname;
+            existingManager.SecondSurname = model.SecondSurname;
+            existingManager.BirthPlace = model.BirthPlace;
+            existingManager.TC = model.TC;
+            existingManager.BirthDate = model.BirthDate;
+            existingManager.HiredDate = model.HiredDate;
+            existingManager.IsActive = model.IsActive;
+            existingManager.Title = model.Title;
+            existingManager.Section = model.Section;
+            existingManager.Salary = Convert.ToDecimal(model.SalaryString);
+            existingManager.TelephoneNumber = model.TelephoneNumber;
+            existingManager.Address = model.Address;
+            existingManager.CompanyName = model.CompanyName;
+            existingManager.Email = model.Email;
 
 
-            //if (existingManager == null)
-            //    {
-            //        return RedirectToAction("GetManagerList");
-            //    }
-
-            //    existingManager.Id = model.Id;
-
-            //    existingManager.FullName = model.FullName;
-            //    existingManager.Name = model.Name;
-            //    existingManager.SecondName = model.SecondName;
-            //    existingManager.Surname = model.Surname;
-            //    existingManager.SecondSurname = model.SecondSurname;
-            //    existingManager.BirthPlace = model.BirthPlace;
-            //    existingManager.TC = model.TC;
-            //    existingManager.BirthDate = model.BirthDate;
-            //    existingManager.HiredDate = model.HiredDate;
-            //    existingManager.IsActive = model.IsActive;
-            //    existingManager.Title = model.Title;
-            //    existingManager.Section = model.Section;
-            //    existingManager.Salary = model.Salary;
-            //    existingManager.TelephoneNumber = model.TelephoneNumber;
-            //    existingManager.Address = model.Address;
-            //    existingManager.CompanyName = model.CompanyName;
-            //    existingManager.Email = model.Email;
+            _hrDb.Update(existingManager);
+            _hrDb.SaveChanges();
 
 
+            return RedirectToAction("GetManagerDetail", new { id = model.Id });
 
-            //_hrDb.Update(existingManager);
-            //    _hrDb.SaveChanges();    
-
-
-            //    return RedirectToAction("GetManagerDetail", new { id = model.Id });
-
-            //var mappedManager = _mapper.Map<GetManagerListVM>(model);
-            //SetUserImageViewBag();
-            //return View("GetManagerDetail", mappedManager);
         }
 
         public IActionResult ManagerDelete(string id)

@@ -1,6 +1,4 @@
-﻿@*@model BugBustersHR.BLL.ViewModels.AdminViewModel.GetManagerListVM*@
-@using BugBustersHR.BLL.ViewModels.ManagerViewModel
-@model ManagerUpdateVM;
+﻿@model BugBustersHR.BLL.ViewModels.AdminViewModel.GetManagerListVM
 
 @{
     ViewData["Title"] = "ManagerEdit";
@@ -35,32 +33,21 @@
             <div class="text-center mb-1">
                 <!-- Centered container for the image -->
                 <div class="avatar avatar-xl position-relative">
-                    <img src="@Model.ImageUrl" alt="profile_image" class="w-100 border-radius-lg shadow-sm" style="max-width: 150px; max-height: 150px;">
+                    <img id="profileImage" src="@Model.ImageUrl" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+                    <input type="file" asp-for="ImageModel.File" accept="image/*" class="form-control" id="photoInput" style="display:none;" onchange="updateProfileImage()">
                 </div>
             </div>
             <div class="col-md-12 d-flex justify-content-center">
                 <h2 class="mb-1 mt-3">Edit Manager</h2>
             </div>
-            <form asp-area="Admin" asp-controller="Default" asp-action="ManagerEdit" method="post" enctype="multipart/form-data" id="editProfileForm">
-                <input type="hidden" asp-for="Id" />
-                <div class="row gx-4 mb-0 justify-content-center align-items-center">
-                    <div class="col-md-10 d-flex align-items-center p-4">
-                        <div class="col-sm-4">
-                            
-                            <div class="avatar avatar-xl position-relative">
-                                <img id="profileImage" src="@Model.ImageUrl" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
-                                <input type="file" asp-for="ImageModel.File" accept="image/*" class="form-control" id="photoInput" style="display:none;" onchange="updateProfileImage()">
             <div class="card-body mt-n2" style="overflow-y: auto; max-height: 600px;">
                 <form asp-area="Admin" asp-controller="Default" asp-action="ManagerEdit" method="post" enctype="multipart/form-data" id="editProfileForm">
+                    <input type="hidden" asp-for="Id" />
                     <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                     <div class="row">
                         <div class="col-md-3">
                             <!-- Column 1 -->
-                            <div class="form-group">
-                                <label asp-for="StartedDate" class="control-label"></label>
-                                <input asp-for="StartedDate" class="form-control shadow-sm" />
-                                <span asp-validation-for="StartedDate" class="text-danger"></span>
-                            </div>
+                   
                             <div class="form-group">
                                 <label asp-for="HiredDate" class="control-label"></label>
                                 <input asp-for="HiredDate" class="form-control shadow-sm" />
@@ -77,9 +64,9 @@
                                 <span asp-validation-for="Section" class="text-danger"></span>
                             </div>
                             <div class="form-group">
-                                <label asp-for="Salary" class="control-label"></label>
-                                <input asp-for="Salary" class="form-control shadow-sm" />
-                                <span asp-validation-for="Salary" class="text-danger"></span>
+                                <label asp-for="SalaryString" class="control-label"></label>
+                                <input asp-for="SalaryString" class="form-control shadow-sm" />
+                                <span asp-validation-for="SalaryString" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -104,13 +91,6 @@
                                 <input asp-for="SecondSurname" class="form-control shadow-sm" />
                                 <span asp-validation-for="SecondSurname" class="text-danger"></span>
                             </div>
-                            @*<div class="form-group">
-                                <label asp-for="FullName" class="control-label"></label>
-                                <input asp-for="FullName" class="form-control" />
-                                <span asp-validation-for="FullName" class="text-danger"></span>
-                            </div>*@
-                        </div>
-                        <div class="col-sm-4">
                         </div>
                         <div class="col-md-3">
                             <!-- Column 3 -->
@@ -128,38 +108,6 @@
                                 <label asp-for="BirthDate" class="control-label"></label>
                                 <input asp-for="BirthDate" class="form-control shadow-sm" />
                                 <span asp-validation-for="BirthDate" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="StartedDate" class="control-label"></label>
-                                <input asp-for="StartedDate" class="form-control" />
-                                <span asp-validation-for="StartedDate" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="HiredDate" class="control-label"></label>
-                                <input asp-for="HiredDate" class="form-control" />
-                                <span asp-validation-for="HiredDate" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group form-check">
-                                <label class="form-check-label">
-                                    <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
-                                </label>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="Title" class="control-label"></label>
-                                <input asp-for="Title" class="form-control" />
-                                <span asp-validation-for="Title" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="Section" class="control-label"></label>
-                                <input asp-for="Section" class="form-control" />
-                                <span asp-validation-for="Section" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="Salary" class="control-label"></label>
-                                <input asp-for="Salary" class="form-control" />
-                                <span asp-validation-for="Salary" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -186,34 +134,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <hr />
-                <div class="row justify-content-center">
-                    <div class="col-sm-3 text-center">
-                        <label for="photoInput" class="btn btn-outline-dark btn-light">
-                            <i class="fas fa-upload"></i> Upload Photo
-                        </label>
-                    </div>
-                    <div class="col-sm-3 text-center">
-                        <button id="updateButton" type="submit" class="btn btn-outline-dark btn-light toast-btn" data-target="successToast">
-                            <i class="fas fa-save"></i> Save
-                        </button> &nbsp
-                    </div>
-                    <div class="col-sm-3 text-center">
-                        <a asp-area="Admin" asp-controller="Default" asp-action="GetManagerDetail" class="btn btn-outline-dark btn-light">
-                            <i class="fas fa-info-circle"></i> Detailed Info
-                        </a>
-                    </div>
-                    <div class="col-sm-3 text-center">
-                        <a asp-area="Admin" asp-controller="Default" asp-action="Index" class="btn btn-dark btn-outline-secondary text-lg-center">
-                            <i class="fas fa-home"></i> Home
-                        </a>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
                     <hr />
                     <div class="row justify-content-center">
                         <div class="col-sm-3 text-center">
@@ -222,7 +142,7 @@
                             </label>
                         </div>
                         <div class="col-sm-3 text-center">
-                            <button id="updateButton" type="submit" class="btn btn-outline-dark btn-light toast-btn" data-target="successToast" disabled>
+                            <button id="updateButton" type="submit" class="btn btn-outline-dark btn-light toast-btn" data-target="successToast">
                                 <i class="fas fa-save"></i> Save
                             </button> &nbsp
                         </div>
@@ -261,17 +181,16 @@
         updatePhotoButton.addEventListener("click", updateProfileImage);
     }
 
-
     function showSuccessToast() {
         // Show the toast notification
         var toast = new bootstrap.Toast(document.getElementById('successToast'));
         toast.show();
 
         // Wait for a few seconds (adjust the delay as needed)
-        //setTimeout(function () {
-        //    // Submit the form
-        //    document.getElementById('editProfileForm').submit();
-        //}, 4000); // 4 seconds delay, you can change this to your preferred value
+        setTimeout(function () {
+            // Submit the form
+            document.getElementById('editProfileForm').submit();
+        }, 4000); // 4 seconds delay, you can change this to your preferred value
     }
 
     // Find all buttons with the toast-btn class
