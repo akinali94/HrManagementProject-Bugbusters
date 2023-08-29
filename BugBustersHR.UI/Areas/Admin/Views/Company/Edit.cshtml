@@ -40,7 +40,7 @@
                     </div>
                 </div>
             </div>
-            <form asp-area="Admin" asp-controller="Default" asp-action="ManagerEdit" method="post" enctype="multipart/form-data" id="editProfileForm">
+            <form asp-controller="Company" asp-action="Edit" method="post" enctype="multipart/form-data" id="editProfileForm">
                 <input type="hidden" asp-for="Id" />
                 <div class="row justify-content-center align-items-center mb-2">
                     <div class="avatar avatar-xxl position-relative">
@@ -128,7 +128,7 @@
                         </button> &nbsp
                     </div>
                     <div class="col-sm-3 text-center">
-                        <a asp-area="Admin" asp-controller="Default" asp-action="GetManagerDetail" class="btn btn-outline-dark btn-light">
+                        <a asp-area="Admin" asp-controller="Company" asp-action="GetCompanyDetails" class="btn btn-outline-dark btn-light">
                             <i class="fas fa-info-circle"></i> Detailed Info
                         </a>
                     </div>
