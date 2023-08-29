@@ -36,5 +36,7 @@ namespace BugBustersHR.BLL.ViewModels.AdminViewModel
         public string Email { get; set; }
         public ImageModel ImageModel { get; set; }
         public string ImageUrl { get; set; }
+
+        public string? SalaryString { get; set; }
     }
 }

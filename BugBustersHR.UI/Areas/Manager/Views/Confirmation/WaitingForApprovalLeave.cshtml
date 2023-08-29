@@ -76,10 +76,8 @@
                                                         @{
                                                             if (item.Approved == null)
                                                             {
-                                                                <a href="/Manager/Advances/AdvanceRefused/@item.Id" class="btn btn-outline-warning">Refuse</a>
-                                                                <a href="/Manager/Advances/AdvanceAccepted/@item.Id" class="btn btn-outline-info">Accept</a>
-                                                                //@Html.ActionLink("Accept Leave", "LeaveAccepted", new { id=item.Id  })
-                                                                //@Html.ActionLink("Refuse Leave", "LeaveRefused", new { id=item.Id })
+                                                                <a href="/Manager/Confirmation/LeaveRefused/@item.Id" class="btn btn-outline-warning">Refuse</a>
+                                                                <a href="/Manager/Confirmation/LeaveAccepted/@item.Id" class="btn btn-outline-info">Accept</a>
 
                                                             }
                                                             if (item.Approved != null)

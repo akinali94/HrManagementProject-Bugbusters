@@ -14,8 +14,10 @@ namespace BugBustersHR.BLL.Services.Concrete
 {
     public class EmployeeService : Service<Employee>, IEmployeeService
     {
-        public EmployeeService(IBaseRepository<Employee> repository, IUnitOfWork unitOfWork, HrDb db) : base(repository, unitOfWork, db)
+        private readonly IEmployeeRepository _employeeRepository;
+        public EmployeeService(IBaseRepository<Employee> repository, IUnitOfWork unitOfWork, HrDb db, IEmployeeRepository employeeRepository) : base(repository, unitOfWork, db)
         {
+            _employeeRepository = employeeRepository;
         }
 
         public string GenerateRandomPassword(PasswordOptions opts = null)
@@ -66,6 +68,11 @@ namespace BugBustersHR.BLL.Services.Concrete
 
             return new string(chars.ToArray());
         }
-      
+
+        public void TUpdateEmployee(Employee employee)
+        {
+            _employeeRepository.UpdateEmployee(employee);
+            _unitOfWork.Save();
+        }
     }
 }

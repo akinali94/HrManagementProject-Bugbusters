@@ -12,13 +12,11 @@ namespace BugBustersHR.BLL.Validatons.CompanyValidation
     public class CompanyUpdateValidator : AbstractValidator<UpdateCompanyVM>
     {
         private readonly ICompanyService _companyService;
-        public CompanyUpdateValidator(ICompanyService companyService)
+        public CompanyUpdateValidator()
         {
-            _companyService = companyService;
+           
 
-            RuleFor(x => x.CompanyName).
-                Must((viewModel, companyName) => !IsDuplicate(viewModel.CompanyName)).
-                WithMessage("Same company name is founded in database");
+            
 
             RuleFor(x => x.TelephoneNumber).
                 NotEmpty().WithMessage("Please enter phone number..").
@@ -119,11 +117,6 @@ namespace BugBustersHR.BLL.Validatons.CompanyValidation
         }
 
         //Şöyle bir metot yazdım. Ama problem Dependency yapmamız laızm
-        private bool IsDuplicate(string cVM)
-        {
-            var companies = _companyService.GetAllCompany().ToList();
-            return companies.Any(x => x.CompanyName == cVM);
-
-        }
+     
     }
 }

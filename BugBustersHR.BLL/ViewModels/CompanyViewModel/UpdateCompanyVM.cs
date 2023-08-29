@@ -15,7 +15,7 @@ namespace BugBustersHR.BLL.ViewModels.CompanyViewModel
 
             ImageModel = new ImageModel();
         }
-        //public int Id { get; set; }
+        public int Id { get; set; }
         public string CompanyName { get; set; }
         public CompanyTitle CompanyTitle { get; set; }
         public ImageModel ImageModel { get; set; }

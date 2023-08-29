@@ -63,9 +63,12 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
         public async Task<IActionResult> ExpenditureAccepted(int id)
         {
             var exp = _db.ExpenditureRequests.Find(id);
-            var user = _db.Users.Find(exp.EmployeeId);
+            var user = _employeeService.TGetById(exp.EmployeeId);
+            var manager = GetEmployee();
+
+
             await _expenditureService.TChangeToTrueforExpenditure(id);
-            await _emailService.RequestApprovedMail("aa", user.Email, "expenditure");
+            await _emailService.ExpenditureRequestApprovedMail(user.Email, "confirmed", user.FullName, manager, exp);
             SetUserImageViewBag();
             return RedirectToAction("Index", "Expenditure", new { area = "Manager" });
         }
@@ -73,9 +76,12 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
         public async Task<IActionResult> ExpenditureRefused(int id)
         {
             var exp = _db.ExpenditureRequests.Find(id);
-            var user = _db.Users.Find(exp.EmployeeId);
+            var user = _employeeService.TGetById(exp.EmployeeId);
+            var manager = GetEmployee();
+
+
             await _expenditureService.TChangeToFalseforExpenditure(id);
-            await _emailService.RequestApprovedMail("aa", user.Email, "expenditure");
+            await _emailService.ExpenditureRequestApprovedMail(user.Email, "refused", user.FullName, manager, exp);
             SetUserImageViewBag();
             return RedirectToAction("Index", "Expenditure", new { area = "Manager" });
         }

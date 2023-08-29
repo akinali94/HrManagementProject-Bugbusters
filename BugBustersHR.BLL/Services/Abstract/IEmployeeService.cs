@@ -12,6 +12,9 @@ namespace BugBustersHR.BLL.Services.Abstract
     public interface IEmployeeService : IService<Employee>
     {
         string GenerateRandomPassword(PasswordOptions opts);
-       
+
+        void TUpdateEmployee(Employee employee);
+
+
     }
 }

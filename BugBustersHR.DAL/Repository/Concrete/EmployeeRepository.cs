@@ -12,6 +12,7 @@ namespace BugBustersHR.DAL.Repository.Concrete
 {
     public class EmployeeRepository : BaseRepository<Employee>, IEmployeeRepository
     {
+        
         public EmployeeRepository(HrDb context) : base(context)
         {
 
@@ -24,8 +25,8 @@ namespace BugBustersHR.DAL.Repository.Concrete
 
         public void UpdateEmployee(Employee employee)
         {
+            _hrDb.ChangeTracker.Clear();
             _hrDb.Personels.Update(employee);
-            _hrDb.SaveChanges();
         }
     }
 }

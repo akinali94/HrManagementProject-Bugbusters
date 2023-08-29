@@ -61,9 +61,11 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
         public async Task<IActionResult> AdvanceAccepted(int id)
         {
             var adv = _db.IndividualAdvances.Find(id);
-            var user = _db.Users.Find(adv.EmployeeRequestingId);
+            var user = _employeeService.TGetById(adv.EmployeeRequestingId);
+            var manager = GetEmployee();
+
             await _individualAdvanceService.TChangeToTrueforAdvance(id);
-            await _emailService.RequestApprovedMail("aa", user.Email, "individual advance");
+            await _emailService.AdvanceRequestApprovedMail(user.Email, "confirmed", user.FullName, manager, adv);
 
             SetUserImageViewBag();
             return RedirectToAction("Index", "Advances", new { area = "Manager" });
@@ -72,10 +74,14 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
         public async Task<IActionResult> AdvanceRefused(int id)
         {
             var adv = _db.IndividualAdvances.Find(id);
-            var user = _db.Users.Find(adv.EmployeeRequestingId);
+            var user = _employeeService.TGetById(adv.EmployeeRequestingId);
+            var manager = GetEmployee();
+
+
+
             await _individualAdvanceService.TChangeToFalseforAdvance(id);
 
-            await _emailService.RequestApprovedMail("aa", user.Email, "individual advance");
+            await _emailService.AdvanceRequestApprovedMail(user.Email, "refused", user.FullName, manager, adv);
             SetUserImageViewBag();
             return RedirectToAction("Index", "Advances", new { area = "Manager" });
         }

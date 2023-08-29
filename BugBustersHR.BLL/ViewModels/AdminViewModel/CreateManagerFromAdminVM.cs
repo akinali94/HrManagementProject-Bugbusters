@@ -52,25 +52,25 @@ namespace BugBustersHR.BLL.ViewModels.AdminViewModel
 
                 if (SecondSurname == null && SecondName == null)
                 {
-                    return $"{sanitizedFirstName}.{sanitizedLastName}@bilgeadam.com";
+                    return $"{sanitizedFirstName}.{sanitizedLastName}@bilgeadamboost.com";
                 }
                 else if (SecondSurname == null && SecondName != null)
                 {
                     string? sanitizedSecondName = SecondName.Replace(" ", "").Replace("ı", "i").Replace("ö", "o").Replace("ü", "u").Replace("ğ", "g").Replace("ç", "c").Replace("ş", "s").ToLower();
 
 
-                    return $"{sanitizedFirstName}{sanitizedSecondName}.{sanitizedLastName}@bilgeadam.com";
+                    return $"{sanitizedFirstName}{sanitizedSecondName}.{sanitizedLastName}@bilgeadamboost.com";
                 }
                 else if (SecondSurname != null && SecondName == null)
                 {
                     string? sanitizedSecondLastName = SecondSurname.Replace(" ", "").Replace("ı", "i").Replace("ö", "o").Replace("ü", "u").Replace("ğ", "g").Replace("ç", "c").Replace("ş", "s").ToLower();
-                    return $"{sanitizedFirstName}{sanitizedLastName}.{sanitizedSecondLastName}@bilgeadam.com";
+                    return $"{sanitizedFirstName}{sanitizedLastName}.{sanitizedSecondLastName}@bilgeadamboost.com";
                 }
                 else
                 {
                     string? sanitizedSecondName1 = SecondName.Replace(" ", "").Replace("ı", "i").Replace("ö", "o").Replace("ü", "u").Replace("ğ", "g").Replace("ç", "c").Replace("ş", "s").ToLower();
                     string? sanitizedSecondLastName2 = SecondSurname.Replace(" ", "").Replace("ı", "i").Replace("ö", "o").Replace("ü", "u").Replace("ğ", "g").Replace("ç", "c").Replace("ş", "s").ToLower();
-                    return $"{sanitizedFirstName}{sanitizedSecondName1}.{sanitizedLastName}{sanitizedSecondLastName2}@bilgeadam.com";
+                    return $"{sanitizedFirstName}{sanitizedSecondName1}.{sanitizedLastName}{sanitizedSecondLastName2}@bilgeadamboost.com";
                 }
             }
             set

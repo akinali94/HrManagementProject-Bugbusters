@@ -18,9 +18,15 @@ namespace BugBustersHR.BLL.Validatons.CompanyValidation
         {
             _companyService = companyService;
 
-            RuleFor(x => x.CompanyName).
-                Must((viewModel, companyName) => !IsDuplicate(viewModel.CompanyName)).
-                WithMessage("Same company name is founded in database");
+            //RuleFor(x => x.CompanyName).
+            //    Must((viewModel, companyName) => !IsDuplicate(viewModel.CompanyName)).
+            //    WithMessage("Same company name is founded in database");
+            RuleFor(x => x.CompanyName)
+    .NotEmpty().WithMessage("Please enter company name..")
+    .NotNull().WithMessage("Please enter company name..")
+    .Must((viewModel, companyName) => IsUniqueCompanyName(viewModel.Id, companyName))
+    .WithMessage("A company with the same name already exists in the database.");
+
 
             RuleFor(x => x.TelephoneNumber).
                 NotEmpty().WithMessage("Please enter phone number..").
@@ -121,11 +127,28 @@ namespace BugBustersHR.BLL.Validatons.CompanyValidation
         }
 
         //Şöyle bir metot yazdım. Ama problem Dependency yapmamız laızm
-        private bool IsDuplicate(string cVM)
-        {
-            var companies = _companyService.GetAllCompany().ToList();
-            return companies.Any(x => x.CompanyName == cVM);
+        //private bool IsDuplicate(string cVM)
+        //{
+        //    var companies = _companyService.GetAllCompany().ToList();
+        //    return companies.Any(x => x.CompanyName == cVM);
 
+        //}
+        private bool IsUniqueCompanyName(int companyId, string companyName)
+        {
+            var existingCompany = _companyService.GetByIdCompany(companyId);
+
+            if (existingCompany == null)
+            {
+                // Company not found, so it's unique
+                return true;
+            }
+
+            var companiesWithSameName = _companyService.GetAllCompany()
+                .Where(c => c.Id != companyId && c.CompanyName == companyName)
+                .ToList();
+
+            return companiesWithSameName.Count == 0;
         }
+
     }
 }

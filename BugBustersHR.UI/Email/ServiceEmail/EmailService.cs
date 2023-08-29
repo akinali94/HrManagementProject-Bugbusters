@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using System.Net.Mail;
 using System.Net;
 using System.Text.Encodings.Web;
+using BugBustersHR.ENTITY.Concrete;
 
 namespace BugBustersHR.UI.Email.ServiceEmail
 {
@@ -32,7 +33,7 @@ namespace BugBustersHR.UI.Email.ServiceEmail
 
             var mailMessage = new MailMessage();
 
-            string emailTemplate = File.ReadAllText("C:\\Users\\JUVENİS\\Source\\Repos\\BugBustersFinall\\BugBustersHR.UI\\wwwroot\\assets\\mailconfirmation\\html\\emailconfirmation.html");
+            string emailTemplate = File.ReadAllText("C:\\Users\\cagri\\Desktop\\dddddddd\\BugBustersFinall\\BugBustersHR.UI\\wwwroot\\assets\\mailconfirmation\\html\\emailconfirmation.html");
 
             emailTemplate = emailTemplate.Replace("{DateTime.Now.Year}", DateTime.Now.Year.ToString());
 
@@ -79,5 +80,141 @@ namespace BugBustersHR.UI.Email.ServiceEmail
         }
 
 
+
+        public async Task LeaveRequestApprovedMail(string ToEmail, string approvedStatus, string employeeFullName, Employee manager, EmployeeLeaveRequest request)
+        {
+            var smptClient = new SmtpClient();
+
+            smptClient.Host = _settings.Host;
+            smptClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+            smptClient.UseDefaultCredentials = false;
+            smptClient.Port = 587;
+            smptClient.Credentials = new NetworkCredential(_settings.Username, _settings.Password);
+            smptClient.EnableSsl = true;
+
+
+            var mailMessage = new MailMessage();
+            string emailTemplate = File.ReadAllText("C:\\Users\\cagri\\Desktop\\dddddddd\\BugBustersFinall\\BugBustersHR.UI\\wwwroot\\assets\\mailconfirmation\\html\\leavemail.html");
+            emailTemplate = emailTemplate.Replace("{DateTime.Now.Year}", DateTime.Now.Year.ToString());
+            emailTemplate = emailTemplate.Replace("{employeeFullName}", employeeFullName);
+            emailTemplate = emailTemplate.Replace("{approvedStatus}", approvedStatus);
+            emailTemplate = emailTemplate.Replace("{manager.FullName}", manager.FullName);
+            emailTemplate = emailTemplate.Replace("{request.StartDate.ToString(\"yyyy-MM-dd\")}", request.StartDate.ToString("yyyy-MM-dd"));
+            emailTemplate = emailTemplate.Replace("{request.EndDate.ToString(\"yyyy-MM-dd\")}", request.EndDate.ToString("yyyy-MM-dd"));
+
+
+            mailMessage.From = new MailAddress(_settings.Username);
+            mailMessage.To.Add(ToEmail);
+            mailMessage.Subject = "Your request has been answered.";
+            mailMessage.Body = emailTemplate;
+
+            mailMessage.IsBodyHtml = true;
+
+            await smptClient.SendMailAsync(mailMessage);
+
+        }
+        public async Task AdvanceRequestApprovedMail(string ToEmail, string approvedStatus, string employeeFullName, Employee manager, IndividualAdvance request)
+        {
+            var smptClient = new SmtpClient();
+
+            smptClient.Host = _settings.Host;
+            smptClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+            smptClient.UseDefaultCredentials = false;
+            smptClient.Port = 587;
+            smptClient.Credentials = new NetworkCredential(_settings.Username, _settings.Password);
+            smptClient.EnableSsl = true;
+
+
+            var mailMessage = new MailMessage();
+            string emailTemplate = File.ReadAllText("C:\\Users\\cagri\\Desktop\\dddddddd\\BugBustersFinall\\BugBustersHR.UI\\wwwroot\\assets\\mailconfirmation\\html\\advancemail.html");
+            emailTemplate = emailTemplate.Replace("{DateTime.Now.Year}", DateTime.Now.Year.ToString());
+            emailTemplate = emailTemplate.Replace("{employeeFullName}", employeeFullName);
+            emailTemplate = emailTemplate.Replace("{approvedStatus}", approvedStatus);
+            emailTemplate = emailTemplate.Replace("{manager.FullName}", manager.FullName);
+            emailTemplate = emailTemplate.Replace("{request.Amount}", request.Amount.ToString());
+            emailTemplate = emailTemplate.Replace("{request.RequestDate}", request.RequestDate.ToString("yyyy-MM-dd"));
+
+
+
+            mailMessage.From = new MailAddress(_settings.Username);
+            mailMessage.To.Add(ToEmail);
+            mailMessage.Subject = "Your request has been answered.";
+            mailMessage.Body = emailTemplate;
+
+            mailMessage.IsBodyHtml = true;
+
+            await smptClient.SendMailAsync(mailMessage);
+        }
+
+
+
+        //--------------------------------------------------------------------------
+        public async Task AllowanceRequestApprovedMail(string ToEmail, string approvedStatus, string employeeFullName, Employee manager, InstitutionalAllowance request)
+        {
+            var smptClient = new SmtpClient();
+
+            smptClient.Host = _settings.Host;
+            smptClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+            smptClient.UseDefaultCredentials = false;
+            smptClient.Port = 587;
+            smptClient.Credentials = new NetworkCredential(_settings.Username, _settings.Password);
+            smptClient.EnableSsl = true;
+
+
+            var mailMessage = new MailMessage();
+            string emailTemplate = File.ReadAllText("C:\\Users\\cagri\\Desktop\\dddddddd\\BugBustersFinall\\BugBustersHR.UI\\wwwroot\\assets\\mailconfirmation\\html\\allowanceMail.html");
+
+            emailTemplate = emailTemplate.Replace("{DateTime.Now.Year}", DateTime.Now.Year.ToString());
+            emailTemplate = emailTemplate.Replace("{employeeFullName}", employeeFullName);
+            emailTemplate = emailTemplate.Replace("{approvedStatus}", approvedStatus);
+            emailTemplate = emailTemplate.Replace("{manager.FullName}", manager.FullName);
+            emailTemplate = emailTemplate.Replace("{request.AmountOfAllowance}", request.AmountOfAllowance.ToString());
+            emailTemplate = emailTemplate.Replace("{request.Currency.Value}", request.Currency.Value.ToString());
+            emailTemplate = emailTemplate.Replace("{request.RequestDate}", request.RequestDate.ToString("yyyy-MM-dd"));
+
+
+
+            mailMessage.From = new MailAddress(_settings.Username);
+            mailMessage.To.Add(ToEmail);
+            mailMessage.Subject = "Your request has been answered.";
+            mailMessage.Body = emailTemplate;
+
+            mailMessage.IsBodyHtml = true;
+
+            await smptClient.SendMailAsync(mailMessage);
+        }
+
+        public async Task ExpenditureRequestApprovedMail(string ToEmail, string approvedStatus, string employeeFullName, Employee manager, ExpenditureRequest request)
+        {
+            var smptClient = new SmtpClient();
+
+            smptClient.Host = _settings.Host;
+            smptClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+            smptClient.UseDefaultCredentials = false;
+            smptClient.Port = 587;
+            smptClient.Credentials = new NetworkCredential(_settings.Username, _settings.Password);
+            smptClient.EnableSsl = true;
+
+
+            var mailMessage = new MailMessage();
+            string emailTemplate = File.ReadAllText("C:\\Users\\cagri\\Desktop\\dddddddd\\BugBustersFinall\\BugBustersHR.UI\\wwwroot\\assets\\mailconfirmation\\html\\expendituremail.html");
+            emailTemplate = emailTemplate.Replace("{DateTime.Now.Year}", DateTime.Now.Year.ToString());
+            emailTemplate = emailTemplate.Replace("{employeeFullName}", employeeFullName);
+            emailTemplate = emailTemplate.Replace("{approvedStatus}", approvedStatus);
+            emailTemplate = emailTemplate.Replace("{manager.FullName}", manager.FullName);
+            emailTemplate = emailTemplate.Replace("{request.AmountOfExpenditure}", request.AmountOfExpenditure.ToString());
+            emailTemplate = emailTemplate.Replace("{request.Currency.Value}", request.Currency.Value.ToString());
+            emailTemplate = emailTemplate.Replace("{request.RequestDate}", request.RequestDate.ToString("yyyy-MM-dd"));
+
+
+            mailMessage.From = new MailAddress(_settings.Username);
+            mailMessage.To.Add(ToEmail);
+            mailMessage.Subject = "Your request has been answered.";
+            mailMessage.Body = emailTemplate;
+
+            mailMessage.IsBodyHtml = true;
+
+            await smptClient.SendMailAsync(mailMessage);
+        }
     }
 }

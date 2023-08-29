@@ -10,6 +10,7 @@ using BugBustersHR.UI.Email.ServiceEmail;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
+using System.Runtime.Intrinsics.X86;
 using System.Security.Claims;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
@@ -69,12 +70,11 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
         public async Task<IActionResult> LeaveAccepted(int id)
         {
             var leave = _db.EmployeeLeaveRequests.Find(id);
-            var user = _db.Users.Find(leave.RequestingId);
-
+            var user = _employeeService.TGetById(leave.RequestingId);
+            var manager = GetEmployee();
 
             await _leaveReqService.TChangeToTrueforLeave(id);
-            await _emailService.RequestApprovedMail("aa", user.Email, "leave");
-            SetUserImageViewBag();
+            await _emailService.LeaveRequestApprovedMail( user.Email, "confirmed", user.FullName, manager, leave);
 
             return RedirectToAction("LeaveConfirmation", "Confirmation", new { area = "Manager" });
         }
@@ -83,10 +83,11 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
         public async Task<IActionResult> LeaveRefused(int id)
         {
             var leave = _db.EmployeeLeaveRequests.Find(id);
-            var user = _db.Users.Find(leave.RequestingId);
+            var user = _employeeService.TGetById(leave.RequestingId);
+            var manager = GetEmployee();
 
             await _leaveReqService.TChangeToFalseforLeave(id);
-            await _emailService.RequestApprovedMail("aa", user.Email, "leave");
+            await _emailService.LeaveRequestApprovedMail(user.Email, "refused", user.FullName, manager, leave);
             SetUserImageViewBag();
             return RedirectToAction("LeaveConfirmation", "Confirmation", new { area = "Manager" });
         }

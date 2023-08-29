@@ -260,13 +260,14 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
 
         public IActionResult GetManagerDetail(string id)
         {
-
-            var manager = _hrDb.Personels.FirstOrDefault(x => x.Id == id && x.Role == AppRoles.Role_Manager);
+            var manager = _employeeService.GetByIdEmployee(id);
+            
+            //var manager = _hrDb.Personels.FirstOrDefault(x => x.Id == id && x.Role == AppRoles.Role_Manager);
 
             if (manager == null)
             {
-                
-                return RedirectToAction("GetManagerList"); 
+
+                return RedirectToAction("GetManagerList");
             }
 
             var mappedManager = _mapper.Map<GetManagerListVM>(manager);
@@ -276,16 +277,15 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
 
         public IActionResult ManagerEdit(string id)
         {
-            
-
-
-            var manager = _hrDb.Personels.FirstOrDefault(x => x.Id == id && x.Role == AppRoles.Role_Manager);
+            var manager = _employeeService.GetByIdEmployee(id);
+            //var manager = _hrDb.Personels.FirstOrDefault(x => x.Id == id && x.Role == AppRoles.Role_Manager);
             if (manager == null)
             {
                 return View("GetManagerDetail");
             }
 
             var mapli = _mapper.Map<GetManagerListVM>(manager);
+            mapli.SalaryString=mapli.Salary.ToString().Replace(",",".");
 
          
             SetUserImageViewBag();
@@ -297,46 +297,41 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
         public IActionResult ManagerEdit(GetManagerListVM model)
         {
 
-           
-                var existingManager = _hrDb.Personels.FirstOrDefault(x => x.Id == model.Id && x.Role == AppRoles.Role_Manager);
+            var existingManager = _hrDb.Personels.FirstOrDefault(x => x.Id == model.Id && x.Role == AppRoles.Role_Manager);
 
 
-                if (existingManager == null)
-                {
-                    return RedirectToAction("GetManagerList");
-                }
+            if (existingManager == null)
+            {
+                return RedirectToAction("GetManagerList");
+            }
 
-                existingManager.Id = model.Id;
+            existingManager.Id = model.Id;
 
-                existingManager.FullName = model.FullName;
-                existingManager.Name = model.Name;
-                existingManager.SecondName = model.SecondName;
-                existingManager.Surname = model.Surname;
-                existingManager.SecondSurname = model.SecondSurname;
-                existingManager.BirthPlace = model.BirthPlace;
-                existingManager.TC = model.TC;
-                existingManager.BirthDate = model.BirthDate;
-                existingManager.HiredDate = model.HiredDate;
-                existingManager.IsActive = model.IsActive;
-                existingManager.Title = model.Title;
-                existingManager.Section = model.Section;
-                existingManager.Salary = model.Salary;
-                existingManager.TelephoneNumber = model.TelephoneNumber;
-                existingManager.Address = model.Address;
-                existingManager.CompanyName = model.CompanyName;
-                existingManager.Email = model.Email;
+            existingManager.FullName = model.FullName;
+            existingManager.Name = model.Name;
+            existingManager.SecondName = model.SecondName;
+            existingManager.Surname = model.Surname;
+            existingManager.SecondSurname = model.SecondSurname;
+            existingManager.BirthPlace = model.BirthPlace;
+            existingManager.TC = model.TC;
+            existingManager.BirthDate = model.BirthDate;
+            existingManager.HiredDate = model.HiredDate;
+            existingManager.IsActive = model.IsActive;
+            existingManager.Title = model.Title;
+            existingManager.Section = model.Section;
+            existingManager.Salary = Convert.ToDecimal(model.SalaryString);
+            existingManager.TelephoneNumber = model.TelephoneNumber;
+            existingManager.Address = model.Address;
+            existingManager.CompanyName = model.CompanyName;
+            existingManager.Email = model.Email;
 
-           
 
             _hrDb.Update(existingManager);
-                _hrDb.SaveChanges();    
-               
+            _hrDb.SaveChanges();
 
-                return RedirectToAction("GetManagerDetail", new { id = model.Id });
-            
-            var mappedManager = _mapper.Map<GetManagerListVM>(model);
-            SetUserImageViewBag();
-            return View("GetManagerDetail", mappedManager);
+
+            return RedirectToAction("GetManagerDetail", new { id = model.Id });
+
         }
 
         public IActionResult ManagerDelete(string id)

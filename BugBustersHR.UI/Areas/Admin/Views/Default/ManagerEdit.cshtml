@@ -33,7 +33,8 @@
             <div class="text-center mb-1">
                 <!-- Centered container for the image -->
                 <div class="avatar avatar-xl position-relative">
-                    <img src="@Model.ImageUrl" alt="profile_image" class="w-100 border-radius-lg shadow-sm" style="max-width: 150px; max-height: 150px;">
+                    <img id="profileImage" src="@Model.ImageUrl" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+                    <input type="file" asp-for="ImageModel.File" accept="image/*" class="form-control" id="photoInput" style="display:none;" onchange="updateProfileImage()">
                 </div>
             </div>
             <div class="col-md-12 d-flex justify-content-center">
@@ -41,15 +42,12 @@
             </div>
             <div class="card-body mt-n2" style="overflow-y: auto; max-height: 600px;">
                 <form asp-area="Admin" asp-controller="Default" asp-action="ManagerEdit" method="post" enctype="multipart/form-data" id="editProfileForm">
+                    <input type="hidden" asp-for="Id" />
                     <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                     <div class="row">
                         <div class="col-md-3">
                             <!-- Column 1 -->
-                            <div class="form-group">
-                                <label asp-for="StartedDate" class="control-label"></label>
-                                <input asp-for="StartedDate" class="form-control shadow-sm" />
-                                <span asp-validation-for="StartedDate" class="text-danger"></span>
-                            </div>
+                   
                             <div class="form-group">
                                 <label asp-for="HiredDate" class="control-label"></label>
                                 <input asp-for="HiredDate" class="form-control shadow-sm" />
@@ -66,9 +64,9 @@
                                 <span asp-validation-for="Section" class="text-danger"></span>
                             </div>
                             <div class="form-group">
-                                <label asp-for="Salary" class="control-label"></label>
-                                <input asp-for="Salary" class="form-control shadow-sm" />
-                                <span asp-validation-for="Salary" class="text-danger"></span>
+                                <label asp-for="SalaryString" class="control-label"></label>
+                                <input asp-for="SalaryString" class="form-control shadow-sm" />
+                                <span asp-validation-for="SalaryString" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -144,7 +142,7 @@
                             </label>
                         </div>
                         <div class="col-sm-3 text-center">
-                            <button id="updateButton" type="submit" class="btn btn-outline-dark btn-light toast-btn" data-target="successToast" disabled>
+                            <button id="updateButton" type="submit" class="btn btn-outline-dark btn-light toast-btn" data-target="successToast">
                                 <i class="fas fa-save"></i> Save
                             </button> &nbsp
                         </div>
@@ -179,6 +177,8 @@
 
             reader.readAsDataURL(photoInput.files[0]);
         }
+        var updatePhotoButton = document.getElementById("updatePhotoButton");
+        updatePhotoButton.addEventListener("click", updateProfileImage);
     }
 
     function showSuccessToast() {
