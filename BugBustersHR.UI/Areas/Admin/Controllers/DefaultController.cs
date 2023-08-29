@@ -334,12 +334,37 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
             existingManager.CompanyName = model.CompanyName;
             existingManager.Email = model.Email;
 
+            if (model.ImageModel.File != null)
+            {
+                string fileExtension = Path.GetExtension(model.ImageModel.File.FileName);
+                var uniqueName = Guid.NewGuid().ToString() + fileExtension;
+
+                using (MemoryStream fileUploadStream = new MemoryStream())
+                {
+                    model.ImageModel.File.CopyTo(fileUploadStream);
+                    fileUploadStream.Position = 0;
+
+                    BlobContainerClient blobContainerClient = new BlobContainerClient(
+                        _azureOptions.ConnectionString,
+                        _azureOptions.Container);
+
+                    BlobClient blobClient = blobContainerClient.GetBlobClient(uniqueName);
+
+                    blobClient.Upload(fileUploadStream, new BlobHttpHeaders()
+                    {
+                        ContentType = model.ImageModel.File.ContentType,
+                    });
+
+                    existingManager.ImageUrl = "https://bugbustersstorage.blob.core.windows.net/contentupload/" + uniqueName;
+                }
+            }
+
 
             _hrDb.Update(existingManager);
             _hrDb.SaveChanges();
 
-
-            return RedirectToAction("GetManagerDetail", new { id = model.Id });
+            
+            return RedirectToAction("GetManagerDetail", new { id = model.Id, imageUrl = model.ImageUrl });
 
         }
 
