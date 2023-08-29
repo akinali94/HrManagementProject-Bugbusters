@@ -18,7 +18,7 @@
     <div class="container-fluid px-2 px-md-4 d-flex justify-content-end align-items-center mt-n12" style="height: 100vh;">
         <div class="col-10 mt-n8">
             <div class="col-12">
-                <div class="bg-light card card-body mx-2 mx-md-4 bg-light">
+                <div class="bg-light card card-body mx-2 mx-md-4 bg-light opacity-9">
                     <div class="col-md-12 d-flex justify-content-center align-items-center">
                         <h2 class="mb-1 mt-4">Detailed Company List</h2>
                     </div>
@@ -74,7 +74,7 @@
                                                   Active
                                                 </th>
 
-                                                <th></th>
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -145,9 +145,11 @@
 
 
                                                     <td>
-                                                        @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-                                                        
-                                                        @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+                                                        @Html.ActionLink("Edit", "Edit", new { id=item.Id }, new { @class = "btn btn-outline-dark btn-light" }) |
+
+                                                        <a href="#" class="btn btn-danger delete-trigger" data-id="@item.Id" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal">
+                                                            Delete
+                                                        </a>
                                                     </td>
                                                 </tr>
                                             }
@@ -185,14 +187,19 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Are you sure you want to delete?
+                    Are you sure you want to delete this item?
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <a id="confirmDeleteLink" class="btn btn-danger">Yes, Delete</a>
+                    @foreach (var item in Model)
+                    {
+
+                        <a asp-area="Admin" asp-controller="Company" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Yes, Delete</a>
+                    }
+                    
                 </div>
             </div>
         </div>
     </div>
-
 </body>
+

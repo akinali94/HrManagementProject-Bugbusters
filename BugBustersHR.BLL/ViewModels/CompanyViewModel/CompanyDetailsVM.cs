@@ -1,4 +1,5 @@
-﻿using BugBustersHR.ENTITY.Concrete;
+﻿using BugBustersHR.BLL.ViewModels.BaseViewModel;
+using BugBustersHR.ENTITY.Concrete;
 using BugBustersHR.ENTITY.Enums;
 using System;
 using System.Collections.Generic;
@@ -8,14 +9,13 @@ using System.Threading.Tasks;
 
 namespace BugBustersHR.BLL.ViewModels.CompanyViewModel
 {
-    public class CompanyDetailsVM
+    public class CompanyDetailsVM:BaseVM
     {
         public CompanyDetailsVM()
         {
 
             ImageModel = new ImageModel();
         }
-        public int Id { get; set; }
         public string CompanyName { get; set; }
         public CompanyTitle CompanyTitle { get; set; }
         public ImageModel ImageModel { get; set; }
