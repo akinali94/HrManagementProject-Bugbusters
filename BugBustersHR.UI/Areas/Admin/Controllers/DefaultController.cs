@@ -240,6 +240,15 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
             SetUserImageViewBag();
             var adminId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+            IEnumerable<Companies> companies = _companyService.GetAllCompany();
+
+            List<SelectListItem> companyItems = companies.Select(c => new SelectListItem
+            {
+                Text = c.CompanyName,
+                Value = c.CompanyName
+            }).ToList();
+
+            ViewBag.Companies = companyItems;
 
             string passwordGenerated = _employeeService.GenerateRandomPassword(null);
             ViewBag.GeneratedPassword = passwordGenerated;

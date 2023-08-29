@@ -4,6 +4,8 @@ using System.Net.Mail;
 using System.Net;
 using System.Text.Encodings.Web;
 using BugBustersHR.ENTITY.Concrete;
+using Microsoft.Extensions.Hosting.Internal;
+using Microsoft.AspNetCore.Hosting;
 
 namespace BugBustersHR.UI.Email.ServiceEmail
 {
@@ -12,11 +14,13 @@ namespace BugBustersHR.UI.Email.ServiceEmail
 
         private readonly EmailSettings _settings;
         private readonly IWebHostEnvironment _env;
+        private readonly Microsoft.AspNetCore.Hosting.IHostingEnvironment _hostEnvironment;
 
-        public EmailService(IOptions<EmailSettings> options, IWebHostEnvironment env)
+        public EmailService(IOptions<EmailSettings> options, IWebHostEnvironment env, Microsoft.AspNetCore.Hosting.IHostingEnvironment hostEnvironment)
         {
             _settings = options.Value;
             _env = env;
+            _hostEnvironment = hostEnvironment;
         }
 
         public async Task SendConfirmEmail(string emailLink, string ToEmail, string Password)
@@ -32,8 +36,10 @@ namespace BugBustersHR.UI.Email.ServiceEmail
 
 
             var mailMessage = new MailMessage();
-
-            string emailTemplate = File.ReadAllText("C:\\Users\\cagri\\Desktop\\dddddddd\\BugBustersFinall\\BugBustersHR.UI\\wwwroot\\assets\\mailconfirmation\\html\\emailconfirmation.html");
+            // string htmlFilePath = Path.Combine(_hostingEnvironment.WebRootPath, "EmailTemplate", "index.html");
+            string htmlFilePath = Path.Combine(_hostEnvironment.WebRootPath, "assets", "mailconfirmation", "html", "emailconfirmation.html");
+            string emailTemplate = File.ReadAllText(htmlFilePath);
+            //string emailTemplate = File.ReadAllText("\\assets\\mailconfirmation\\html\\emailconfirmation.html");
 
             emailTemplate = emailTemplate.Replace("{DateTime.Now.Year}", DateTime.Now.Year.ToString());
 
