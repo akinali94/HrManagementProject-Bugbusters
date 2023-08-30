@@ -114,6 +114,63 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
 
 
 
+        //public IActionResult Edit(int id)
+        //{
+
+        //    var company = _service.GetByIdCompany(id);
+
+        //    var mapli = _mapper.Map<CompanyVM>(company);
+        //    SetUserImageViewBag();
+        //    return View(mapli);
+
+        //}
+        //[HttpPost]
+        //public IActionResult Edit(CompanyVM companyVM)
+        //{
+        //    var validationResult = _companyValidator.Validate(companyVM);
+        //    try
+        //    {
+        //        if (companyVM.ImageModel.File != null)
+        //        {
+        //            string fileExtension = Path.GetExtension(companyVM.ImageModel.File.FileName);
+        //            var uniqueName = Guid.NewGuid().ToString() + fileExtension;
+
+        //            using (MemoryStream fileUploadStream = new MemoryStream())
+        //            {
+        //                companyVM.ImageModel.File.CopyTo(fileUploadStream);
+        //                fileUploadStream.Position = 0;
+
+        //                BlobContainerClient blobContainerClient = new BlobContainerClient(_azureOptions.ConnectionString, _azureOptions.Container);
+        //                BlobClient blobClient = blobContainerClient.GetBlobClient(uniqueName);
+
+        //                blobClient.Upload(fileUploadStream, new BlobHttpHeaders
+        //                {
+        //                    ContentType = companyVM.ImageModel.File.ContentType,
+        //                });
+
+        //                companyVM.Logo = "https://bugbustersstorage.blob.core.windows.net/contentupload/" + uniqueName;
+        //            }
+        //        }
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+
+        //    if (validationResult.IsValid)
+        //    {
+        //        var mapping = _mapper.Map<Companies>(companyVM);
+        //        mapping.CompanyName = companyVM.CompanyName;
+
+        //        _service.TUpdate(mapping);
+        //        return RedirectToAction("Index");
+        //    }
+        //    SetUserImageViewBag();
+        //    return View(companyVM);
+
+
+        //}
+
         public IActionResult Edit(int id)
         {
 

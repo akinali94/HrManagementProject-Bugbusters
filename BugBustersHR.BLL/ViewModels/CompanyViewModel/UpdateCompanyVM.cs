@@ -36,10 +36,10 @@ namespace BugBustersHR.BLL.ViewModels.CompanyViewModel
             {
                 if (ContractEndDate > DateTime.Now)
                 {
-                    return false;
+                    return true;
                 }
                 else
-                { return true; }
+                { return false; }
             }
         }
 

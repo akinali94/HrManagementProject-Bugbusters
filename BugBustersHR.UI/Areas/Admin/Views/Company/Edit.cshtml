@@ -42,12 +42,22 @@
             </div>
             <form asp-controller="Company" asp-action="Edit" method="post" enctype="multipart/form-data" id="editProfileForm">
                 <input type="hidden" asp-for="Id" />
-                <div class="row justify-content-center align-items-center mb-2">
+@*                <div class="row justify-content-center align-items-center mb-2">
                     <div class="avatar avatar-xxl position-relative">
-                        <img id="profileImage" src="@Model.Logo" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
-                        <input type="file" asp-for="ImageModel.File" accept="image/*" class="form-control" id="photoInput" style="display:none;" onchange="updateProfileImage()">
+                        <img id="profileImage" src="@Url.Content(@Model.Logo)" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+                        <input asp-for="Logo" value="@Model.Logo" type="file" accept="image/*" class="form-control" id="photoInput" style="display:none;" onchange="updateProfileImage()">
                     </div>
+                </div>*@
+                <div class="avatar avatar-xl position-relative">
+                    <img id="profileImage" src="@Model.Logo" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+                    <input type="file" asp-for="ImageModel.File" accept="image/*" class="form-control" id="photoInput" style="display:none;" onchange="updateProfileImage()">
                 </div>
+@*                    <div class="form-group">
+                        <label asp-for="Logo" class="control-label"></label>
+                        <input asp-for="Logo" class="form-control" value="@Model.Logo" />
+                        <img src="@Url.Content(@Model.Logo)" alt="Company Logo" class="company-logo" style="width: 100px; height: 100px;" />
+                        <span asp-validation-for="Logo" class="text-danger"></span>
+                    </div>*@
                 <div class="row">
                     <div class="col-md-4">
                         <!-- Column 1 -->
@@ -142,7 +152,7 @@
         </div>
     </div>
 </div>
-<script>
+@*<script>
     function updateProfileImage() {
         var profileImage = document.getElementById("profileImage");
         var photoInput = document.getElementById("photoInput");
@@ -184,6 +194,146 @@
     telephoneNumberInput.addEventListener("input", validateAndUpdateButton);
     var addressInput = document.getElementById("Address");
     addressInput.addEventListener("input", validateAndUpdateButton);
+</script>
+
+
+<script>
+
+    function updateProfileImage() {
+        var profileImage = document.getElementById("profileImage");
+        var photoInput = document.getElementById("photoInput");
+
+        if (photoInput.files && photoInput.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                profileImage.src = e.target.result;
+            };
+
+            reader.readAsDataURL(photoInput.files[0]);
+        }
+
+        validateAndUpdateButton(); // Update the button status after image change
+    }
+
+    function showSuccessToast() {
+        // Show the toast notification
+        var toast = new bootstrap.Toast(document.getElementById('successToast'));
+        toast.show();
+
+        // Wait for a few seconds (adjust the delay as needed)
+        setTimeout(function () {
+            // Submit the form
+            document.getElementById('editProfileForm').submit();
+        }, 4000); // 4 seconds delay, you can change this to your preferred value
+    }
+
+    // Find all buttons with the toast-btn class
+    var toastButtons = document.getElementsByClassName('toast-btn');
+    for (var i = 0; i < toastButtons.length; i++) {
+        toastButtons[i].addEventListener('click', showSuccessToast);
+    }
+</script>
+
+
+
+<script>
+    var telephoneNumberInput = document.getElementById("telephoneNumber");
+    telephoneNumberInput.addEventListener("input", validateAndUpdateButton);
+    var addressInput = document.getElementById("Address");
+    addressInput.addEventListener("input", validateAndUpdateButton);
+
+    //var backgroundImageInput = document.getElementById("backgroundImageInput");
+    //backgroundImageInput.addEventListener("change", validateAndUpdateButton);
+
+    var photoInput = document.getElementById("photoInput");
+    photoInput.addEventListener("change", validateAndUpdateButton);
+
+    var originalTelephoneNumber = telephoneNumberInput.value;
+    var originalAddress = addressInput.value;
+
+    function validateAndUpdateButton() {
+        var updateButton = document.getElementById("updateButton");
+        var isValidTelephoneNumber = validatePhoneNumber(telephoneNumberInput.value);
+        var isValidAddress = validateAddress(addressInput.value);
+        var isImageChanged = isFileSelected(photoInput);
+        //var isBackgroundImageChanged = isFileSelected(backgroundImageInput);
+
+
+        var telephoneNumberChanged = originalTelephoneNumber !== telephoneNumberInput.value;
+        var addressChanged = originalAddress !== addressInput.value;
+
+        updateButton.disabled = !(isValidTelephoneNumber && isValidAddress && (isImageChanged || telephoneNumberChanged || addressChanged));
+    }
+
+    function validatePhoneNumber(telephoneNumber) {
+        // Telefon numarasının sadece rakamlardan oluşup oluşmadığını kontrol et
+        return /^[0-9]{11}$/.test(telephoneNumber);
+    }
+
+    function validateAddress(address) {
+        return address.trim() !== "";
+    }
+
+    function isFileSelected(input) {
+        return input.files && input.files.length > 0;
+    }
+</script>*@
+
+@*
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>*@
+
+<script>
+
+    function updateProfileImage() {
+        var profileImage = document.getElementById("profileImage");
+        var photoInput = document.getElementById("photoInput");
+
+        if (photoInput.files && photoInput.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                profileImage.src = e.target.result;
+            };
+
+            reader.readAsDataURL(photoInput.files[0]);
+        }
+
+        validateAndUpdateButton(); // Update the button status after image change
+    }
+
+    function showSuccessToast() {
+        // Show the toast notification
+        var toast = new bootstrap.Toast(document.getElementById('successToast'));
+        toast.show();
+
+        // Wait for a few seconds (adjust the delay as needed)
+        setTimeout(function () {
+            // Submit the form
+            document.getElementById('editProfileForm').submit();
+        }, 4000); // 4 seconds delay, you can change this to your preferred value
+    }
+
+    // Find all buttons with the toast-btn class
+    var toastButtons = document.getElementsByClassName('toast-btn');
+    for (var i = 0; i < toastButtons.length; i++) {
+        toastButtons[i].addEventListener('click', showSuccessToast);
+    }
 </script>
 
 

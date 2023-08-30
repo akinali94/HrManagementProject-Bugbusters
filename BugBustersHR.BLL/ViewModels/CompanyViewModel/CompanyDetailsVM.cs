@@ -34,7 +34,7 @@ namespace BugBustersHR.BLL.ViewModels.CompanyViewModel
         {
             get
             {
-                if (ContractEndDate<=DateTime.Now)
+                if (ContractEndDate > DateTime.Now)
                 {
                     return true;
                 }
