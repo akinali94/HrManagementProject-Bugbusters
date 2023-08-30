@@ -39,12 +39,12 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
         private readonly IValidator<AdminUpdateVM> _adminValidator;
         private readonly IValidator<CreateManagerFromAdminVM> _CreateManagerValidator;
         private readonly AzureOptions _azureOptions;
-    
+        private readonly IValidator<GetManagerListVM> _managerEditFromAdminValidator;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IEmailService _emailService;
 
-        public DefaultController(IEmployeeService employeeService, IMapper mapper, HrDb hrDb, IValidator<AdminUpdateVM> adminValidator, IValidator<CreateManagerFromAdminVM> CreateManagerValidator, IOptions<AzureOptions> azureOptions, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IEmailService emailService, ICompanyService companyService)
+        public DefaultController(IEmployeeService employeeService, IMapper mapper, HrDb hrDb, IValidator<AdminUpdateVM> adminValidator, IValidator<CreateManagerFromAdminVM> CreateManagerValidator, IOptions<AzureOptions> azureOptions, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IEmailService emailService, ICompanyService companyService, IValidator<GetManagerListVM> managerEditFromAdminValidator)
         {
             _employeeService = employeeService;
             _mapper = mapper;
@@ -57,12 +57,13 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
             _roleManager = roleManager;
             _emailService = emailService;
             _companyService = companyService;
+            _managerEditFromAdminValidator = managerEditFromAdminValidator;
         }
 
 
         public IActionResult Index()
         {
-            
+
             var mappingQuery = _mapper.Map<AdminSummaryListVM>(GetEmployee());
             SetUserImageViewBag();
 
@@ -86,7 +87,7 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
 
             if (validationResult.IsValid)
             {
-                try  
+                try
                 {
                     var entity = _employeeService.TGetById(updateVm.Id);
 
@@ -162,7 +163,7 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
 
         public IActionResult Details(string id)
         {
-  
+
             var query1 = _employeeService.TGetById(GetEmployee().Id);
             var mappingQuery1 = _mapper.Map<AdminListWithoutSalaryVM>(query1);
             SetUserImageViewBag();
@@ -181,7 +182,7 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
                 new SelectListItem{Text = "Man", Value = "0"}
             }, "Value", "Text");
 
-       
+
             IEnumerable<Companies> companies = _companyService.GetAllCompany();
 
             List<SelectListItem> companyItems = companies.Select(c => new SelectListItem
@@ -260,15 +261,6 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
         public IActionResult GetManagerList()
         {
 
-            var getList = _hrDb.Personels.Where(x => x.Role == AppRoles.Role_Manager && x.IsActive==true).ToList();
-            
-            var mappingList = _mapper.Map<List<GetManagerListVM>>(getList);
-            SetUserImageViewBag();
-            return View(mappingList);
-        }
-        public IActionResult GetManagerListAll()
-        {
-
             var getList = _hrDb.Personels.Where(x => x.Role == AppRoles.Role_Manager).ToList();
 
             var mappingList = _mapper.Map<List<GetManagerListVM>>(getList);
@@ -279,7 +271,7 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
         public IActionResult GetManagerDetail(string id)
         {
             var manager = _employeeService.GetByIdEmployee(id);
-            
+
             //var manager = _hrDb.Personels.FirstOrDefault(x => x.Id == id && x.Role == AppRoles.Role_Manager);
 
             if (manager == null)
@@ -303,9 +295,8 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
             }
 
             var mapli = _mapper.Map<GetManagerListVM>(manager);
-            mapli.SalaryString=mapli.Salary.ToString().Replace(",",".");
+            mapli.SalaryString = mapli.Salary.ToString().Replace(",", ".");
 
-         
             SetUserImageViewBag();
 
             return View(mapli);
@@ -314,67 +305,90 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult ManagerEdit(GetManagerListVM model)
         {
+            var validationResult = _managerEditFromAdminValidator.Validate(model); // Doğrulama burada kullanılıyor
 
-            var existingManager = _hrDb.Personels.FirstOrDefault(x => x.Id == model.Id && x.Role == AppRoles.Role_Manager);
-
-
-            if (existingManager == null)
+            if (validationResult.IsValid)
             {
-                return RedirectToAction("GetManagerList");
-            }
-
-            existingManager.Id = model.Id;
-            existingManager.ResignationDate=model.ResignationDate;
-            existingManager.FullName = model.FullName;
-            existingManager.Name = model.Name;
-            existingManager.SecondName = model.SecondName;
-            existingManager.Surname = model.Surname;
-            existingManager.SecondSurname = model.SecondSurname;
-            existingManager.BirthPlace = model.BirthPlace;
-            existingManager.TC = model.TC;
-            existingManager.BirthDate = model.BirthDate;
-            existingManager.HiredDate = model.HiredDate;
-            existingManager.IsActive = model.IsActive;
-            existingManager.Title = model.Title;
-            existingManager.Section = model.Section;
-            existingManager.Salary = Convert.ToDecimal(model.SalaryString);
-            existingManager.TelephoneNumber = model.TelephoneNumber;
-            existingManager.Address = model.Address;
-            existingManager.CompanyName = model.CompanyName;
-            existingManager.Email = model.Email;
-
-            if (model.ImageModel.File != null)
-            {
-                string fileExtension = Path.GetExtension(model.ImageModel.File.FileName);
-                var uniqueName = Guid.NewGuid().ToString() + fileExtension;
-
-                using (MemoryStream fileUploadStream = new MemoryStream())
+                try
                 {
-                    model.ImageModel.File.CopyTo(fileUploadStream);
-                    fileUploadStream.Position = 0;
+                    var existingManager = _hrDb.Personels.FirstOrDefault(x => x.Id == model.Id && x.Role == AppRoles.Role_Manager);
 
-                    BlobContainerClient blobContainerClient = new BlobContainerClient(
-                        _azureOptions.ConnectionString,
-                        _azureOptions.Container);
-
-                    BlobClient blobClient = blobContainerClient.GetBlobClient(uniqueName);
-
-                    blobClient.Upload(fileUploadStream, new BlobHttpHeaders()
+                    if (existingManager == null)
                     {
-                        ContentType = model.ImageModel.File.ContentType,
-                    });
+                        return RedirectToAction("GetManagerList");
+                    }
 
-                    existingManager.ImageUrl = "https://bugbustersstorage.blob.core.windows.net/contentupload/" + uniqueName;
+                    existingManager.Id = model.Id;
+
+                    existingManager.FullName = model.FullName;
+                    existingManager.Name = model.Name;
+                    existingManager.SecondName = model.SecondName;
+                    existingManager.Surname = model.Surname;
+                    existingManager.SecondSurname = model.SecondSurname;
+                    existingManager.BirthPlace = model.BirthPlace;
+                    existingManager.TC = model.TC;
+                    existingManager.BirthDate = model.BirthDate;
+                    existingManager.HiredDate = model.HiredDate;
+                    existingManager.IsActive = model.IsActive;
+                    existingManager.Title = model.Title;
+                    existingManager.Section = model.Section;
+                    existingManager.Salary = Convert.ToDecimal(model.SalaryString);
+                    existingManager.TelephoneNumber = model.TelephoneNumber;
+                    existingManager.Address = model.Address;
+                    existingManager.CompanyName = model.CompanyName;
+                    existingManager.Email = model.Email;
+
+                    if (model.ImageModel.File != null)
+                    {
+                        string fileExtension = Path.GetExtension(model.ImageModel.File.FileName);
+                        var uniqueName = Guid.NewGuid().ToString() + fileExtension;
+
+                        using (MemoryStream fileUploadStream = new MemoryStream())
+                        {
+                            model.ImageModel.File.CopyTo(fileUploadStream);
+                            fileUploadStream.Position = 0;
+
+                            BlobContainerClient blobContainerClient = new BlobContainerClient(
+                                _azureOptions.ConnectionString,
+                                _azureOptions.Container);
+
+                            BlobClient blobClient = blobContainerClient.GetBlobClient(uniqueName);
+
+                            blobClient.Upload(fileUploadStream, new BlobHttpHeaders()
+                            {
+                                ContentType = model.ImageModel.File.ContentType,
+                            });
+
+                            existingManager.ImageUrl = "https://bugbustersstorage.blob.core.windows.net/contentupload/" + uniqueName;
+                        }
+                    }
+
+
+                    _hrDb.Update(existingManager);
+                    _hrDb.SaveChanges();
+
+
+                    return RedirectToAction("GetManagerDetail", new { id = model.Id, imageUrl = model.ImageUrl });
+
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", "An error occurred while saving changes.");
+                    SetUserImageViewBag();
+                    Console.WriteLine(ex);
+                    return View(model);
                 }
             }
-
-
-            _hrDb.Update(existingManager);
-            _hrDb.SaveChanges();
-
-            
-            return RedirectToAction("GetManagerDetail", new { id = model.Id, imageUrl = model.ImageUrl });
-
+            else
+            {
+                // Validation failed, handle the errors
+                foreach (var error in validationResult.Errors)
+                {
+                    ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+                }
+                SetUserImageViewBag();
+                return View(model);
+            }
         }
 
         public IActionResult ManagerDelete(string id)

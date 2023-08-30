@@ -15,6 +15,7 @@ namespace BugBustersHR.BLL.ViewModels.AdminViewModel
 
             ImageModel = new ImageModel();
         }
+        public DateTime ResignationDate { get; set; }
         public string Id { get; set; }
         public string Name { get; set; }
         public string? SecondName { get; set; }
@@ -33,7 +34,48 @@ namespace BugBustersHR.BLL.ViewModels.AdminViewModel
         public string TelephoneNumber { get; set; }
         public string Address { get; set; }
         public string CompanyName { get; set; }
-        public string Email { get; set; }
+        public string Email
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Surname))
+                {
+                    return string.Empty;
+                }
+                string sanitizedFirstName = Name.Replace(" ", "").Replace("ı", "i").Replace("ö", "o").Replace("ü", "u").Replace("ğ", "g").Replace("ç", "c").Replace("ş", "s").ToLower();
+                string sanitizedLastName = Surname.Replace(" ", "").Replace("ı", "i").Replace("ö", "o").Replace("ü", "u").Replace("ğ", "g").Replace("ç", "c").Replace("ş", "s").ToLower();
+
+
+
+
+                if (SecondSurname == null && SecondName == null)
+                {
+                    return $"{sanitizedFirstName}.{sanitizedLastName}@bilgeadamboost.com";
+                }
+                else if (SecondSurname == null && SecondName != null)
+                {
+                    string? sanitizedSecondName = SecondName.Replace(" ", "").Replace("ı", "i").Replace("ö", "o").Replace("ü", "u").Replace("ğ", "g").Replace("ç", "c").Replace("ş", "s").ToLower();
+
+
+                    return $"{sanitizedFirstName}{sanitizedSecondName}.{sanitizedLastName}@bilgeadamboost.com";
+                }
+                else if (SecondSurname != null && SecondName == null)
+                {
+                    string? sanitizedSecondLastName = SecondSurname.Replace(" ", "").Replace("ı", "i").Replace("ö", "o").Replace("ü", "u").Replace("ğ", "g").Replace("ç", "c").Replace("ş", "s").ToLower();
+                    return $"{sanitizedFirstName}{sanitizedLastName}.{sanitizedSecondLastName}@bilgeadamboost.com";
+                }
+                else
+                {
+                    string? sanitizedSecondName1 = SecondName.Replace(" ", "").Replace("ı", "i").Replace("ö", "o").Replace("ü", "u").Replace("ğ", "g").Replace("ç", "c").Replace("ş", "s").ToLower();
+                    string? sanitizedSecondLastName2 = SecondSurname.Replace(" ", "").Replace("ı", "i").Replace("ö", "o").Replace("ü", "u").Replace("ğ", "g").Replace("ç", "c").Replace("ş", "s").ToLower();
+                    return $"{sanitizedFirstName}{sanitizedSecondName1}.{sanitizedLastName}{sanitizedSecondLastName2}@bilgeadamboost.com";
+                }
+            }
+            set
+            {
+
+            }
+        }
         public ImageModel ImageModel { get; set; }
         public string ImageUrl { get; set; }
 

@@ -105,9 +105,9 @@
 
 
                         <div class="form-floating mb-3">
-                            <input asp-for="Salary" class="form-control shadow-sm" placeholder="Salary" />
-                            <label asp-for="Salary">Salary</label>
-                            <span asp-validation-for="Salary" class="text-danger"></span>
+                            <input asp-for="SalaryString" class="form-control shadow-sm" placeholder="Salary" />
+                            <label asp-for="SalaryString">Salary</label>
+                            <span asp-validation-for="SalaryString" class="text-danger"></span>
                         </div>
                         <div class="form-floating mb-3">
                             <input asp-for="Title" class="form-control shadow-sm" placeholder="Title" />
@@ -140,14 +140,14 @@
                     </div>
                 </div>
                 <hr />
-                <div class="row justify-content-center">
+                <div class="row">
                     <div class="col-sm-3 text-center">
                         <label for="photoInput" class="btn btn-outline-dark btn-light">
                             <i class="fas fa-upload"></i> Upload Photo
                         </label>
                     </div>
                     <div class="col-sm-3 text-center">
-                        <button id="updateButton" type="submit" class="btn btn-outline-dark btn-light toast-btn" data-target="successToast">
+                        <button id="updateButton" type="submit" class="btn btn-outline-dark btn-light">
                             <i class="fas fa-save"></i> Save
                         </button> &nbsp
                     </div>
@@ -188,15 +188,21 @@
 
 
     function showSuccessToast() {
+        var validationSummary = document.getElementById('validationSummary');
+        if (validationSummary != null && validationSummary.classList.contains('validation-summary-errors')) {
+            // If there are validation errors, do not submit the form
+            return;
+        }
+
         // Show the toast notification
         var toast = new bootstrap.Toast(document.getElementById('successToast'));
         toast.show();
 
         // Wait for a few seconds (adjust the delay as needed)
-        //setTimeout(function () {
-        //    // Submit the form
-        //    document.getElementById('editProfileForm').submit();
-        //}, 4000); // 4 seconds delay, you can change this to your preferred value
+        setTimeout(function () {
+            // Submit the form
+            document.getElementById('editProfileForm').submit();
+        }, 4000); // 4 seconds delay, you can change this to your preferred value
     }
 
     // Find all buttons with the toast-btn class
@@ -214,46 +220,47 @@
 
 
 <script>
-    var telephoneNumberInput = document.getElementById("telephoneNumber");
-    telephoneNumberInput.addEventListener("input", validateAndUpdateButton);
-    var addressInput = document.getElementById("Address");
-    addressInput.addEventListener("input", validateAndUpdateButton);
+    document.addEventListener("DOMContentLoaded", function () {
 
-    //var backgroundImageInput = document.getElementById("backgroundImageInput");
-    //backgroundImageInput.addEventListener("change", validateAndUpdateButton);
-
-    var photoInput = document.getElementById("photoInput");
-    photoInput.addEventListener("change", validateAndUpdateButton);
-
-    var originalTelephoneNumber = telephoneNumberInput.value;
-    var originalAddress = addressInput.value;
-
-    function validateAndUpdateButton() {
+        var telephoneNumberInput = document.getElementById("TelephoneNumber");
+        var addressInput = document.getElementById("Address");
+        var photoInput = document.getElementById("photoInput");
         var updateButton = document.getElementById("updateButton");
-        var isValidTelephoneNumber = validatePhoneNumber(telephoneNumberInput.value);
-        var isValidAddress = validateAddress(addressInput.value);
-        var isImageChanged = isFileSelected(photoInput);
-        //var isBackgroundImageChanged = isFileSelected(backgroundImageInput);
 
+       
 
-        var telephoneNumberChanged = originalTelephoneNumber !== telephoneNumberInput.value;
-        var addressChanged = originalAddress !== addressInput.value;
+        validateAndUpdateButton();
 
-        updateButton.disabled = !(isValidTelephoneNumber && isValidAddress && (isImageChanged || telephoneNumberChanged || addressChanged));
-    }
+        telephoneNumberInput.addEventListener("input", validateAndUpdateButton);
+        addressInput.addEventListener("input", validateAndUpdateButton);
+        photoInput.addEventListener("change", validateAndUpdateButton);
 
-    function validatePhoneNumber(telephoneNumber) {
-        // Telefon numarasının sadece rakamlardan oluşup oluşmadığını kontrol et
-        return /^[0-9]{11}$/.test(telephoneNumber);
-    }
+        function validateAndUpdateButton() {
+            var isValidTelephoneNumber = validatePhoneNumber(telephoneNumberInput.value);
+            var isValidAddress = validateAddress(addressInput.value);
+            var isImageChanged = isFileSelected(photoInput);
 
-    function validateAddress(address) {
-        return address.trim() !== "";
-    }
+            var telephoneNumberChanged = originalTelephoneNumber !== telephoneNumberInput.value;
+            var addressChanged = originalAddress !== addressInput.value;
 
-    function isFileSelected(input) {
-        return input.files && input.files.length > 0;
-    }
+            updateButton.disabled = !(isValidTelephoneNumber && isValidAddress && (isImageChanged || telephoneNumberChanged || addressChanged));
+        }
+
+        function validatePhoneNumber(telephoneNumber) {
+            // Telefon numarasının uygunluğunu daha geniş bir regex ile kontrol etmek
+            var phoneRegex = /^[0-9]{10,11}$/; // En az 10, en fazla 11 haneli
+            return phoneRegex.test(telephoneNumber);
+        }
+
+        function validateAddress(address) {
+            // Gerçek bir adres validasyonu, boşluk kontrolü yerine
+            return address.trim() !== "";
+        }
+
+        function isFileSelected(input) {
+            return input.files && input.files.length > 0;
+        }
+    });
 </script>
 
 @section Scripts{

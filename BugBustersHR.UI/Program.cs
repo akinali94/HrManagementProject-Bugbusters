@@ -158,7 +158,7 @@ builder.Services.AddScoped<IValidator<CreateEmployeeFromManagerVM>, CreateEmploy
 builder.Services.AddScoped<IValidator<CreateManagerFromAdminVM>, CreateManagerValidator>();
 builder.Services.AddScoped<IValidator<AdminUpdateVM>, AdminValidator>();
 builder.Services.AddScoped<IValidator<CompanyVM>, CompanyValidator>();
-
+builder.Services.AddScoped<IValidator<GetManagerListVM>, ManagerEditFromAdminValidator>();
 
 
 
