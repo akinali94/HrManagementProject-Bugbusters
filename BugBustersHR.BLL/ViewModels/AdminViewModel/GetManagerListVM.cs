@@ -15,6 +15,7 @@ namespace BugBustersHR.BLL.ViewModels.AdminViewModel
 
             ImageModel = new ImageModel();
         }
+        public DateTime? ResignationDate { get; set; }
         public string Id { get; set; }
         public string Name { get; set; }
         public string? SecondName { get; set; }

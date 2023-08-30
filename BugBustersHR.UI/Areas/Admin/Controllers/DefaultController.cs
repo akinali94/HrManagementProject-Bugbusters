@@ -260,8 +260,17 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
         public IActionResult GetManagerList()
         {
 
-            var getList = _hrDb.Personels.Where(x => x.Role == AppRoles.Role_Manager).ToList();
+            var getList = _hrDb.Personels.Where(x => x.Role == AppRoles.Role_Manager && x.IsActive==true).ToList();
             
+            var mappingList = _mapper.Map<List<GetManagerListVM>>(getList);
+            SetUserImageViewBag();
+            return View(mappingList);
+        }
+        public IActionResult GetManagerListAll()
+        {
+
+            var getList = _hrDb.Personels.Where(x => x.Role == AppRoles.Role_Manager).ToList();
+
             var mappingList = _mapper.Map<List<GetManagerListVM>>(getList);
             SetUserImageViewBag();
             return View(mappingList);
@@ -315,7 +324,7 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
             }
 
             existingManager.Id = model.Id;
-
+            existingManager.ResignationDate=model.ResignationDate;
             existingManager.FullName = model.FullName;
             existingManager.Name = model.Name;
             existingManager.SecondName = model.SecondName;
