@@ -185,6 +185,9 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
         public IActionResult Edit(CompanyVM companyVM)
         {
             var validationResult = _companyValidator.Validate(companyVM);
+            var entity = _service.GetByIdCompany(companyVM.Id);
+
+
             try
             {
                 if (companyVM.ImageModel.File != null)
@@ -207,6 +210,10 @@ namespace BugBustersHR.UI.Areas.Admin.Controllers
 
                         companyVM.Logo = "https://bugbustersstorage.blob.core.windows.net/contentupload/" + uniqueName;
                     }
+                }
+                else
+                {
+                    companyVM.Logo = entity.Logo;
                 }
             }
             catch (Exception)
