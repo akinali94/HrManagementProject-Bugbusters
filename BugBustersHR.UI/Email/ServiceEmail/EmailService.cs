@@ -100,14 +100,16 @@ namespace BugBustersHR.UI.Email.ServiceEmail
 
 
             var mailMessage = new MailMessage();
-            string emailTemplate = File.ReadAllText("C:\\Users\\cagri\\Desktop\\dddddddd\\BugBustersFinall\\BugBustersHR.UI\\wwwroot\\assets\\mailconfirmation\\html\\leavemail.html");
+            string wwwrootPath = _hostEnvironment.WebRootPath;
+            //string emailTemplate = File.ReadAllText("C:\\Users\\cagri\\Desktop\\dddddddd\\BugBustersFinall\\BugBustersHR.UI\\wwwroot\\assets\\mailconfirmation\\html\\leavemail.html");
+            string emailTemplate = Path.Combine(wwwrootPath, "C:\\Users\\cagri\\Desktop\\dddddddd\\BugBustersFinall\\BugBustersHR.UI\\wwwroot\\assets\\mailconfirmation\\html\\leavemail.html");
             emailTemplate = emailTemplate.Replace("{DateTime.Now.Year}", DateTime.Now.Year.ToString());
             emailTemplate = emailTemplate.Replace("{employeeFullName}", employeeFullName);
             emailTemplate = emailTemplate.Replace("{approvedStatus}", approvedStatus);
             emailTemplate = emailTemplate.Replace("{manager.FullName}", manager.FullName);
             emailTemplate = emailTemplate.Replace("{request.StartDate.ToString(\"yyyy-MM-dd\")}", request.StartDate.ToString("yyyy-MM-dd"));
             emailTemplate = emailTemplate.Replace("{request.EndDate.ToString(\"yyyy-MM-dd\")}", request.EndDate.ToString("yyyy-MM-dd"));
-
+             
 
             mailMessage.From = new MailAddress(_settings.Username);
             mailMessage.To.Add(ToEmail);

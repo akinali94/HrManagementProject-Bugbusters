@@ -243,7 +243,7 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
 
                 await _emailService.SendConfirmEmail(link,mapEmployee.Email,mapEmployee.PasswordHash);
 
-                return RedirectToAction("Index", "Default");
+                return RedirectToAction("GetEmployeeList", "Default");
             }
 
             ViewBag.gender = new SelectList(new List<SelectListItem>

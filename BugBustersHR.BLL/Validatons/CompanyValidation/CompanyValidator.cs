@@ -33,7 +33,9 @@ namespace BugBustersHR.BLL.Validatons.CompanyValidation
                 NotNull().WithMessage("Please enter phone number..").
                 Matches(@"^[0-9\s\(\)]+$").
                 WithMessage("Phone number should only have numbers..").
-                Length(11).WithMessage("Phone number must have 11 digits..");
+                Length(11).WithMessage("Phone number must have 11 digits..").
+                Must(x => x.StartsWith("05")).WithMessage("Phone number should start with '05'...");
+
 
             RuleFor(x => x.Address).
                 NotEmpty().WithMessage("Please enter address information..").
@@ -59,6 +61,13 @@ namespace BugBustersHR.BLL.Validatons.CompanyValidation
                 Must((viewModel, mersisNo) => IncludeTax(mersisNo, viewModel.TaxNumber)).
                 WithMessage("Mersis No should include tax number");
 
+            RuleFor(vm => vm.FoundationYear)
+           .Must((vm, foundationYear) => foundationYear < vm.ContractStartDate)
+           .WithMessage("Foundation year must be earlier than contract start date");
+
+            RuleFor(vm => vm.ContractStartDate)
+                .LessThan(vm => vm.ContractEndDate)
+                .WithMessage("Contract start date must be earlier than contract end date");
         }
 
         //public CompanyValidator()
