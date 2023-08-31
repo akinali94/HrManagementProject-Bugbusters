@@ -72,6 +72,14 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
             return View(mappingQuery);
         }
 
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            _hrDb.Remove(id);
+            _hrDb.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
         public IActionResult Edit(string id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
