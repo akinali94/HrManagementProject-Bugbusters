@@ -95,14 +95,14 @@
                                                             @Html.DisplayFor(modelItem => item.Currency)
                                                         </td>
                                                         <td>
-                                                            @Html.DisplayFor(modelItem => item.ApprovalStatus)
+                                                            @Html.DisplayFor(modelItem => item.ApprovalStatusName)
                                                         </td>
-                                                   @*     <td>
-                                                            @Html.DisplayFor(modelItem => item.RequestDate)
-                                                        </td>*@
                                                         <td>
-                                                            @Html.DisplayFor(modelItem => item.ApprovalDate)
+                                                            @Html.DisplayFor(modelItem => item.RequestDate)
                                                         </td>
+                                                     @*   <td>
+                                                            @Html.DisplayFor(modelItem => item.ApprovalDate)
+                                                        </td>*@
                                                         <td>
                                                             @Html.DisplayFor(modelItem => item.TypeName)
                                                         </td>
@@ -115,8 +115,7 @@
                                                                 {
                                                                     <a href="/Manager/Expenditure/ExpenditureRefused/@item.Id" class="btn btn-outline-warning">Refuse</a>
                                                                     <a href="/Manager/Expenditure/ExpenditureAccepted/@item.Id" class="btn btn-outline-info">Accept</a>
-                                                                    //@Html.ActionLink("Accept Leave", "LeaveAccepted", new { id=item.Id  })
-                                                                    //@Html.ActionLink("Refuse Leave", "LeaveRefused", new { id=item.Id })
+                                                    
 
                                                                 }
                                                                 if (item.ApprovalStatus != null)

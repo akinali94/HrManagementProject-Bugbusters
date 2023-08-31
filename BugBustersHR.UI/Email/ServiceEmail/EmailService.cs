@@ -101,7 +101,6 @@ namespace BugBustersHR.UI.Email.ServiceEmail
 
             var mailMessage = new MailMessage();
             string wwwrootPath = _hostEnvironment.WebRootPath;
-            //string emailTemplate = File.ReadAllText("C:\\Users\\cagri\\Desktop\\dddddddd\\BugBustersFinall\\BugBustersHR.UI\\wwwroot\\assets\\mailconfirmation\\html\\leavemail.html");
             string emailTemplate = Path.Combine(wwwrootPath, "C:\\Users\\cagri\\Desktop\\dddddddd\\BugBustersFinall\\BugBustersHR.UI\\wwwroot\\assets\\mailconfirmation\\html\\leavemail.html");
             emailTemplate = emailTemplate.Replace("{DateTime.Now.Year}", DateTime.Now.Year.ToString());
             emailTemplate = emailTemplate.Replace("{employeeFullName}", employeeFullName);
@@ -133,8 +132,10 @@ namespace BugBustersHR.UI.Email.ServiceEmail
             smptClient.EnableSsl = true;
 
 
+
             var mailMessage = new MailMessage();
-            string emailTemplate = File.ReadAllText("C:\\Users\\cagri\\Desktop\\dddddddd\\BugBustersFinall\\BugBustersHR.UI\\wwwroot\\assets\\mailconfirmation\\html\\advancemail.html");
+            string wwwrootPath = _hostEnvironment.WebRootPath;
+            string emailTemplate = Path.Combine(wwwrootPath, "C:\\Users\\cagri\\Desktop\\dddddddd\\BugBustersFinall\\BugBustersHR.UI\\wwwroot\\assets\\mailconfirmation\\html\\advancemail.html");
             emailTemplate = emailTemplate.Replace("{DateTime.Now.Year}", DateTime.Now.Year.ToString());
             emailTemplate = emailTemplate.Replace("{employeeFullName}", employeeFullName);
             emailTemplate = emailTemplate.Replace("{approvedStatus}", approvedStatus);
@@ -169,8 +170,11 @@ namespace BugBustersHR.UI.Email.ServiceEmail
             smptClient.EnableSsl = true;
 
 
+          
+
             var mailMessage = new MailMessage();
-            string emailTemplate = File.ReadAllText("C:\\Users\\cagri\\Desktop\\dddddddd\\BugBustersFinall\\BugBustersHR.UI\\wwwroot\\assets\\mailconfirmation\\html\\allowanceMail.html");
+            string wwwrootPath = _hostEnvironment.WebRootPath;
+            string emailTemplate = Path.Combine(wwwrootPath, "C:\\Users\\cagri\\Desktop\\dddddddd\\BugBustersFinall\\BugBustersHR.UI\\wwwroot\\assets\\mailconfirmation\\html\\allowanceMail.html");
 
             emailTemplate = emailTemplate.Replace("{DateTime.Now.Year}", DateTime.Now.Year.ToString());
             emailTemplate = emailTemplate.Replace("{employeeFullName}", employeeFullName);
@@ -204,8 +208,13 @@ namespace BugBustersHR.UI.Email.ServiceEmail
             smptClient.EnableSsl = true;
 
 
+          
+
             var mailMessage = new MailMessage();
-            string emailTemplate = File.ReadAllText("C:\\Users\\cagri\\Desktop\\dddddddd\\BugBustersFinall\\BugBustersHR.UI\\wwwroot\\assets\\mailconfirmation\\html\\expendituremail.html");
+            string wwwrootPath = _hostEnvironment.WebRootPath;
+            string emailTemplate = Path.Combine(wwwrootPath, "C:\\Users\\cagri\\Desktop\\dddddddd\\BugBustersFinall\\BugBustersHR.UI\\wwwroot\\assets\\mailconfirmation\\html\\expendituremail.html");
+
+
             emailTemplate = emailTemplate.Replace("{DateTime.Now.Year}", DateTime.Now.Year.ToString());
             emailTemplate = emailTemplate.Replace("{employeeFullName}", employeeFullName);
             emailTemplate = emailTemplate.Replace("{approvedStatus}", approvedStatus);

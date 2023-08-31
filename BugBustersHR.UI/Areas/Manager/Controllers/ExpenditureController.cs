@@ -45,6 +45,7 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
             var mappingQuery = _mapper.Map<IEnumerable<ExpenditureRequestVM>>(expList)
                 .Where(expenditure => userCompanyIds.Contains(expenditure.EmployeeId)).ToList();
             _expenditureService.GetExpenditureApprovelName(mappingQuery);
+            _expenditureService.GetExpenditureTypeName(mappingQuery);
 
             foreach (var item in mappingQuery)
             {
@@ -101,6 +102,7 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
             var mappingQuery = _mapper.Map<IEnumerable<ExpenditureRequestVM>>(query)
                .Where(advances => userCompanyIds.Contains(advances.EmployeeId)).ToList();
           _expenditureService.GetExpenditureApprovelName(mappingQuery);
+            _expenditureService.GetExpenditureTypeName(mappingQuery);
             foreach (var item in mappingQuery)
             {
                 item.FullName = (_employeeService.TGetById(item.EmployeeId)).FullName;
@@ -123,6 +125,7 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
             var mappingQuery = _mapper.Map<IEnumerable<ExpenditureRequestVM>>(query)
                .Where(advances => userCompanyIds.Contains(advances.EmployeeId)).ToList();
           _expenditureService.GetExpenditureApprovelName(mappingQuery);
+            _expenditureService.GetExpenditureTypeName(mappingQuery);
 
             foreach (var item in mappingQuery)
             {
@@ -148,6 +151,7 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
             var mappingQuery = _mapper.Map<IEnumerable<ExpenditureRequestVM>>(query)
                .Where(advances => userCompanyIds.Contains(advances.EmployeeId)).ToList();
        _expenditureService.GetExpenditureApprovelName(mappingQuery);
+            _expenditureService.GetExpenditureTypeName(mappingQuery);
             foreach (var item in mappingQuery)
             {
                 item.FullName = (_employeeService.TGetById(item.EmployeeId)).FullName;
