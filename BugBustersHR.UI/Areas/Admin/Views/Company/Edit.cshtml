@@ -31,7 +31,7 @@
     </div>
 </div>
 <div class="container-fluid px-2 px-md-4 d-flex justify-content-end align-items-center mt-n12 bg-light" style="min-height: 100vh">
-    <div class="col-10 mt-n12 bg-light">
+    <div class="col-10 mt-n11 bg-light">
         <div class="card card-body mx-3 mx-md-4 bg-light opacity-9">
             <div class="card-header pb-0 p-3 bg-light">
                 <div class="row">
@@ -42,22 +42,19 @@
             </div>
             <form asp-controller="Company" asp-action="Edit" method="post" enctype="multipart/form-data" id="editProfileForm">
                 <input type="hidden" asp-for="Id" />
-@*                <div class="row justify-content-center align-items-center mb-2">
+                <div class="row justify-content-center align-items-center mb-2">
                     <div class="avatar avatar-xxl position-relative">
-                        <img id="profileImage" src="@Url.Content(@Model.Logo)" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
-                        <input asp-for="Logo" value="@Model.Logo" type="file" accept="image/*" class="form-control" id="photoInput" style="display:none;" onchange="updateProfileImage()">
+                        <img id="profileImage" src="@Model.Logo" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+                        <input type="file" asp-for="ImageModel.File" accept="image/*" class="form-control" id="photoInput" style="display:none;" onchange="updateProfileImage()">
                     </div>
-                </div>*@
-                <div class="avatar avatar-xl position-relative">
-                    <img id="profileImage" src="@Model.Logo" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
-                    <input type="file" asp-for="ImageModel.File" accept="image/*" class="form-control" id="photoInput" style="display:none;" onchange="updateProfileImage()">
                 </div>
-@*                    <div class="form-group">
-                        <label asp-for="Logo" class="control-label"></label>
-                        <input asp-for="Logo" class="form-control" value="@Model.Logo" />
-                        <img src="@Url.Content(@Model.Logo)" alt="Company Logo" class="company-logo" style="width: 100px; height: 100px;" />
-                        <span asp-validation-for="Logo" class="text-danger"></span>
-                    </div>*@
+
+                @*                    <div class="form-group">
+                <label asp-for="Logo" class="control-label"></label>
+                <input asp-for="Logo" class="form-control" value="@Model.Logo" />
+                <img src="@Url.Content(@Model.Logo)" alt="Company Logo" class="company-logo" style="width: 100px; height: 100px;" />
+                <span asp-validation-for="Logo" class="text-danger"></span>
+                </div>*@
                 <div class="row">
                     <div class="col-md-4">
                         <!-- Column 1 -->
