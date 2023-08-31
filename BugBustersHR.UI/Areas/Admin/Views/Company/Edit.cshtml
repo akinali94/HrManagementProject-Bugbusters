@@ -87,17 +87,17 @@
                             <span asp-validation-for="EmployeeNumber" class="text-danger"></span>
                         </div>
                         <div class="form-floating">
-                            <input asp-for="FoundationYear" class="form-control shadow-sm" />
+                            <input asp-for="FoundationYear" class="form-control shadow-sm" type="date"/>
                             <label asp-for="FoundationYear" class="control-label"></label>
                             <span asp-validation-for="FoundationYear" class="text-danger"></span>
                         </div>
                         <div class="form-floating">
-                            <input asp-for="ContractStartDate" class="form-control shadow-sm" />
+                            <input asp-for="ContractStartDate" class="form-control shadow-sm" type="date"/>
                             <label asp-for="ContractStartDate" class="control-label"></label>
                             <span asp-validation-for="ContractStartDate" class="text-danger"></span>
                         </div>
                         <div class="form-floating">
-                            <input asp-for="ContractEndDate" class="form-control shadow-sm" />
+                            <input asp-for="ContractEndDate" class="form-control shadow-sm" type="date"/>
                             <label asp-for="ContractEndDate" class="control-label"></label>
                             <span asp-validation-for="ContractEndDate" class="text-danger"></span>
                         </div>
@@ -135,10 +135,11 @@
                         </button> &nbsp
                     </div>
                     <div class="col-sm-3 text-center">
-                        <a asp-area="Admin" asp-controller="Company" asp-action="GetCompanyDetails" class="btn btn-outline-dark btn-light">
-                            <i class="fas fa-info-circle"></i> Detailed Info
+                            <a asp-area="Admin" asp-controller="Company" asp-action="GetCompanyDetails" asp-route-id="@Model.Id" class="btn btn-outline-dark btn-light">
+                                <i class="fas fa-info-circle"></i> Detailed Info
                         </a>
                     </div>
+
                     <div class="col-sm-3 text-center">
                         <a asp-area="Admin" asp-controller="Default" asp-action="Index" class="btn btn-dark btn-outline-secondary text-lg-center">
                             <i class="fas fa-home"></i> Home
