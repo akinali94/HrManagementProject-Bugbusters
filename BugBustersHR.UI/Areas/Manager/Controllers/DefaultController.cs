@@ -71,13 +71,24 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
 
             return View(mappingQuery);
         }
+        public IActionResult Delete(string id)
+        {
+
+            var employee = _service.GetByIdEmployee(id);
+            _service.TDelete(employee);
+            SetUserImageViewBag();
+
+            return RedirectToAction("GetEmployeeList");
+        }
 
         [HttpPost]
-        public IActionResult Delete(int id)
+        public IActionResult Delete(GetEmployeeListVM employeeListVM)
         {
-            _hrDb.Remove(id);
-            _hrDb.SaveChanges();
-            return RedirectToAction("Index");
+            _service.TDelete(_mapper.Map<Employee>(employeeListVM));
+            SetUserImageViewBag();
+            return RedirectToAction("GetEmployeeList");
+
+
         }
 
         public IActionResult Edit(string id)
@@ -307,6 +318,18 @@ namespace BugBustersHR.UI.Areas.Manager.Controllers
             
         }
 
-  
+        [NonAction]
+        private void SetUserImageViewBag()
+        {
+
+
+            var adminID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var admin = _hrDb.Personels.FirstOrDefault(u => u.Id == adminID);
+            ViewBag.UserImageUrl = admin?.ImageUrl;
+            ViewBag.UserFullName = admin?.FullName;
+
+
+        }
+
     }
 }
