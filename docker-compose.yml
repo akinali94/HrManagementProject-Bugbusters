@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    platform: linux/amd64
+    container_name: bugbusters-sql
+    ports:
+      - "${MSSQL_PORT}:1433"
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "${MSSQL_SA_PASSWORD}"
+    volumes:
+      - mssqldata:/var/opt/mssql
+    healthcheck:
+      test: [ "CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P \"$${MSSQL_SA_PASSWORD}\" -C -Q \"SELECT 1\" || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    # Eğer Linux/Apple Silicon'da ssl trust sorunları görürsen:
+    # command: [ "/opt/mssql/bin/sqlservr" ]
+
+  # (İsteğe bağlı) DB oluşturma komutu—mssql sağlıklı olduktan sonra bir kez çalışır
+  db-init:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    depends_on:
+      mssql:
+        condition: service_healthy
+    entrypoint: ["/bin/bash","-lc"]
+    command: >
+      "/opt/mssql-tools18/bin/sqlcmd -S mssql -U sa -P \"$${MSSQL_SA_PASSWORD}\" -C
+      -Q \"IF DB_ID('$${MSSQL_DB}') IS NULL CREATE DATABASE [$${MSSQL_DB}];\""
+    environment:
+      MSSQL_SA_PASSWORD: "${MSSQL_SA_PASSWORD}"
+      MSSQL_DB: "${MSSQL_DB}"
+
+volumes:
+  mssqldata:
