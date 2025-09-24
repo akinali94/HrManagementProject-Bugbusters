@@ -156,8 +156,6 @@ await db.SaveChangesAsync();
 // ------------------------------------------------------
 // 3) Seed Employee users (admin + 2 managers + 4 employees)
 // ------------------------------------------------------
-// everything here is Employee (inherits IdentityUser) -> we can set domain fields:
-// Name, Surname, Title, Section, TelephoneNumber, CompanyName, Salary, Gender, etc. :contentReference[oaicite:2]{index=2}
 static (Employee user, string role, string password)[] GetMockEmployees()
 {
     static string N(string s) => s.ToUpperInvariant();
